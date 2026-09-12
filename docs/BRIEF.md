@@ -69,20 +69,20 @@ Use the extension's resume view for prefilled context. A remote task URL alone d
 
 The local extension foundation now passes the browser checks recorded in `docs/EXTENSION-HANDOFF.md`. The complete voice and meeting demo remains unverified.
 
-Read-only inspection found `NemotronEngine.load`, `feed`, `finalize`, `onText`, and `onEvent` in the local silent-notetaker `nemotron-engine.js`. The decoder calls `WasmNemotron.transcribeChunk`, which calls the WASM ASR implementation. This is existing source, not fresh runtime proof or event-built work. Confirm the teammate's actual branch before integration.
+The integrated audio base is `bf79f61`, the inherited Voice Lab implementation. It uses sherpa-onnx WebAssembly workers for Nemotron and Kokoro, a bounded IndexedDB audio queue, Zoom tab capture, and BlackHole output selection. The earlier silent-notetaker inspection informed the planning boundary; its Rust/WASM engine was not ported into this extension.
 
-The silent-notetaker extension SDK describes plugins inside that application. It does not itself establish Chrome extension messaging. Agree on a transport and versioned events carrying session ID, segment ID, sequence/revision, time offsets, text, speaker if known, and capture status. Preserve partial/final semantics and mark missing transcript intervals.
+The working transport is a versioned Chrome runtime message bridge from Voice Lab to the extension service worker. Transcript events carry session and segment IDs, sequence/revision, decoded-audio offsets, text, source, and partial/final state. The worker validates the owning tab and document before committing records to IndexedDB. Actual sample recognition, transcript persistence, and reload recovery passed the combined browser checks in the handoff.
 
-Kokoro synthesis, playback, and delivery into a meeting are separate checks. Verify virtual microphone delivery with a second participant and provide an immediate stop operation. Teammate owns this work.
+Actual Kokoro synthesis and cancellation of late results passed the combined UI checks. Return reaches the audio owner and cancels output while the existing ASR worker remains usable. Virtual microphone delivery still requires a second participant; local synthesis does not prove meeting delivery. Autonomous Takeover remains unavailable.
 
-Use an offscreen extension document to own continuous browser capture/audio work; the service worker handles hotkeys, policy, alarms, and sync coordination. Closing the UI must not lose the session. Validate the existing WASM runtime under extension CSP and resource-loading rules before claiming reuse works.
+The persistent Voice Lab tab owns the current audio workers and capture. Closing the side panel leaves that tab running. Closing or reloading the audio owner interrupts capture; session recovery preserves transcripts and allows a new capture. An offscreen document is a later ownership option, not part of this checkpoint. The current bundled runtime was exercised under the combined extension manifest and CSP.
 
-The live Ambiguous OpenAPI schema was fetched successfully from `https://app.ambiguous.ai/api/openapi.json` during planning. It lists document and task create/read operations, calendar events under `/api/calendars/`, and event meeting-note associations. Request schemas, authentication, canonical record links, and real writes still need verification. Use the schema's plural calendar routes rather than the singular route on the overview page.
+The live Ambiguous OpenAPI schema was fetched successfully from `https://app.ambiguous.ai/api/openapi.json` during planning. It lists document and task create/read operations, calendar events under `/api/calendars/`, and event meeting-note associations. Create/read schemas and bearer authentication are encoded in the adapter. Actual remote writes, readback, and canonical record links remain unverified. Use the schema's plural calendar routes rather than the singular route on the overview page.
 
 ## Inputs still needed
 
 - Meeting app and reminder source for the demo.
-- Teammate's current branch/transport and proof status for transcription, speech, and meeting audio delivery.
+- A live Zoom session and another participant for meeting audio delivery verification.
 - Reasoning model and local or hosted execution location. Speech transcription and synthesis do not supply action reasoning.
 - Takeover speaking authority.
 - Ambiguous credentials and the identity creating records. Keep credentials out of repo files and chat output.

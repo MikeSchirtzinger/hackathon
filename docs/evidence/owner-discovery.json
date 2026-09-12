@@ -1,0 +1,17 @@
+{
+  "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/index.html",
+  "tabs": [],
+  "contexts": [
+    {
+      "contextId": "785cf3f2-c5c6-48be-806e-6c71bb47d988",
+      "contextType": "TAB",
+      "documentId": "035E00C9362426718B68A018C1E24095",
+      "documentOrigin": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+      "documentUrl": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/index.html",
+      "frameId": 0,
+      "incognito": false,
+      "tabId": 154410780,
+      "windowId": 154410779
+    }
+  ]
+}

@@ -84,23 +84,25 @@ async function interruptAudioSession(session: AudioSession, detail: string) {
   const meeting = session.meetingId ? await get('meetings', session.meetingId) : undefined;
   if (meeting) await put('meetings', { ...meeting, captureStatus: 'error', speechStatus: 'stopped', revision: meeting.revision + 1 });
 }
+function isVoiceDocument(url?: string) { return url?.split(/[?#]/)[0] === chrome.runtime.getURL('index.html'); }
+async function voiceContexts() { return (await chrome.runtime.getContexts({ contextTypes: ['TAB'] })).filter(owner => isVoiceDocument(owner.documentUrl)); }
 async function recoverAudioSessions() {
   const owners = await chrome.runtime.getContexts({ contextTypes: ['TAB'] });
   for (const session of await all('audioSessions')) {
     if (!['starting','listening'].includes(session.captureStatus)) continue;
-    const ownerExists = owners.some(owner => owner.tabId === session.tabId && owner.documentId === session.ownerDocumentId && owner.documentUrl === chrome.runtime.getURL('index.html'));
+    const ownerExists = owners.some(owner => owner.tabId === session.tabId && owner.documentId === session.ownerDocumentId && isVoiceDocument(owner.documentUrl));
     if (!ownerExists) await interruptAudioSession(session, 'Audio owner closed, reloaded, or restarted before capture finished. Transcript retained.');
   }
 }
 async function stopVoiceOutput() {
-  const tabs = await chrome.runtime.getContexts({ contextTypes: ['TAB'], documentUrls: [chrome.runtime.getURL('index.html')] });
+  const tabs = await voiceContexts();
   if (!tabs.length) return;
   const response = await chrome.runtime.sendMessage({ type: 'voice-control', action: 'stop-output' });
   if (!response?.stopped) throw new Error('Speech stop was not acknowledged. Use Stop audio in Voice Lab.');
 }
 async function openVoice(meetingId?: string) {
   await chrome.storage.session.set({ voiceMeetingId: meetingId ?? null });
-  const tabs = await chrome.runtime.getContexts({ contextTypes: ['TAB'], documentUrls: [chrome.runtime.getURL('index.html')] });
+  const tabs = await voiceContexts();
   if (tabs[0] && tabs[0].tabId >= 0) { await chrome.tabs.update(tabs[0].tabId, { active: true }); return; }
   await chrome.tabs.create({ url: chrome.runtime.getURL('index.html') });
 }

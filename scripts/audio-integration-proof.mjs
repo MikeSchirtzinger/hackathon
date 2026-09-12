@@ -29,6 +29,10 @@ try{
  const opened=context.waitForEvent('page');await panel.getByRole('button',{name:'Open Voice Lab',exact:true}).click();
  let voice=await opened;await voice.waitForURL(`chrome-extension://${id}/index.html`);
  await voice.locator('#load-asr').waitFor();
+ await voice.evaluate(()=>{location.hash='audio-controls';});
+ const pageCount=context.pages().length;
+ await panel.getByRole('button',{name:'Open Voice Lab',exact:true}).click();
+ assert.equal(context.pages().length,pageCount);
  voice.on('pageerror',error=>report.errors.push(error.message));
  pass('Panel opens the inherited Voice Lab under the same extension ID');
  const loadStart=Date.now();await voice.locator('#load-asr').click();
@@ -72,7 +76,11 @@ try{
  await control('meeting-action',{id:meetingId,action:'join'});await control('meeting-action',{id:meetingId,action:'away'});
  await voice.locator('#speech').fill('This pending response must be cancelled when the person returns.');await voice.locator('#speak').click();
  await voice.getByText('Generating speech in WASM…',{exact:true}).waitFor();
+ await voice.evaluate(() => { window.stopReceipts=0; window.addEventListener('speech-output-stopped',()=>{window.stopReceipts++;}); });
  const returned=await control('meeting-action',{id:meetingId,action:'return'});assert(returned.ok,returned.error);
+ const stopReceipt=await voice.evaluate(async()=>({stops:window.stopReceipts,pending:(await import('./speech-output.js')).speechRequests.pending}));
+ assert(stopReceipt.stops>=1);assert.equal(stopReceipt.pending,false);
+ report.returnStopReceipt=stopReceipt;
  await eventually(async()=>(await voice.locator('#tts-status').textContent()).includes('Late result discarded'),180000);
  assert.equal(await voice.locator('#playback').getAttribute('src'),null);
  assert.equal((await readState()).meetings.find(m=>m.id===meetingId).status,'present');
@@ -108,5 +116,5 @@ try{
  await voice.close();
  assert.deepEqual(report.errors,[]);
  report.result='PASS';
-}catch(error){report.result='FAIL';report.failure=error.stack;console.error(error);process.exitCode=1;}
+}catch(error){report.result='FAIL';report.failure=error.stack;report.pages=await Promise.all(context.pages().map(async p=>({url:p.url(),text:await p.locator('body').innerText().catch(()=>'' )})));console.error(error);process.exitCode=1;}
 finally{if(context)await context.close();report.finishedAt=new Date().toISOString();await writeFile(path.join(evidence,'report.json'),JSON.stringify(report,null,2));console.log('RESULT:',report.result);}

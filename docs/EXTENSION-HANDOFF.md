@@ -1,28 +1,29 @@
 # Combined extension handoff
 
-Branch: `feat/extension-foundation`. Base: `bf79f61` (`origin/main`). First foundation checkpoint: `7cd9293`.
+PR: https://github.com/MikeSchirtzinger/hackathon/pull/1
 
-RESULT: PARTIAL. Draft integration is ready for code review. Long audio integration checks are still being completed.
+Branch: `feat/extension-foundation`. Base: `bf79f61945cedbf18eaa061a753c09b548a8ee57`. First local checkpoint: `7cd9293`. Combined draft checkpoint: `ffa49ae`.
 
-## One extension
+RESULT: PASS for the combined local foundation and audio integration. Overall autonomous meeting demo: PARTIAL.
 
-Run `npm ci`, import local assets with `node scripts/import-assets.mjs /path/to/source/extension`, and run `npm run prepare:assets` then `npm run verify`. Load this repository's `extension/` folder unpacked. The installer and all browser checks use that same manifest. Build outputs are under `extension/foundation/`. There is no separate dist manifest.
+## One install and load path
 
-The inherited persistent Voice Lab tab owns its workers, capture, and output. The side panel handles local context, notes, reminders, review, and sync settings. Real transcript events pass through versioned runtime messages into IndexedDB, with tab and document ownership validation. PCM stays on the inherited worker/audio queue path.
+```sh
+npm ci
+node scripts/import-assets.mjs /path/to/source/extension
+npm run prepare:assets
+npm run verify
+```
 
-## Evidence so far
+Load this repository's `extension/` folder unpacked. The installer and every browser check use that manifest. `npm run build` writes to `extension/foundation/` and preserves the inherited runtime, models, installer, and asset tools. There is no separate dist manifest.
 
-- `npm run verify`: TypeScript, six focused tests, combined build, JavaScript/shell syntax, and 362 installed model assets passed before final draft changes.
-- `npm run test:browser`: the inherited 40-second real IndexedDB queue check and actual Nemotron decoding passed on the combined manifest. The replacement clip text begins "After early nightfall". Original hackathon audio was unavailable; provenance and CC BY 4.0 credit are in `docs/TEST-CLIP.txt`.
-- `npm run test:integration`: actual UI sample decoding persisted into the side panel and survived reload. Real Kokoro output was discarded after Stop audio. A fresh explicit request generated audio afterward. The Return cancellation check failed and is being rerun after replacing URL-filtered tab discovery with the extension context inventory. Lifecycle checks follow it.
-- `npm run test:foundation`: original foundation passed 13 browser checks. Combined rerun found a root-icon URL regression after nesting the worker. `chrome.runtime.getURL('icon.png')` fixes the packaging; the real notification assertion remains and is being rerun.
+Voice Lab owns its workers and audio in a persistent tab. The side panel owns context, notes, reminders, review, and sync settings. Real transcript events are validated against the owning tab/document and committed to IndexedDB. PCM remains on the inherited worker/audio queue path. Keep Voice Lab open during capture.
 
-Current local reports and inspected screenshots are under `.evidence/checkpoint/` and `.evidence/audio-integration/`. Historical premerge foundation evidence is `docs/evidence/foundation-browser.json`. Final merged reports will be recorded separately.
-
-Local Chrome used for these checks:
+## Reproduce the measured checks
 
 ```sh
 export CHROME_PATH='/Users/mike/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing'
+npm run verify
 npm run test:foundation
 npm run test:browser
 npm run test:integration
@@ -30,12 +31,29 @@ npm run test:integration
 
 Without CHROME_PATH, install the Playwright browser with `npx playwright install chromium`.
 
-## Scope and limits
+| Command | Observed result | Evidence |
+|---|---|---|
+| `npm run verify` | TypeScript, six focused tests, build, JavaScript/shell syntax, and 362 installed model assets passed | Source checks in `scripts/verify.mjs` and `tests/*.test.ts` |
+| `npm run test:foundation` | 13 real-browser checks passed, including native hotkey context, persistence, actual notification, local network observation, rollback, and restart | `docs/evidence/merged-foundation-browser.json` |
+| `npm run test:browser` | Real 40-second FIFO audio queue and Nemotron recognition passed | `docs/evidence/inherited-audio-browser.json` |
+| `npm run test:integration` | Eight checks passed: same-extension audio workspace, real ASR persistence, Stop cancellation, fresh Kokoro output, Return cancellation with usable ASR, reload, close, and browser restart recovery | `docs/evidence/merged-audio-integration.json` |
 
-No autonomous reasoning or Takeover authority is configured. No live Zoom/BlackHole delivery is claimed. The test does not connect a virtual microphone or send speech to another participant. Transcript offsets are decoded audio offsets, not aligned absence timestamps.
+The integration run reused Voice Lab with a URL fragment and observed its stop events with no pending speech request after Return. It then verified the late real Kokoro result was discarded and decoded another real clip with the existing ASR worker. Ownership lifecycle fixtures exercise durable begin state without a cleanup callback; they never stand in for successful audio or synthetic transcripts.
 
-The Ambiguous REST adapter and reviewed outbox use the public schema. External create/readback is unverified, with no configured identity or approved live records. Local mode sends no captured content and does not silently enqueue earlier private history. Unknown write outcomes require reconciliation before another create.
+The first combined foundation run found a notification icon resolved under `foundation/`. It now uses the root URL; the passing network receipt shows `/icon.png`. The first Return run found URL-filtered `tabs.query` returned no Voice Lab tab. The live comparison in `docs/evidence/owner-discovery.json` found the actual tab via `runtime.getContexts`. Discovery and recovery now match the canonical audio document path, allowing query/fragment changes without adding tabs permission.
 
-Audio lifecycle recovery checks stored tab/document ownership at worker startup and before a new capture. A lost owner becomes an interrupted record; transcripts are retained. Pending verification covers reload, close, and browser restart recovery. Worker exceptions now update capture state as well as the audio UI.
+Browser screenshots were visually inspected: `.evidence/checkpoint/notes-persisted.png`, `.evidence/checkpoint/meeting-ended.png`, `.evidence/checkpoint/settings-local.png`, `.evidence/audio-integration/transcript-persisted.png`, and `.evidence/audio-integration/kokoro-real-output.png`. Historical premerge evidence remains in `docs/evidence/foundation-browser.json`.
 
-Assets were reconstructed by the main agent and copied read-only from `/Users/mike/.cache/hackathon-audio-assets-20260912/source/extension`. Source URLs and SHA256 receipts are in `docs/evidence/audio-download-receipts.json`. Runtime/model license files and the NVIDIA notice remain with the imported assets and are checked by `npm run verify`.
+## Assets and provenance
+
+The main agent reconstructed the assets from pinned official releases. Read-only copies were imported from `/Users/mike/.cache/hackathon-audio-assets-20260912/source/extension`. Exact source URLs and SHA256 receipts are in `docs/evidence/audio-download-receipts.json`. The runtime/model licenses and NVIDIA notice remain with the imported assets and are checked by `npm run verify`.
+
+The original hackathon audio was unavailable. The real replacement LibriSpeech clip and CC BY 4.0 credit are documented in `docs/TEST-CLIP.txt`. Both ASR checks use its actual reference text. Model/runtime assets remain ignored by Git; public asset distribution is not completed.
+
+## Remaining integration gaps
+
+No autonomous reasoning or Takeover authority is configured. No live Zoom/BlackHole delivery is claimed. The browser tests do not connect a virtual microphone or send speech to another participant. Transcript offsets are decoded-audio offsets, not aligned absence timestamps; no generated catch-up or action-item summary is claimed.
+
+The Ambiguous REST adapter and durable reviewed outbox use the public schema. External create/readback remains unverified because no identity or approved live records were provided. No captured content was sent. Local mode stops new and queued sends; an unknown write outcome requires reconciliation before another create.
+
+The main agent owns final GitHub merge and discussion-checkout synchronization. This worker has not merged the PR, deleted the branch/worktree, or edited the discussion checkout.
