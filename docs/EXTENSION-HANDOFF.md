@@ -46,7 +46,7 @@ Browser screenshots were visually inspected: `.evidence/checkpoint/notes-persist
 
 ## Assets and provenance
 
-The main agent reconstructed the assets from pinned official releases. Read-only copies were imported from `/Users/mike/.cache/hackathon-audio-assets-20260912/source/extension`. Exact source URLs and SHA256 receipts are in `docs/evidence/audio-download-receipts.json`. The runtime/model licenses and NVIDIA notice remain with the imported assets and are checked by `npm run verify`.
+Assets were reconstructed from pinned official releases. Read-only copies were imported from `/Users/mike/.cache/hackathon-audio-assets-20260912/source/extension`. Exact source URLs and SHA256 receipts are in `docs/evidence/audio-download-receipts.json`. The runtime/model licenses and NVIDIA notice remain with the imported assets and are checked by `npm run verify`.
 
 The original hackathon audio was unavailable. The real replacement LibriSpeech clip and CC BY 4.0 credit are documented in `docs/TEST-CLIP.txt`. Both ASR checks use its actual reference text. Model/runtime assets remain ignored by Git; public asset distribution is not completed.
 
@@ -56,4 +56,3 @@ No autonomous reasoning or Takeover authority is configured. No live Zoom/BlackH
 
 The Ambiguous REST adapter and durable reviewed outbox use the public schema. External create/readback remains unverified because no identity or approved live records were provided. No captured content was sent. Local mode stops new and queued sends; an unknown write outcome requires reconciliation before another create.
 
-The main agent owns final GitHub merge and discussion-checkout synchronization. This worker has not merged the PR, deleted the branch/worktree, or edited the discussion checkout.
