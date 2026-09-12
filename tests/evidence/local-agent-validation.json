@@ -1,0 +1,9 @@
+{
+  "at": "2026-09-12T21:36:01.229497+00:00",
+  "command": "node --test tests/local-agent-bridge.test.mjs tests/codex-worker.test.mjs",
+  "passed": 16,
+  "failed": 0,
+  "scope": "Real HTTP, filesystem and subprocess controls. Injected protocol results do not establish model functionality.",
+  "independentReview": "PASS. Duplicate daemon, cancellation despite failed persistence, descendant cleanup, invalid output and delayed-body shutdown controls verified.",
+  "liveModelReceipt": "local-agent-live.json"
+}
