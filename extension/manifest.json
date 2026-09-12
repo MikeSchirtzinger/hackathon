@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Zoom Voice · Nemotron + Kokoro",
+  "permissions": ["activeTab", "tabCapture", "storage", "power"],
+  "version": "0.2.0",
+  "description": "Local speech recognition and synthesis using sherpa-onnx WebAssembly. No server or API key.",
+  "action": { "default_title": "Open Voice Lab" },
+  "background": { "service_worker": "background.js" },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' blob:; worker-src 'self'; media-src 'self' blob:"
+  }
+}

@@ -7,3 +7,9 @@ dist/
 *.onnx
 *.bin
 *.wav
+
+# Local inference assets are imported separately.
+extension/models/
+extension/vendor/
+extension/demo.wav
+work/

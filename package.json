@@ -1,0 +1,13 @@
+{
+  "name": "brevity-hackathon",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "verify": "node scripts/verify.mjs",
+    "test:browser": "node tests/browser.cjs",
+    "prepare:assets": "node prepare-assets.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

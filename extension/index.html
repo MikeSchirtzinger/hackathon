@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Voice Lab — local speech playground</title>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' blob:; worker-src 'self'; media-src 'self' blob:">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header><a class="brand" href="index.html">VOICE LAB</a><span class="badge">ON DEVICE · WASM</span></header>
+    <section class="intro"><div class="eyebrow">A SMALL SPEECH EXPERIMENT</div><h1>Your voice.<br><span>Your browser.</span></h1><p>Hear it. Read it. Say it back. Two real speech models,<br class="wide"> running locally with sherpa-onnx WebAssembly.</p></section>
+    <div class="pipeline"><span>01 &nbsp; Microphone</span><i>→</i><span>02 &nbsp; Nemotron</span><i>→</i><span>03 &nbsp; Kokoro</span></div>
+    <section class="card">
+      <h2>Zoom audio handoff</h2>
+      <p>Click this extension on the Zoom meeting tab. Select BlackHole 2ch as Zoom’s microphone; keep Zoom’s speaker and your system output on headphones. Nemotron transcribes the other participants’ audio locally; Zoom captions are not needed.</p>
+      <button id="connect-output">Connect BlackHole</button>
+      <button id="test-output">Play bundled test phrase</button>
+      <button id="stop-output">Stop audio</button>
+      <div id="route-status" role="status">Output disconnected. No meeting audio will play until connected.</div>
+      <h3>Zoom audio → Nemotron</h3>
+      <button id="listen-zoom">Load Nemotron & listen to Zoom</button>
+      <button id="stop-zoom" disabled>Stop listening</button>
+      <div id="zoom-asr-status" role="status">Ready to load local speech recognition.</div>
+      <pre id="zoom-transcript">Transcript appears here.</pre>
+      <button id="copy-caption">Copy transcript into speech text</button>
+    </section>
+    <div class="grid">
+      <section class="card"><div class="cardtop"><div><span class="eyebrow">SPEECH → TEXT</span><h2>Listen with Nemotron</h2></div><span class="tag">0.6B · INT8</span></div>
+        <p class="hint">English streaming recognition. Try the bundled clip first, or record a short phrase.</p>
+        <button id="load-asr" class="secondary">Load Nemotron</button>
+        <div id="asr-status" class="status" role="status">Model is on disk. Load it when you’re ready.</div>
+        <div class="controls"><button id="sample" disabled>Try sample audio</button><button id="record" class="secondary" disabled>● Record</button></div>
+        <label for="transcript">TRANSCRIPT</label><textarea id="transcript" placeholder="Your words appear here…" rows="5"></textarea>
+        <div class="bottom"><span id="asr-metric">16 kHz · CPU / WASM</span><button id="use-text" class="link">Use text for speech ↗</button></div>
+      </section>
+      <section class="card"><div class="cardtop"><div><span class="eyebrow">TEXT → SPEECH</span><h2>Speak with Kokoro</h2></div><span class="tag">82M · INT8</span></div>
+        <p class="hint">A local voice, generated from your text. Edit the line below or bring over your transcript.</p>
+        <button id="load-tts" class="secondary">Load Kokoro</button>
+        <div id="tts-status" class="status" role="status">Model is on disk. Load it when you’re ready.</div>
+        <label for="speech">SAY SOMETHING</label><textarea id="speech" maxlength="500" rows="5">Hello from the hackathon. Nemotron listens, and Kokoro speaks. Everything runs right here in your browser.</textarea>
+        <div class="controls"><select id="voice" aria-label="Voice"><option value="0">Default voice</option></select><button id="speak" disabled>Generate speech ↗</button></div>
+        <audio id="playback" controls></audio><div id="tts-metric" class="bottom">24 kHz · CPU / WASM</div>
+      </section>
+    </div>
+    <footer><span><b class="dot"></b> No API key. No audio uploads. No inference server.</span><button id="reset" class="link">Reset & release models</button></footer>
+    <details><summary>What’s running?</summary><p>Nemotron Speech Streaming English 0.6B (560 ms configuration) and Kokoro English v0.19, both quantized to INT8. Each runs in its own Web Worker using sherpa-onnx 1.13.8 and ONNX Runtime WASM. All runtime and model files are bundled with this extension. Model loading can take a while and uses substantial RAM. This is a speech demo; it does not include a chatbot.</p><pre id="log" aria-label="Diagnostic log"></pre></details>
+  </main><script src="app.js" type="module"></script><script src="zoom.js" type="module"></script><script src="zoom-asr.js" type="module"></script>
+</body></html>
