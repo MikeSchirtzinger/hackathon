@@ -1,0 +1,67 @@
+{
+  "startedAt": "2026-09-12T23:21:56.874Z",
+  "referenceSha256": "4d1883af54245ecaa55f72fc505515d352f48c73b7ed89eb7cad5a9f610325fd",
+  "checks": [
+    {
+      "name": "Real hotkey saves first and shows a 380px isolated upper-right acknowledgement without focus, badge, native alert, or workspace access",
+      "detail": {
+        "x": 872,
+        "y": 28,
+        "width": 380,
+        "height": 167
+      }
+    },
+    {
+      "name": "Capture card disappears automatically; Local only remains zero worker HTTP"
+    },
+    {
+      "name": "A page-created surface frame with a forged capability receives no content or privileged operation"
+    },
+    {
+      "name": "Capture during a live interrupt saves without replacing the actionable reminder or sending a second native alert"
+    },
+    {
+      "name": "Due reminder uses a generic scoped page card without duplicate system notification; synthetic click is denied and real Join updates lifecycle"
+    },
+    {
+      "name": "In-page delivery consumes the same ten-minute budget and shelves the next reminder"
+    },
+    {
+      "name": "Matching popup and review cards show real counts and real away/return state without Takeover or missed-item claims"
+    },
+    {
+      "name": "Reload/navigation revokes surface capability even at the same site"
+    },
+    {
+      "name": "Page removal prevents the frame from rendering; real native system notification remains available without a duplicate card"
+    }
+  ],
+  "requests": [],
+  "sourceSha256": {
+    "extension/manifest.json": "7f65e37a9fa91dc2caaba580af3ca40f9cc221a13e2004667c25ff5c40e65993",
+    "extension/app.js": "fb4df0813ed95264596fa42e323523da4aa946859ed691c9d3b2710ad9712065",
+    "extension/zoom-asr.js": "cb59221d9f11193ad8174094f3bd65633f9e4269f1f6f6794c56949462a5570c",
+    "extension/voice-bridge.js": "a8a099473a77ff1cb751268299b58c1d53b40424314a9f3b1d1b1a63fa24f6c8",
+    "extension/src/types.ts": "9ae0106fa429305c4218a174922ac69e61a327e9b56a2037f07581faa51662c5",
+    "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+    "extension/popup.css": "1f50280705efaaf7386f8537dee2ab478847d2defaab8e915c28f8f2c3ec4ff1",
+    "extension/popup.html": "1bfd4b3667dbd12b99006172da8b182a15a37790f3e8dc2f45765df5beeb7e61",
+    "extension/surface.html": "f48a393c5eb48409c4a13ee83169089a8cb8a4cc69f4da0400568a872832cefa",
+    "extension/surface.css": "46f69ac841b00422306e2150cd5e19afa0e9ba37a49adaf219b5bc6395ee0bf9",
+    "extension/src/surfaces.ts": "345df8802dacd25105b67d2d68864ce637ee8805f384f7d58726e57fe6dbc0e9",
+    "extension/src/surface-frame.ts": "ce61d1c929d3c339406e89839ae49396ec670d49714429d56cc4f2f9dc8d50b1",
+    "extension/src/surface-types.ts": "c69d92690ccdca56ea37f54e95f5e8bcfe12bdf419e7eff1cf294c6d7790c7b0",
+    "extension/src/cards.ts": "4d60208c0d5462e49c2a1448b53d5f203444dd1d735aefcc0e55f531279a90a7",
+    "extension/src/background.ts": "f28c7b876162bdd65b1ab04ffba3b0a6cf01f58b7c8aa606222507d32b9ff67c",
+    "extension/src/attention.ts": "b87b84bf62be868f2b2bbdc8dba5e1ac55525b2951b79b140509aecb67927d22",
+    "extension/src/popup.ts": "644def400380caebf8ebbeaa6b2cefc5bbe7995525ec9ae8a86513cfd03ec9fb",
+    "extension/src/panel.ts": "728297e84b6e12f75dbfc838d7f265c9a867e735c3996cc5360885f996e747ba",
+    "extension/public/panel.css": "6ff9bd65eb1bc631db45c975df58cbc2d99c30cc43fa500d815928d09ca812a3",
+    "extension/foundation/background.js": "b37f5e2b2d7690dc55e886ff4788338d0bb84e1516df4f808308047c6b250b61",
+    "extension/foundation/surface-frame.js": "7a468d471c7f0d08cdcf3f0dfcff7ac9508facdaee503edc0a51298367f24b0d"
+  },
+  "chrome": "151.0.7922.34",
+  "captureProjection": "Context saved\n\nPage context captured. Pick it up when you return.\n\n127.0.0.1 \u00b7 page text captured \u00b7 saved locally\n\nQuiet status\n\u00d7",
+  "result": "PASS",
+  "finishedAt": "2026-09-12T23:22:22.187Z"
+}

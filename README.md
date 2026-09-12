@@ -1,6 +1,6 @@
 # Spark
 
-Spark brings saved browser context into meeting preparation and follow-through. One Chrome extension combines local notes, reminders and transcript storage with Voice Lab's Nemotron transcription and Kokoro speech. Spark stays closed in the background. With separate provider consent, newly saved context and notes automatically queue analysis through Ambiguous or a connected Codex CLI. Minimal notifications protect attention; the toolbar popup opens only on request.
+Spark brings saved browser context into meeting preparation and follow-through. One Chrome extension combines local notes, reminders and transcript storage with Voice Lab's Nemotron transcription and Kokoro speech. Spark stays closed in the background. With separate provider consent, newly saved context and notes automatically queue analysis through Ambiguous or a connected Codex CLI. A brief page card acknowledges an explicit capture without moving focus. Due reminders use a compact page card where authorized, with native system delivery when the page surface is unavailable. The toolbar popup opens only on request.
 
 ## Run locally
 
@@ -19,8 +19,8 @@ For virtual microphone setup, run `sh install.sh` in an interactive Terminal. It
 
 ## Capture, import and follow through
 
-1. On a page, press Command+Shift+Y on macOS or Ctrl+Shift+Y elsewhere. The extension quietly saves the URL, title, selection, available visible text and capture time. Restricted content is marked unavailable.
-2. Open the compact toolbar popup from the extension icon or Command+Shift+U. Save a note there. Connections and settings opens the optional full settings/history page. There is no sidebar. Voice Lab remains available for speech transcription. Records are committed to IndexedDB before analysis or synchronization.
+1. On a page, press Command+Shift+Y on macOS or Ctrl+Shift+Y elsewhere. The extension quietly saves the URL, title, selection, available visible text and capture time. Restricted content is marked unavailable. On an authorized web page, a small upper-right card confirms the save and disappears. A live meeting reminder keeps its place if you capture again.
+2. Open the compact toolbar popup from the extension icon or Command+Shift+U. Save a note there, check actual job and review counts, or use the meeting controls. Matching slate cards distinguish quiet status, saved digests, review items and reminders. Connections and settings opens the optional full settings/history page. There is no sidebar. Voice Lab remains available for speech transcription. Records are committed to IndexedDB before analysis or synchronization.
 3. Save a local meeting reminder, or configure Ambiguous in Settings and import an event or upcoming reminders. Imports preserve the remote event ID, join URL and notes-document association. Refresh explicitly to receive schedule changes. Chrome alarms run from saved reminder times even after sync is turned off, subject to the attention policy below.
 4. Mark away and return to preserve absence intervals. Return stops output and invalidates pending synthesis while keeping Voice Lab transcription running.
 5. Create task drafts and review selected records before approving and sending a sync batch. Remote tasks and restricted note documents are confirmed by HTTP readback. Optional due dates are checked against the stored date; an omitted date may receive the workspace SLA default.
@@ -38,9 +38,9 @@ Jobs retain evidence IDs, consent and connection epochs, dispatch intent, result
 - Routine status stays in storage, with no badge or notification.
 - Useful findings wait in a digest until return or an explicit review.
 - Actionable proposals appear as a quiet pending count. Nothing executes automatically.
-- A saved meeting that still needs joining can interrupt only within ten minutes of its trusted start time. At most one notification is sent per ten minutes; simultaneous reminders coalesce. Shelved items retain their reason and return/request trigger. Provider urgency cannot override this policy.
+- A saved meeting that still needs joining can interrupt only within ten minutes of its trusted start time. At most one interruption is delivered per ten minutes; simultaneous reminders coalesce. Shelved items retain their reason and return/request trigger. Provider urgency cannot override this policy.
 
-Completion never opens the popup, Settings, Voice Lab, or a browser tab.
+Completion never opens the popup, Settings, Voice Lab, a page card, or a browser tab. In-page reminders contain generic wording, never private meeting titles or join URLs. Join is resolved inside the extension from the saved meeting record. Pages receive no workspace state or credentials. Navigation revokes the page authorization; an unavailable page surface uses native system delivery without a duplicate card.
 
 ## Optional manual hosted analysis
 
@@ -52,13 +52,13 @@ The Assistant returns proposals for review. The extension does not execute them 
 
 ## Local audio
 
-Open Voice Lab from the popup or Settings and keep its persistent tab open during capture. Closing the popup or Settings does not stop it. Closing or reloading Voice Lab records an interrupted session, preserves transcripts and permits another capture.
+Open Voice Lab from the popup or Settings and keep its persistent tab open during capture. Closing the popup or Settings does not stop it. Closing or reloading Voice Lab records an interrupted session, preserves transcripts and permits another capture. A small bottom-left pill appears on an authorized active page only while a live Voice Lab owner reports actual microphone or tab input. It disappears on Stop, even while queued transcription finishes. The validation sample alone does not produce a listening claim.
 
 Microphone transcription: load Nemotron and use Record. The bundled sample is a separate, labeled validation input. Final transcripts can be saved as notes with their original captured context.
 
 For Jitsi, Zoom or another web meeting, invoke the extension icon or capture hotkey on the meeting tab first. Open meeting audio from Settings, then choose **Load Nemotron & listen to meeting** in Voice Lab. Chrome's real tab-capture permission remains required. Tab playback captures received audio; it does not include your own microphone.
 
-For manual speech output, connect BlackHole, select BlackHole 2ch as the meeting microphone and keep speakers on headphones. Load Kokoro and generate speech from entered text. **Stop audio** and **Return** invalidate pending speech as well as stopping playback. Re-select the physical microphone to speak yourself. Route selection does not prove another participant heard audio.
+Manual speech output uses BlackHole. Connect BlackHole, select BlackHole 2ch as the meeting microphone and keep speakers on headphones. Load Kokoro and generate speech from entered text. **Stop audio** and **Return** invalidate pending speech as well as stopping playback. Re-select the physical microphone to speak yourself. Route selection does not prove another participant heard audio.
 
 ## Verification and limits
 
@@ -69,13 +69,19 @@ npm run test:foundation
 npm run test:browser
 npm run test:integration
 npm run test:proactive
+npm run test:concept
+npm run test:listening-surface
 ```
 
 `SPARK_TEST_BRIDGE=1 SPARK_VISIBLE_PROOF=1 npm run test:proactive` additionally exercises real Connect, Codex inference, restart polling and cancellation against the running local bridge. `npm run test:auto-hosted` uses the ordinary Context Scout agent key from an ignored dotenv file to exercise separate automatic consent and the real Assistant route. These checks make real hosted requests. No token or pairing secret is bundled or printed.
 
 The additional `test:demo`, `test:tab-capture` and `test:hosted` commands exercise the new integration. The demo and hosted commands require an authorized `AMBIGUOUS_API_KEY` in the test process and perform real workspace operations. Read [the evidence guide](tests/evidence/README.md) before running them.
 
+The [concept UI receipts](tests/evidence/CONCEPT-UI.md) cover real capture acknowledgement, reminder delivery, page isolation controls, native popup geometry and active-input listening. `npm run verify` also runs the publication gate.
+
 Current and historical checks prove real calendar import, task/note creation and readback, explicitly requested hosted proposals, local-mode network boundaries, and real Jitsi document audio through tabCapture and Nemotron. Earlier audio checks prove real Kokoro synthesis and stale-result cancellation. See [the handoff](docs/EXTENSION-HANDOFF.md) for exact tested scope and hashes.
+
+The current full audio regression remains non-green at the third Kokoro synthesis after Return. A matched comparison reproduces the same 180-second timeout on the previous main commit with identical assets. Return revokes pending output, but timely synthesis completion and the later assertions in that run are not established. See the [matched audio receipt](tests/evidence/concept-audio-baseline.json).
 
 Hosted requests can fail independently of local storage; the UI retains an explicit error when that happens. Autonomous Takeover, continuous browser-context capture, physical-microphone mixing and an offscreen audio owner are not implemented. Live participant delivery and sustained meeting throughput remain unverified. Transcript offsets measure decoded audio and are not aligned to absence wall-clock intervals; the extension cannot attribute missed items to an absence. Local resume links restore only the originating browser's saved context and execute nothing.
 

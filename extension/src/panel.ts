@@ -1,3 +1,4 @@
+import { card as conceptCard } from './cards';
 import { BRIDGE_PERMISSION } from './local-agent';
 import type { ReasoningJob, AttentionSignal, Analysis, Absence, AudioSession, ContextSnapshot, Meeting, Note, OutboxItem, Settings, TaskProposal, TranscriptSegment } from './types';
 interface State { jobs: ReasoningJob[]; attention: AttentionSignal[]; localAgent: { connected: boolean }; analyses: Analysis[]; audioSessions: AudioSession[]; contexts: ContextSnapshot[]; notes: Note[]; tasks: TaskProposal[]; meetings: Meeting[]; absences: Absence[]; transcripts: TranscriptSegment[]; outbox: OutboxItem[]; settings: Settings; currentContextId?: string; credentialsConfigured: boolean; commands: chrome.commands.Command[]; lastStatus?: { message: string; error: boolean } }
@@ -8,7 +9,7 @@ const $ = <T extends HTMLElement = HTMLElement>(selector: string) => {
 };
 let state: State;
 let selectedContextId: string | undefined;
-let view = location.hash === '#attention' ? 'attention' : location.hash ? 'notes' : 'settings';
+let view = location.hash === '#attention' ? 'attention' : location.hash === '#meeting' ? 'meeting' : location.hash ? 'notes' : 'settings';
 let refreshSequence = 0;
 let analysisRunning = false;
 function showStatus(message: string, error = false) { $('#status').textContent = message; $('#status').classList.toggle('error', error); }
@@ -75,8 +76,8 @@ function renderNotes() {
   $('#task-form button').toggleAttribute('disabled', !context);
   const notes = $('#notes'); notes.replaceChildren();
   for (const note of [...state.notes].sort((a,b) => b.createdAt - a.createdAt)) {
-    const card = el('article'); card.dataset.noteId = note.id;
-    card.append(el('p', note.text), el('p', `${when(note.createdAt)} · Saved locally · ${note.source === 'manual' ? 'Text entry' : 'Speech transcript'}`, 'meta'));
+    const card = conceptCard('quiet', 'Note saved', note.text); card.dataset.noteId = note.id;
+    card.append(el('p', '' ), el('p', `${when(note.createdAt)} · Saved locally · ${note.source === 'manual' ? 'Text entry' : 'Speech transcript'}`, 'meta'));
     const source = state.contexts.find(c => c.id === note.contextId);
     if (source) card.append(el('p', source.title, 'hint'));
     card.append(button('Analyze saved note', () => requestAnalysis('analyze-note', note.id), !analysisEnabled())); renderAnalyses(note.id, card);
@@ -86,8 +87,8 @@ function renderNotes() {
   const transcripts = $('#transcripts'); transcripts.replaceChildren();
   for (const segment of state.transcripts.filter(s => s.final)) {
     const session = state.audioSessions.find(a => a.id === segment.sessionId);
-    const card = el('article'); card.dataset.segmentId = segment.id;
-    card.append(el('p', segment.text), el('p', `${session?.source === 'sample' ? 'Bundled sample audio' : ['zoom','tab'].includes(session?.source ?? '') ? 'Meeting tab audio' : 'Microphone'} · Saved locally`, 'meta'));
+    const card = conceptCard(segment.source === 'agent' ? 'agent' : 'tracked', segment.source === 'agent' ? 'Recorded agent speech' : 'Saved transcript', segment.text); card.dataset.segmentId = segment.id;
+    card.append( el('p', `${session?.source === 'sample' ? 'Bundled sample audio' : ['zoom','tab'].includes(session?.source ?? '') ? 'Meeting tab audio' : 'Microphone'} · Saved locally`, 'meta'));
     if (session?.contextId && segment.text.trim()) card.append(button('Save transcript as note', () => send('save-transcript-note', { segmentId: segment.id })));
     transcripts.append(card);
   }
@@ -105,8 +106,8 @@ function renderNotes() {
 function renderMeetings() {
   const box = $('#meetings'); box.replaceChildren();
   for (const meeting of [...state.meetings].sort((a,b) => b.createdAt - a.createdAt)) {
-    const card = el('article'); card.dataset.meetingId = meeting.id;
-    card.append(el('h3', meeting.title), el('p', `Starts ${when(meeting.startsAt)}`, 'hint'), el('p', `Meeting: ${meeting.status} · Transcription: ${meeting.captureStatus} · Speech: ${meeting.speechStatus}`, 'meta'));
+    const card = conceptCard(meeting.status === 'away' ? 'queue' : 'tracked', meeting.title, meeting.status === 'away' ? 'Absence recorded. Speaking on your behalf is unavailable.' : 'Your saved meeting timeline.'); card.dataset.meetingId = meeting.id;
+    card.append( el('p', `Starts ${when(meeting.startsAt)}`, 'hint'), el('p', `Meeting: ${meeting.status} · Transcription: ${meeting.captureStatus} · Speech: ${meeting.speechStatus}`, 'meta'));
     if (meeting.remote) card.append(el('p', `Imported from Ambiguous · Event ${meeting.remote.eventId}`, 'meta'));
     if (meeting.remote?.notesDocId) card.append(el('p', `Meeting notes document: ${meeting.remote.notesDocId}`, 'meta'));
     if (meeting.reminderEnabled === false) card.append(el('p', 'No upcoming reminder returned for this event. Join remains available.', 'hint'));
@@ -169,19 +170,20 @@ function renderBackground() {
   const pending = state.attention.filter(a => !a.surfacedAt && a.mode === 'negotiate').length;
   attention.append(el('p', `${pending} decisions queued when you are ready.`));
   for (const signal of [...state.attention].sort((a,b) => b.createdAt - a.createdAt)) {
-    const card = el('article'); card.dataset.attentionId = signal.id;
-    card.append(el('p', signal.summary), el('p', `${signal.mode} · ${signal.reason}`, 'meta'), el('p', `Resurface: ${signal.resurface}. Evidence: ${signal.evidenceIds.join(', ')}`, 'hint'));
+    const kind = signal.mode === 'status' ? 'quiet' : signal.mode === 'digest' ? 'digest' : signal.mode === 'negotiate' ? 'queue' : 'interrupt';
+    const heading = signal.mode === 'status' ? 'Saved status' : signal.mode === 'digest' ? 'Summary ready' : signal.mode === 'negotiate' ? 'Ready for your review' : 'Meeting reminder';
+    const card = conceptCard(kind, heading, signal.summary, signal.resurface === 'on-return' ? 'Saved for your return' : 'Available on request'); card.dataset.attentionId = signal.id;
+    const details = el('details'); details.append(el('summary', 'Why this delivery'), el('p', signal.reason), el('p', `Evidence: ${signal.evidenceIds.join(', ')}`, 'hint')); card.append(details);
     if (signal.notificationError) card.append(el('p', signal.notificationError, 'warning'));
     attention.append(card);
   }
   const jobs = $('#jobs'); jobs.replaceChildren();
   for (const job of [...state.jobs].sort((a,b) => b.createdAt - a.createdAt)) {
-    const card = el('article'); card.dataset.jobId = job.id;
-    card.append(el('h3', `${job.provider === 'codex' ? 'Connected Codex' : 'Ambiguous'} · ${job.state}`), el('p', `${job.kind} · ${when(job.createdAt)} · Hosted processing`, 'meta'));
+    const card = conceptCard(job.state === 'error' ? 'queue' : job.state === 'cancelled' ? 'quiet' : 'tracked', `${job.provider === 'codex' ? 'Codex CLI' : 'Ambiguous'} · ${job.state}`, job.result?.summary ?? (job.state === 'running' ? 'Analyzing your saved evidence.' : job.state === 'queued' ? 'Saved and waiting to be processed.' : job.error ?? 'Saved result'), `${job.kind} · ${when(job.createdAt)} · Hosted processing`); card.dataset.jobId = job.id;
     if (job.error) card.append(el('p', job.error, 'warning'));
     if (job.cancelDelivery) card.append(el('p', `Bridge cancellation: ${job.cancelDelivery}${job.cancelError ? `. ${job.cancelError}` : ''}`, 'hint'));
     if (job.result) {
-      card.append(el('p', job.result.summary), el('p', `Provider reason: ${job.result.reason}`, 'hint'));
+      const reasoning = el('details'); reasoning.append(el('summary', 'Result details'), el('p', job.result.reason, 'hint')); card.append(reasoning);
       for (const proposal of job.result.proposals) card.append(el('p', proposal.nextStep), el('p', `Proposal only · ${proposal.delivery} · ${proposal.evidenceIds.join(', ')}`, 'meta'));
     }
     card.append(el('p', `Saved evidence: ${job.evidenceIds.join(', ')}`, 'hint'));
@@ -233,6 +235,6 @@ $('#approve-sync').onclick = () => void run(async () => {
 $('#send-approved').onclick = () => void run(async () => { await send('send-approved'); showStatus('Sending approved records. Local copies remain saved.'); });
 chrome.runtime.onMessage.addListener(message => { if (message.type === 'changed') void refresh().catch(error => showStatus(String(error), true)); });
 function readHash() { selectedContextId = new URLSearchParams(location.hash.slice(1)).get('context') ?? undefined; }
-window.onhashchange = () => { readHash(); switchView(location.hash === '#attention' ? 'attention' : 'notes'); void refresh(); };
+window.onhashchange = () => { readHash(); switchView(location.hash === '#attention' ? 'attention' : location.hash === '#meeting' ? 'meeting' : 'notes'); void refresh(); };
 readHash();
 void refresh().then(() => showStatus('Local workspace ready.')).catch(error => showStatus(String(error), true));

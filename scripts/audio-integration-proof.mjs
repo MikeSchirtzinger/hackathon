@@ -29,6 +29,14 @@ try{
  const opened=context.waitForEvent('page');await panel.getByRole('button',{name:'Open Voice Lab',exact:true}).click();
  let voice=await opened;await voice.waitForURL(`chrome-extension://${id}/index.html`);
  await voice.locator('#load-asr').waitFor();
+ await voice.evaluate(() => {
+   window.audioProofEvents = [];
+   const record = value => window.audioProofEvents.push({ at: Date.now(), visibility: document.visibilityState, ...value });
+   const NativeWorker = window.Worker;
+   window.Worker = class extends NativeWorker { constructor(...args) { super(...args); this.addEventListener('message', ({data}) => { if (['audio-result','error'].includes(data.type)) record({ type: data.type, elapsed: data.elapsed, requestId:data.requestId, speechEpoch:data.speechEpoch }); }); } postMessage(data,...rest) { if (data.type==='speak') record({ type:'speak-request', requestId:data.requestId, speechEpoch:data.speechEpoch, phase:window.audioProofPhase }); return super.postMessage(data,...rest); } };
+   new MutationObserver(() => record({ type:'status', text:document.getElementById('tts-status').textContent })).observe(document.getElementById('tts-status'), { childList:true, subtree:true, characterData:true });
+   document.addEventListener('visibilitychange', () => record({ type:'visibility' }));
+ });
  await voice.evaluate(()=>{location.hash='audio-controls';});
  const pageCount=context.pages().length;
  await panel.getByRole('button',{name:'Open Voice Lab',exact:true}).click();
@@ -74,14 +82,19 @@ try{
  const now=Date.now();const created=await control('save-meeting',{title:'Audio cancellation check',joinUrl:'https://example.com/',startsAt:now+600000,remindAt:now+590000});assert(created.ok);
  const meetingId=created.value.id;
  await control('meeting-action',{id:meetingId,action:'join'});await control('meeting-action',{id:meetingId,action:'away'});
+ report.returnRequestStarted=Date.now(); await voice.evaluate(()=>{window.audioProofPhase='return';});
  await voice.locator('#speech').fill('This pending response must be cancelled when the person returns.');await voice.locator('#speak').click();
  await voice.getByText('Generating speech in WASM…',{exact:true}).waitFor();
  await voice.evaluate(() => { window.stopReceipts=0; window.addEventListener('speech-output-stopped',()=>{window.stopReceipts++;}); });
+ report.returnRequest=await voice.evaluate(()=>window.audioProofEvents.findLast(e=>e.type==='speak-request'&&e.phase==='return'));
+ assert(report.returnRequest?.requestId);
  const returned=await control('meeting-action',{id:meetingId,action:'return'});assert(returned.ok,returned.error);
  const stopReceipt=await voice.evaluate(async()=>({stops:window.stopReceipts,pending:(await import('./speech-output.js')).speechRequests.pending}));
  assert(stopReceipt.stops>=1);assert.equal(stopReceipt.pending,false);
- report.returnStopReceipt=stopReceipt;
- await eventually(async()=>(await voice.locator('#tts-status').textContent()).includes('Late result discarded'),180000);
+ report.returnStopReceipt=stopReceipt; report.returnWaitStarted=Date.now();
+ report.returnStatusPolls=[];
+ await eventually(async()=>{ const start=Date.now(); const value=await voice.locator('#tts-status').textContent(); const elapsed=Date.now()-start; if (report.returnStatusPolls.at(-1)?.text!==value || elapsed>500) report.returnStatusPolls.push({at:Date.now(),elapsed,text:value}); const matched=await voice.evaluate(id=>window.audioProofEvents.some(e=>e.type==='audio-result'&&e.requestId===id),report.returnRequest.requestId); return matched && value.includes('Late result discarded'); },180000);
+ report.audioEvents=await voice.evaluate(()=>window.audioProofEvents);
  assert.equal(await voice.locator('#playback').getAttribute('src'),null);
  assert.equal((await readState()).meetings.find(m=>m.id===meetingId).status,'present');
  assert.equal(await voice.locator('#sample').isEnabled(),true);
@@ -116,5 +129,5 @@ try{
  await voice.close();
  assert.deepEqual(report.errors,[]);
  report.result='PASS';
-}catch(error){report.result='FAIL';report.failure=error.stack;report.pages=await Promise.all(context.pages().map(async p=>({url:p.url(),text:await p.locator('body').innerText().catch(()=>'' )})));console.error(error);process.exitCode=1;}
+}catch(error){report.result='FAIL';report.failure=error.stack;report.pages=await Promise.all(context.pages().map(async p=>({url:p.url(),text:await p.locator('body').innerText().catch(()=>'' ),audioEvents:await p.evaluate(()=>window.audioProofEvents).catch(()=>undefined)})));console.error(error);process.exitCode=1;}
 finally{if(context)await context.close();report.finishedAt=new Date().toISOString();await writeFile(path.join(evidence,'report.json'),JSON.stringify(report,null,2));console.log('RESULT:',report.result);}

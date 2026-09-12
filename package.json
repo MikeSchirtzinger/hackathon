@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "verify": "npm run check && npm test && npm run build && node scripts/verify.mjs",
+    "verify": "npm run check && npm test && npm run build && node scripts/verify.mjs && npm run check:publication",
     "test:browser": "node tests/browser.cjs",
     "prepare:assets": "node prepare-assets.mjs",
     "build": "node scripts/build.mjs",
@@ -16,7 +16,10 @@
     "test:tab-capture": "node scripts/tab-capture-proof.mjs",
     "test:proactive": "node scripts/proactive-browser-proof.mjs",
     "test:auto-hosted": "node scripts/automatic-hosted-proof.mjs",
-    "test:disconnect": "node scripts/disconnect-browser-proof.mjs"
+    "test:disconnect": "node scripts/disconnect-browser-proof.mjs",
+    "check:publication": "node scripts/check-publication.mjs",
+    "test:concept": "node scripts/concept-browser-proof.mjs",
+    "test:listening-surface": "node scripts/listening-surface-proof.mjs"
   },
   "devDependencies": {
     "@types/chrome": "^0.1.0",

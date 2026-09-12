@@ -1,0 +1,48 @@
+{
+  "startedAt": "2026-09-12T23:30:15.114Z",
+  "checks": [
+    {
+      "name": "Inactive review navigation hover meets body-text contrast",
+      "pass": true,
+      "ratio": 9.951584095338426,
+      "color": "rgb(245, 242, 235)",
+      "background": "rgb(52, 59, 80)"
+    },
+    {
+      "name": "Narrow review mode label remains readable",
+      "pass": true,
+      "fontSize": 12
+    }
+  ],
+  "sourceSha256": {
+    "extension/public/panel.css": "e4bed795977a9f7a7c492fe258d084173bd0a17b3530519f3132b06ef8509875",
+    "extension/panel.css": "e4bed795977a9f7a7c492fe258d084173bd0a17b3530519f3132b06ef8509875",
+    "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f"
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-12T23:30:16.297Z",
+  "baseline": {
+    "startedAt": "2026-09-12T23:26:46.965Z",
+    "checks": [
+      {
+        "name": "Inactive review navigation hover meets body-text contrast",
+        "pass": false,
+        "ratio": 4.0704753271900485,
+        "color": "rgb(153, 156, 169)",
+        "background": "rgb(52, 59, 80)"
+      },
+      {
+        "name": "Narrow review mode label remains readable",
+        "pass": false,
+        "fontSize": 10
+      }
+    ],
+    "sourceSha256": {
+      "extension/public/panel.css": "6ff9bd65eb1bc631db45c975df58cbc2d99c30cc43fa500d815928d09ca812a3",
+      "extension/panel.css": "6ff9bd65eb1bc631db45c975df58cbc2d99c30cc43fa500d815928d09ca812a3",
+      "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f"
+    },
+    "result": "FAIL",
+    "finishedAt": "2026-09-12T23:26:49.233Z"
+  }
+}

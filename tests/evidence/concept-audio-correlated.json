@@ -1,0 +1,190 @@
+{
+  "result": "FAIL",
+  "startedAt": "2026-09-12T23:34:46.749Z",
+  "finishedAt": "2026-09-12T23:38:17.077Z",
+  "returnRequest": {
+    "at": 1789256113387,
+    "visibility": "visible",
+    "type": "speak-request",
+    "requestId": "49cd961f-eb7d-4cce-aa11-be6d3856cd9f",
+    "speechEpoch": 1,
+    "phase": "return"
+  },
+  "returnStopReceipt": {
+    "stops": 2,
+    "pending": false
+  },
+  "returnWaitStarted": 1789256113399,
+  "error": "No matching Return audio-result before the unchanged 180-second assertion deadline.",
+  "audioEvents": [
+    {
+      "at": 1789256099778,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Starting WebAssembly runtime\u2026"
+    },
+    {
+      "at": 1789256100216,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Initializing kokoro model\u2026"
+    },
+    {
+      "at": 1789256100831,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Ready \u00b7 running locally in WebAssembly"
+    },
+    {
+      "at": 1789256100920,
+      "visibility": "visible",
+      "type": "speak-request",
+      "requestId": "56f84226-e0ec-4809-92ac-64035f4294c3",
+      "speechEpoch": 0
+    },
+    {
+      "at": 1789256100920,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Generating speech in WASM\u2026"
+    },
+    {
+      "at": 1789256100938,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256108815,
+      "visibility": "visible",
+      "type": "audio-result",
+      "elapsed": 7894.5,
+      "requestId": "56f84226-e0ec-4809-92ac-64035f4294c3",
+      "speechEpoch": 0
+    },
+    {
+      "at": 1789256108815,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Speech cancelled. Late result discarded."
+    },
+    {
+      "at": 1789256108912,
+      "visibility": "visible",
+      "type": "speak-request",
+      "requestId": "7e8ee7d4-45f4-495c-b51e-cb2e2c4af62c",
+      "speechEpoch": 1
+    },
+    {
+      "at": 1789256108912,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Generating speech in WASM\u2026"
+    },
+    {
+      "at": 1789256113204,
+      "visibility": "visible",
+      "type": "audio-result",
+      "elapsed": 4292.199999999255,
+      "requestId": "7e8ee7d4-45f4-495c-b51e-cb2e2c4af62c",
+      "speechEpoch": 1
+    },
+    {
+      "at": 1789256113206,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Speech generated locally \u00b7 press play to listen"
+    },
+    {
+      "at": 1789256113387,
+      "visibility": "visible",
+      "type": "speak-request",
+      "requestId": "49cd961f-eb7d-4cce-aa11-be6d3856cd9f",
+      "speechEpoch": 1,
+      "phase": "return"
+    },
+    {
+      "at": 1789256113387,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Generating speech in WASM\u2026"
+    },
+    {
+      "at": 1789256113395,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256113395,
+      "visibility": "visible",
+      "type": "status",
+      "text": "Speech output stopped. Pending results will be discarded."
+    }
+  ],
+  "errors": [],
+  "returnStatusPolls": [
+    {
+      "at": 1789256113401,
+      "elapsed": 2,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256128520,
+      "elapsed": 2965,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256129920,
+      "elapsed": 580,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256171172,
+      "elapsed": 783,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256176462,
+      "elapsed": 4538,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256202184,
+      "elapsed": 528,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256220116,
+      "elapsed": 4059,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256230030,
+      "elapsed": 2233,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256251723,
+      "elapsed": 1255,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256257100,
+      "elapsed": 1105,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256281548,
+      "elapsed": 3636,
+      "text": "Speech output stopped. Pending results will be discarded."
+    },
+    {
+      "at": 1789256293846,
+      "elapsed": 918,
+      "text": "Speech output stopped. Pending results will be discarded."
+    }
+  ],
+  "harness": "The test closed its isolated browser in finally after the failed assertion. It did not observe natural completion of this request.",
+  "proofSha256": "e9eb2721386a9d6af68f1312046d5cc39fb58182d6d17bca8e47c240f51516f3"
+}

@@ -1,0 +1,28 @@
+{
+  "command": "impeccable detect --json extension/concept.css extension/popup.css extension/popup.html extension/panel.css extension/panel.html extension/surface.css extension/surface.html",
+  "exitCode": 2,
+  "qualityFindings": 0,
+  "aestheticFindings": [
+    {
+      "rule": "overused-font",
+      "file": "extension/concept.css",
+      "snippet": "font-family:\"Helvetica"
+    },
+    {
+      "rule": "single-font",
+      "file": "extension/popup.html",
+      "snippet": "only font used is helvetica neue"
+    },
+    {
+      "rule": "flat-type-hierarchy",
+      "file": "extension/popup.html",
+      "snippet": "Sizes: 11px, 12px, 14px, 19px (ratio 1.7:1)"
+    },
+    {
+      "rule": "kicker-above-heading",
+      "file": "extension/panel.html",
+      "snippet": "kicker \"SPARK\" above h1 \"Pick up where you left off.\""
+    }
+  ],
+  "disposition": "The explicit concept reference takes priority for installed fonts, compact hierarchy and the Spark product label. No detector suppressions were added."
+}

@@ -1,4 +1,4 @@
-import { beginLocalTranscript, persistTranscript, captureStatus } from './voice-bridge.js';
+import { beginLocalTranscript, persistTranscript, captureStatus, captureInputActive } from './voice-bridge.js';
 import {AudioQueue} from './audio-queue.js';
 const $ = id=>document.getElementById(id);
 let queue, inflight=0, pumping=false, segmentSeconds=0, silentSeconds=0, skippedSeconds=0, computeMs=0, decodedSeconds=0;
@@ -16,6 +16,7 @@ async function pump(){
 let worker, ready=false, media, ctx, source, capture, pending=0, active=false, seconds=0, history='', finishing=false;
 function status(text){$('zoom-asr-status').textContent=text;}
 function cleanup(){
+  if (media) void captureInputActive(false).catch(()=>{});
   active=false; source?.disconnect(); capture?.disconnect();
   media?.getTracks().forEach(t=>t.stop()); ctx?.close().catch(()=>{});
   media=ctx=source=capture=null;
@@ -82,7 +83,7 @@ $('listen-zoom').onclick=async()=>{
     // tabCapture suppresses original playback. Restore it to headphones/default output.
     source.connect(ctx.destination);
     media.getAudioTracks()[0].onended=()=>stop();
-    await captureStatus('listening');
+    await captureStatus('listening'); await captureInputActive(true);
     $('stop-zoom').disabled=false;status(`Listening to ${result.title || 'authorized meeting tab'}. Another participant must speak; your own mic is not in tab playback.`);
   }catch(e){fail(e.message);}
 };
