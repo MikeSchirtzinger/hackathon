@@ -3,11 +3,22 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "verify": "node scripts/verify.mjs",
+    "verify": "npm run check && npm test && npm run build && node scripts/verify.mjs",
     "test:browser": "node tests/browser.cjs",
-    "prepare:assets": "node prepare-assets.mjs"
+    "prepare:assets": "node prepare-assets.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "test:foundation": "node scripts/browser-proof.mjs",
+    "test:integration": "node scripts/audio-integration-proof.mjs"
   },
   "devDependencies": {
+    "@types/chrome": "^0.1.0",
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
     "playwright": "1.63.0"
-  }
+  },
+  "type": "module"
 }

@@ -1,3 +1,5 @@
+import { speechRequests, stopSpeechOutput } from './speech-output.js';
+import { beginLocalTranscript, persistTranscript, captureStatus } from './voice-bridge.js';
 const $ = id => document.getElementById(id);
 const workers = {}, loaded = { asr: false, tts: false };
 let recording = false, asrBusy = false, ttsBusy = false, context, mic, source, capture;
@@ -23,7 +25,7 @@ function load(kind) {
     }
     if (data.type === 'error') {
       status(kind, data.message, true); log(`${kind}: ${data.message}`);
-      if (kind === 'asr') { cleanupMic(); recording = false; asrBusy = false; $('record').textContent = '● Record'; $('record').classList.remove('recording'); }
+      if (kind === 'asr') { void captureStatus('error', data.message).catch(() => undefined); cleanupMic(); recording = false; asrBusy = false; $('record').textContent = '● Record'; $('record').classList.remove('recording'); }
       else ttsBusy = false;
       worker.terminate(); loaded[kind] = false;
       $(`load-${kind}`).disabled = false; $(`load-${kind}`).textContent = `Retry ${kind === 'asr' ? 'Nemotron' : 'Kokoro'}`; buttons();
@@ -31,15 +33,21 @@ function load(kind) {
     if (data.type === 'transcript') {
       pending = Math.max(0, pending - 1); compute += data.elapsed;
       $('transcript').value = data.text;
+      void persistTranscript(data.text, false, duration * 1000).catch(error => status('asr', error.message, true));
       status('asr', recording ? `Listening… ${Math.round(duration)}s recorded · ${pending} chunks queued` : 'Finishing transcription…');
     }
     if (data.type === 'final') {
       $('transcript').value = data.text; asrBusy = false;
+      void persistTranscript(data.text, true, duration * 1000).then(() => captureStatus('stopped')).catch(error => status('asr', error.message, true));
       status('asr', data.text ? 'Transcription complete · ready for another clip' : 'No speech detected. Try a clearer or longer phrase.');
       $('asr-metric').textContent = `${duration.toFixed(1)}s audio · ${((performance.now() - started) / 1000).toFixed(1)}s elapsed`;
       buttons();
     }
     if (data.type === 'audio-result') {
+      if (!speechRequests.finish(data)) {
+        if (!speechRequests.pending) { ttsBusy = false; status('tts', 'Speech cancelled. Late result discarded.'); buttons(); }
+        return;
+      }
       if (audioUrl) URL.revokeObjectURL(audioUrl);
       audioUrl = URL.createObjectURL(wav(data.samples, data.sampleRate));
       $('playback').src = audioUrl;
@@ -52,7 +60,7 @@ function load(kind) {
   worker.onerror = event => {
     status(kind, `Worker failed: ${event.message}. Reset and retry.`, true);
     worker.terminate(); loaded[kind] = false;
-    if (kind === 'asr') { cleanupMic(); asrBusy = false; recording = false; } else ttsBusy = false;
+    if (kind === 'asr') { void captureStatus('error', `Worker failed: ${event.message}`).catch(() => undefined); cleanupMic(); asrBusy = false; recording = false; } else ttsBusy = false;
     $(`load-${kind}`).disabled = false; buttons();
   };
   worker.postMessage({ type: 'init', kind: kind === 'asr' ? 'nemotron' : 'kokoro' });
@@ -66,6 +74,7 @@ function sendAudio(samples, sampleRate) {
   workers.asr.postMessage({ type: 'audio', samples, sampleRate }, [samples.buffer]);
 }
 async function sample() {
+  try { await beginLocalTranscript('sample'); } catch (error) { status('asr', error.message, true); return; }
   startStream(); status('asr', 'Reading bundled test clip…');
   const decoder = new AudioContext({ sampleRate: 16000 });
   try {
@@ -75,7 +84,7 @@ async function sample() {
     const samples = audio.getChannelData(0);
     for (let offset = 0; offset < samples.length; offset += 3200) sendAudio(samples.slice(offset, offset + 3200), audio.sampleRate);
     workers.asr.postMessage({ type: 'finish' });
-  } catch (error) { asrBusy = false; status('asr', error.message, true); buttons(); }
+  } catch (error) { void captureStatus('error', error.message).catch(() => undefined); asrBusy = false; status('asr', error.message, true); buttons(); }
   finally { await decoder.close(); }
 }
 function cleanupMic() {
@@ -85,8 +94,9 @@ function cleanupMic() {
 }
 async function record() {
   if (recording) return stop();
-  asrBusy = true; buttons(); $('playback').pause();
+  asrBusy = true; buttons(); stopSpeechOutput('Recording started.');
   try {
+    await beginLocalTranscript('microphone');
     mic = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true } });
     context = new AudioContext({ sampleRate: 16000 }); await context.resume();
     await context.audioWorklet.addModule('capture-worklet.js');
@@ -97,11 +107,11 @@ async function record() {
       if (data.samples) sendAudio(data.samples, rate);
       if (data.stopped) { cleanupMic(); workers.asr.postMessage({ type: 'finish' }); }
     };
-    recording = true; startStream(); source.connect(capture); capture.connect(context.destination);
+    recording = true; await captureStatus('listening'); startStream(); source.connect(capture); capture.connect(context.destination);
     $('record').textContent = '■ Stop'; $('record').classList.add('recording');
     status('asr', 'Listening… click Stop when finished (30 second limit).'); buttons();
     timer = setTimeout(stop, 30000);
-  } catch (error) { cleanupMic(); asrBusy = false; recording = false; status('asr', `Microphone: ${error.message}`, true); buttons(); }
+  } catch (error) { void captureStatus('error', error.message).catch(() => undefined); cleanupMic(); asrBusy = false; recording = false; status('asr', `Microphone: ${error.message}`, true); buttons(); }
 }
 function stop() {
   if (!recording) return;
@@ -125,7 +135,9 @@ $('use-text').onclick = () => { if ($('transcript').value.trim()) $('speech').va
 $('speak').onclick = () => {
   const text = $('speech').value.trim(); if (!text) return status('tts', 'Enter some text first.', true);
   ttsBusy = true; buttons(); status('tts', 'Generating speech in WASM…');
-  workers.tts.postMessage({ type: 'speak', text: text.slice(0, 500), sid: Number($('voice').value) });
+  workers.tts.postMessage({ type: 'speak', text: text.slice(0, 500), sid: Number($('voice').value), ...speechRequests.begin() });
 };
-$('reset').onclick = () => { cleanupMic(); Object.values(workers).forEach(worker => worker.terminate()); location.reload(); };
+$('reset').onclick = () => { stopSpeechOutput('Audio workspace reset.'); cleanupMic(); Object.values(workers).forEach(worker => worker.terminate()); location.reload(); };
 window.addEventListener('pagehide', () => { cleanupMic(); Object.values(workers).forEach(worker => worker.terminate()); });
+
+window.addEventListener('speech-output-stopped', () => { status('tts', 'Speech output stopped. Pending results will be discarded.'); });

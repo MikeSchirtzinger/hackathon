@@ -1,0 +1,6 @@
+Real ASR test clip: LibriSpeech 1089-134686-0001, distributed in the official sherpa-onnx test assets.
+License: CC BY 4.0. Corpus: https://www.openslr.org/12/
+Source: https://huggingface.co/csukuangfj2/sherpa-onnx-nemotron-speech-streaming-en-0.6b-560ms-int8-2026-04-25/resolve/main/test_wavs/0.wav
+SHA256: 6bc58a4efdf20daac252b6b1502632601a71efe0308f6757dc1eda34891a7e4f
+Expected transcript: AFTER EARLY NIGHTFALL THE YELLOW LAMPS WOULD LIGHT UP HERE AND THERE THE SQUALID QUARTER OF THE BROTHELS.
+This replaces the unavailable original hackathon demo.wav. Do not report it as that original phrase.

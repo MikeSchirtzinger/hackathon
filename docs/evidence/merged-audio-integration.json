@@ -1,0 +1,73 @@
+{
+  "startedAt": "2026-09-12T18:49:11.982Z",
+  "checks": [
+    {
+      "name": "Panel opens the inherited Voice Lab under the same extension ID"
+    },
+    {
+      "name": "Real Nemotron sample is saved through the UI bridge and retained after reload",
+      "detail": {
+        "text": "After early nightfall, the yellow lamps would light up here and there the squalid quarter of the brothels",
+        "elapsedMs": 12168
+      }
+    },
+    {
+      "name": "Stop audio discards a late result from real Kokoro synthesis",
+      "detail": {
+        "elapsedMs": 7916
+      }
+    },
+    {
+      "name": "A fresh explicit Kokoro request generates audio after cancellation",
+      "detail": {
+        "metric": "1.0s audio \u00b7 4.3s generation \u00b7 4.05\u00d7 RTF",
+        "route": "not configured; no meeting delivery claim"
+      }
+    },
+    {
+      "name": "Return cancels real pending synthesis; the existing ASR worker still decodes another real clip"
+    },
+    {
+      "name": "Reloaded audio document cannot leave a durable starting session blocking capture"
+    },
+    {
+      "name": "Closed audio owner is marked interrupted and permits a new session"
+    },
+    {
+      "name": "Browser restart recovers stale owner records and retains real transcript before allowing capture"
+    }
+  ],
+  "errors": [],
+  "sampleSha256": "6bc58a4efdf20daac252b6b1502632601a71efe0308f6757dc1eda34891a7e4f",
+  "chrome": "151.0.7922.34",
+  "extensionId": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+  "returnStopReceipt": {
+    "stops": 2,
+    "pending": false
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-12T18:51:47.043Z",
+  "command": "CHROME_PATH=<Chrome for Testing 151 executable> npm run test:integration",
+  "ownerMatch": "Canonical own-extension index.html path, ignoring query and fragment. The test reuses the tab with #audio-controls.",
+  "sourceSha256": {
+    "extension/app.js": "18319f981774b12de20e384ad7b92813a7302a8e8957e302c695a134b68bcab7",
+    "extension/audio-queue.js": "4d44e8e5a2037428dd9004c44a66d5313a5a38ce8e4642cd42ed0027ad549063",
+    "extension/captions.js": "5635c2e369451b00bbd5219062ced69c01de21ef074abb01ff7bfbb97e68614c",
+    "extension/capture-worklet.js": "33f85335555ba8fb9309959b336fb4d6bed5854a1742bc109e84104300ff07df",
+    "extension/engine-worker.js": "48dc0d7400b93929d5121ab9cc765effb0cc6d45a4678b7adf1b1f8d4512194b",
+    "extension/manifest.json": "8953adc158c0e25b162a88dfbc76e360cdb59d5962d9730f7275941761f2e423",
+    "extension/speech-output.js": "885392258e15a0db7178ed14fdde2cced73875e12e3917e9299270d7a529d64e",
+    "extension/src/ambiguous.ts": "379ff62892e8ee416df3d96210cb0ab1ec3df33e07da4fd2e0f87865b1104c0d",
+    "extension/src/background.ts": "439047bc74e9ae4397f5060e38bade7ae99f6e9f8c2ba2c3d2e332108aa26ebf",
+    "extension/src/capture.ts": "165fcdec9502b4db20b4840aa9374ef40fde6bea61086f700f5d9667c30f0d7e",
+    "extension/src/db.ts": "cc847f290df754163d2cbd3f500b1cbd817a432a52df4ef531e673af1ba7fae6",
+    "extension/src/panel.ts": "78b7dd5de607786f4365f7b6e1b1f848f71cf6ad4a93cc626adbf36626eb3ace",
+    "extension/src/policy.ts": "4f5c7a8fef401b943bcddc4d6b7df69cc747a7eaf761f870dbdcbd1a658ae3d9",
+    "extension/src/transcript.ts": "5fe892d8cf841eb98d5c804babeb31b8ee3d91c273bcc72fdf9f10257c9805f4",
+    "extension/src/types.ts": "9ee64110a181d88a1fffb8269a36fc07928b3998bfa151878c890f0581ab2654",
+    "extension/voice-bridge.js": "3280996aa4f0cb8fabde97f2cae03c2db4ed49abbaffad5133ea0ad32d303ccf",
+    "extension/zoom-asr.js": "dacaf6ab93edb6b8dc0db646f4c273875b550f0bfe1e317b8f76448a2ddae942",
+    "extension/zoom.js": "dfa5b49b824cfbf362810f3498a8c6781740a277ecbe8ee7829931efb45d7410",
+    "scripts/audio-integration-proof.mjs": "0e2af251a8bf10176c05c23f5160f740ee670353dd4d30a97fa968c96c6d0162"
+  }
+}

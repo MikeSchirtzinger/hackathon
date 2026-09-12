@@ -1,46 +1,64 @@
-# Brevity — hackathon
+# Brevity hackathon
 
-Local-first browser extension for the AI Tinkerers “Agents, Everywhere” hackathon. Team: Brevity.
-
-The current implementation is the Zoom Voice prototype: Zoom tab audio → local Nemotron transcription, and typed text → local Kokoro speech → BlackHole virtual microphone → Zoom. No API key or inference server is required. It does not generate autonomous replies.
+Context Carry combines local browser notes and meeting follow-through with the existing Voice Lab audio workspace in one Chrome extension. A hotkey saves the current page context. Notes, transcript segments, task drafts, and meeting state persist in IndexedDB. Nemotron transcribes local audio; Kokoro generates speech from text. Autonomous reasoning and Takeover are not configured.
 
 ## Run locally
 
-Use Node.js 22+ and Chrome on macOS. From the repository root:
+Use Node.js 22+ and Chrome on macOS.
 
 ```sh
 npm ci
-node scripts/import-assets.mjs /path/to/existing/zoom-voice/extension
+node scripts/import-assets.mjs /path/to/existing/extension
 npm run verify
 ```
 
-The models, sherpa-onnx runtime, bundled test audio, and their upstream license files are imported together. They are ignored by Git. The migration checkout already contains them. A fresh clone currently requires an existing asset bundle; public asset distribution remains unfinished.
+Load this repository's `extension/` folder unpacked at `chrome://extensions`. It is the only manifest and load path. `npm run build` writes the foundation scripts into `extension/foundation/`; it preserves imported models, runtime files, and their license notices. `npm run prepare:assets` rebuilds model file lists when needed.
 
-For virtual microphone output, run `sh install.sh` in an interactive Terminal. This installs BlackHole if needed and may restart CoreAudio, briefly interrupting audio. Admin credentials are required for driver installation. It opens the extension folder for the next step.
+The runtime and models are ignored by Git. A fresh clone requires an asset bundle. Asset distribution remains unfinished.
 
-1. Open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select this repo’s `extension/` folder.
-2. Click the extension icon on your Zoom meeting tab.
-3. Click **Load Nemotron & listen to Zoom**. Verify with another participant speaking. Your own microphone is not included in Zoom’s tab playback. Captions are unnecessary.
-4. For speech output, click **Connect BlackHole**, choose **BlackHole 2ch** as Zoom’s microphone, then click **Play bundled test phrase**. Keep Zoom speakers and system output on headphones, not BlackHole.
-5. Load Kokoro, type a short phrase, and generate speech. Re-select your physical microphone in Zoom to speak yourself.
+For virtual microphone setup, run `sh install.sh` in an interactive Terminal. It installs BlackHole when needed and may restart CoreAudio, briefly interrupting audio. Admin credentials are required for driver installation. The installer opens the same `extension/` folder.
 
-Keep the extension panel open. This implementation captures one Zoom tab. It does not capture every browser tab or the entire device.
+## Capture and meeting controls
 
-## Verify
+1. On a page, press Command+Shift+Y on macOS or Ctrl+Shift+Y elsewhere. This quietly saves its URL, title, selection, available visible text, and time. Restricted content is marked unavailable.
+2. Open the side panel from the toolbar or Command+Shift+U. Enter a note and save it locally. Manual text entry is labeled separately from speech transcription.
+3. Save a meeting start, reminder time, and join URL. Chrome schedules the notification from that saved time. Calendar import is not connected.
+4. Mark away and return to preserve absence boundaries. Return stops current output and invalidates pending synthesis results. It leaves the Voice Lab transcription owner running.
+5. Review local task drafts and selected records before creating a sync batch. Enabling sync does not upload private history. Local mode stops pending sends. A write with an unknown outcome cannot create again automatically.
+
+## Use Voice Lab
+
+Open Voice Lab from the side panel. Keep that persistent tab open during audio capture. Closing the side panel does not stop it. Closing Voice Lab stops its workers and capture, and the local workspace records the interrupted session.
+
+For microphone transcription, load Nemotron and use Record. The bundled sample is a separate validation input and is labeled as such in saved transcripts. Real final transcripts can be saved as notes with their original captured context.
+
+For Zoom, click the extension toolbar on the Zoom meeting tab, then open meeting audio from the side panel. In Voice Lab, choose **Load Nemotron & listen to Zoom**. The captured tab playback contains other participants, not your own microphone. Captions are unnecessary.
+
+For speech output, choose **Connect BlackHole**, select BlackHole 2ch as Zoom's microphone, and keep speakers on headphones. Load Kokoro, enter text, and generate speech. **Stop audio** and the meeting's **Return** control invalidate queued speech results as well as stopping playback. Generating a new phrase is an explicit action. Re-select your physical microphone in Zoom to speak yourself.
+
+BlackHole route selection does not prove another participant heard audio. Verify that separately.
+
+## Verify the combined extension
 
 ```sh
 npx playwright install chromium
+npm run verify
+npm run test:foundation
 npm run test:browser
+npm run test:integration
 ```
 
-The browser test checks 40 seconds of ordered IndexedDB audio buffering and actual Nemotron recognition of the bundled phrase. It does not join Zoom or transmit audio. A second participant is still needed to verify the meeting audio path.
+The foundation test loads the actual manifest, exercises Chrome's native keyboard command routing, saves and reloads notes, checks a real alarm, and observes local-mode network behavior. The inherited browser check exercises real IndexedDB audio buffering and Nemotron recognition. The integration check uses the actual audio UI and worker outputs to verify transcript persistence and stale-synthesis cancellation.
 
-## Status and limits
+See [the handoff](docs/EXTENSION-HANDOFF.md) for current command results, evidence, and exact gaps. [The brief](docs/BRIEF.md) contains the full intended demo, which remains broader than the verified implementation.
 
-- Recognition segments reset every 20 decoded seconds. One audio chunk is sent to the worker at a time; queued PCM uses IndexedDB, capped at 30 minutes, with at most 60 seconds of pending writes. Digital silence can be skipped after one second.
-- Queue bounds prevent unbounded backlog; they do not make inference real-time. The original live test exceeded the former 30-second cutoff. Sustained speech performance needs validation.
-- Kokoro synthesis worked in the original session, taking 14.6 seconds for 3.9 seconds of audio.
-- No automatic agent replies, physical-mic mixing, or native system-audio helper exists.
-- The broader page hotkey → voice note → proposed action → approval → Ambiguous record flow in [the brief](docs/BRIEF.md) is planned, not implemented.
+## Limits
 
-See [migration notes](docs/MIGRATION.md) and [submission checklist](SUBMISSION.md).
+- No autonomous replies, reasoning model, physical-mic mixing, or offscreen audio owner is implemented. The Takeover control remains unavailable.
+- Audio queues bound memory and disk backlog; sustained live speech throughput still needs validation.
+- Transcript offsets are measured in decoded audio, not aligned to absence wall-clock boundaries. The timeline displays saved text and does not invent a catch-up summary.
+- The Ambiguous adapter and reviewed outbox exist, but live remote writes and readback require configured credentials and approved records. No external write is claimed verified here.
+- Local resume links work only in the browser that has the saved context. Opening one restores a draft and executes nothing.
+- The full Zoom/BlackHole path requires another participant. Bundled audio recognition and local synthesis do not establish meeting delivery.
+
+Inherited audio work and dependencies are recorded in [migration notes](docs/MIGRATION.md). Record inherited and event-built work separately in [the submission checklist](SUBMISSION.md).

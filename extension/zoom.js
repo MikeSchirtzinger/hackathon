@@ -1,3 +1,5 @@
+import { stopSpeechOutput } from './speech-output.js';
+import { voiceMessage } from './voice-bridge.js';
 const el = id => document.getElementById(id);
 const player = el('playback');
 window.zoomOutputReady = false;
@@ -12,15 +14,16 @@ el('connect-output').onclick = async () => {
     if (!output) throw new Error('BlackHole 2ch not installed/visible. Install it, restart Chrome, then retry.');
     await player.setSinkId(output.deviceId);
     window.zoomOutputReady = true;
+    await voiceMessage('voice-output-status', { ready: true });
     chrome.power.requestKeepAwake('system');
     el('route-status').textContent = 'Connected → '+output.label+'. Now select BlackHole 2ch in Zoom microphone settings.';
-  } catch(error) {window.zoomOutputReady=false;el('route-status').textContent=error.message;}
+  } catch(error) {window.zoomOutputReady=false;stopSpeechOutput('Output route unavailable.');void voiceMessage('voice-output-status', { ready: false }).catch(() => undefined);el('route-status').textContent=error.message;}
 };
 el('test-output').onclick = async () => {
   if (!window.zoomOutputReady) {el('route-status').textContent='Click Connect BlackHole first.';return;}
   player.src='demo.wav';
   try {await player.play();} catch(e) {el('route-status').textContent=e.message;}
 };
-el('stop-output').onclick = () => {player.pause();player.currentTime=0;};
+el('stop-output').onclick = () => stopSpeechOutput();
 el('copy-caption').onclick = () => {el('speech').value=el('zoom-transcript').textContent.slice(-500);};
 window.addEventListener('pagehide',()=>chrome.power.releaseKeepAwake());

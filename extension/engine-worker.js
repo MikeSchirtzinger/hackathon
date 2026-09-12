@@ -78,7 +78,7 @@ onmessage = event => {
     } else if (data.type === 'speak') {
       const start = performance.now();
       const audio = engine.generate({ text: data.text, sid: data.sid, speed: 1 });
-      postMessage({ type: 'audio-result', samples: audio.samples, sampleRate: audio.sampleRate, elapsed: performance.now() - start }, [audio.samples.buffer]);
+      postMessage({ type: 'audio-result', requestId: data.requestId, speechEpoch: data.speechEpoch, samples: audio.samples, sampleRate: audio.sampleRate, elapsed: performance.now() - start }, [audio.samples.buffer]);
     }
   }).catch(error => send('error', { message: error.message || String(error) }));
 };

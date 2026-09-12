@@ -1,0 +1,120 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { mkdtemp, mkdir, writeFile, readFile } from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import { createHash } from 'node:crypto';
+const evidence = path.resolve('.evidence/audio-integration');
+await mkdir(evidence,{recursive:true});
+const profile=await mkdtemp(path.join(os.tmpdir(),'carry-audio-'));
+const extension=path.resolve('extension');
+const report={startedAt:new Date().toISOString(),checks:[],errors:[],sampleSha256:createHash('sha256').update(await readFile('extension/demo.wav')).digest('hex')};
+function pass(name,detail){report.checks.push({name,detail});console.log('PASS',name,detail??'');}
+async function eventually(fn,timeout=20000){const until=Date.now()+timeout;while(Date.now()<until){if(await fn())return;await new Promise(r=>setTimeout(r,100));}throw Error('Timed out waiting for real audio integration state.');}
+const launch=()=>chromium.launchPersistentContext(profile,{...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{channel:'chromium'}),headless:true,viewport:{width:1100,height:1000},ignoreDefaultArgs:['--disable-extensions'],args:[`--disable-extensions-except=${extension}`,`--load-extension=${extension}`]});
+let context;
+try{
+ context=await launch();report.chrome=context.browser().version();
+ const worker=context.serviceWorkers()[0]||await context.waitForEvent('serviceworker');
+ const id=new URL(worker.url()).host;report.extensionId=id;
+ let panel=context.pages()[0];await panel.goto(`chrome-extension://${id}/panel.html`);
+ await panel.getByText('Local workspace ready.',{exact:true}).waitFor();
+ const readState=()=>panel.evaluate(async()=>{const r=await chrome.runtime.sendMessage({type:'state'});if(!r.ok)throw Error(r.error);return r.value;});
+ const control=(type,values={})=>panel.evaluate(async({type,values})=>chrome.runtime.sendMessage({type,...values}),{type,values});
+ const sourcePage=await context.newPage();await sourcePage.goto('https://example.com/');
+ const keyboard=await context.newCDPSession(sourcePage);
+ for(const type of ['rawKeyDown','keyUp'])await keyboard.send('Input.dispatchKeyEvent',{type,modifiers:12,key:'Y',code:'KeyY',windowsVirtualKeyCode:89,nativeVirtualKeyCode:16,isSystemKey:true});
+ await keyboard.detach();await eventually(async()=>(await readState()).contexts.length===1);
+ const capturedContext=(await readState()).contexts[0];
+ const opened=context.waitForEvent('page');await panel.getByRole('button',{name:'Open Voice Lab',exact:true}).click();
+ let voice=await opened;await voice.waitForURL(`chrome-extension://${id}/index.html`);
+ await voice.locator('#load-asr').waitFor();
+ await voice.evaluate(()=>{location.hash='audio-controls';});
+ const pageCount=context.pages().length;
+ await panel.getByRole('button',{name:'Open Voice Lab',exact:true}).click();
+ assert.equal(context.pages().length,pageCount);
+ voice.on('pageerror',error=>report.errors.push(error.message));
+ pass('Panel opens the inherited Voice Lab under the same extension ID');
+ const loadStart=Date.now();await voice.locator('#load-asr').click();
+ await eventually(()=>voice.locator('#sample').isEnabled(),180000);
+ await voice.locator('#sample').click();
+ await eventually(async()=>{const state=await readState();return state.transcripts.some(t=>t.final)&&state.audioSessions.some(s=>s.captureStatus==='stopped');},180000);
+ const asrState=await readState();const transcript=asrState.transcripts.find(t=>t.final);
+ assert.match(transcript.text,/after early nightfall/i);assert.match(transcript.text,/yellow lamps/i);assert.match(transcript.text,/squalid quarter/i);
+ const audioSession=asrState.audioSessions.find(s=>s.id===transcript.sessionId);
+ assert.equal(audioSession.source,'sample');assert.equal(audioSession.meetingId,undefined);
+ assert(audioSession.ownerDocumentId);assert(transcript.endMs>transcript.startMs);
+ await panel.reload();await panel.getByText('Local workspace ready.',{exact:true}).waitFor();
+ assert.equal((await readState()).transcripts.find(t=>t.id===transcript.id).text,transcript.text);
+ await panel.getByText(transcript.text,{exact:true}).waitFor();
+ await panel.screenshot({path:path.join(evidence,'transcript-persisted.png'),fullPage:true});
+ assert.equal(audioSession.contextId,capturedContext.id);
+ await panel.getByRole('button',{name:'Save transcript as note',exact:true}).click();
+ await eventually(async()=>(await readState()).notes.length===1);
+ const spokenNote=(await readState()).notes[0];assert.equal(spokenNote.source,'transcript');assert.equal(spokenNote.transcriptId,transcript.id);assert.equal(spokenNote.contextId,capturedContext.id);
+ pass('Real Nemotron sample is saved through the UI bridge and retained after reload',{text:transcript.text,elapsedMs:Date.now()-loadStart});
+ await voice.locator('#load-tts').click();
+ await eventually(()=>voice.locator('#speak').isEnabled(),180000);
+ await voice.locator('#speech').fill('The saved context is ready for your return.');
+ const generationStart=Date.now();await voice.locator('#speak').click();
+ await voice.getByText('Generating speech in WASM…',{exact:true}).waitFor();
+ await voice.locator('#stop-output').click();
+ await eventually(async()=>(await voice.locator('#tts-status').textContent()).includes('Late result discarded'),180000);
+ assert.equal(await voice.locator('#playback').getAttribute('src'),null);
+ assert.equal(await voice.locator('#playback').evaluate(p=>p.paused),true);
+ pass('Stop audio discards a late result from real Kokoro synthesis',{elapsedMs:Date.now()-generationStart});
+ // Positive control: a new explicit request still produces real audio after cancellation.
+ await voice.locator('#speech').fill('Welcome back.');await voice.locator('#speak').click();
+ await eventually(async()=>!!(await voice.locator('#playback').getAttribute('src'))?.startsWith('blob:'),180000);
+ const positive=await voice.locator('#playback').evaluate(p=>({src:p.src,paused:p.paused,duration:p.duration}));
+ assert(positive.paused); // BlackHole is deliberately not configured in this test.
+ await voice.screenshot({path:path.join(evidence,'kokoro-real-output.png'),fullPage:true});
+ pass('A fresh explicit Kokoro request generates audio after cancellation',{metric:await voice.locator('#tts-metric').textContent(),route:'not configured; no meeting delivery claim'});
+ // Exercise Return with the same real model output path. The meeting itself is a local control fixture.
+ const now=Date.now();const created=await control('save-meeting',{title:'Audio cancellation check',joinUrl:'https://example.com/',startsAt:now+600000,remindAt:now+590000});assert(created.ok);
+ const meetingId=created.value.id;
+ await control('meeting-action',{id:meetingId,action:'join'});await control('meeting-action',{id:meetingId,action:'away'});
+ await voice.locator('#speech').fill('This pending response must be cancelled when the person returns.');await voice.locator('#speak').click();
+ await voice.getByText('Generating speech in WASM…',{exact:true}).waitFor();
+ await voice.evaluate(() => { window.stopReceipts=0; window.addEventListener('speech-output-stopped',()=>{window.stopReceipts++;}); });
+ const returned=await control('meeting-action',{id:meetingId,action:'return'});assert(returned.ok,returned.error);
+ const stopReceipt=await voice.evaluate(async()=>({stops:window.stopReceipts,pending:(await import('./speech-output.js')).speechRequests.pending}));
+ assert(stopReceipt.stops>=1);assert.equal(stopReceipt.pending,false);
+ report.returnStopReceipt=stopReceipt;
+ await eventually(async()=>(await voice.locator('#tts-status').textContent()).includes('Late result discarded'),180000);
+ assert.equal(await voice.locator('#playback').getAttribute('src'),null);
+ assert.equal((await readState()).meetings.find(m=>m.id===meetingId).status,'present');
+ assert.equal(await voice.locator('#sample').isEnabled(),true);
+ await voice.locator('#sample').click();
+ await eventually(async()=>(await readState()).transcripts.filter(t=>t.final).length===2,180000);
+ pass('Return cancels real pending synthesis; the existing ASR worker still decodes another real clip');
+ await eventually(async()=>(await readState()).audioSessions.every(s=>!['starting','listening'].includes(s.captureStatus)));
+ // Lifecycle fixtures use production begin messaging without registering pagehide cleanup.
+ // They represent ownership state only, never successful audio or a transcript.
+ const begin=()=>voice.evaluate(()=>chrome.runtime.sendMessage({type:'voice-begin',source:'microphone'}));
+ const orphan1=await begin();assert(orphan1.ok,orphan1.error);
+ await voice.reload();await voice.locator('#load-asr').waitFor();
+ const replacement=await begin();assert(replacement.ok,replacement.error);
+ let state=await readState();assert.equal(state.audioSessions.find(s=>s.id===orphan1.value.id).captureStatus,'error');
+ assert.equal(state.transcripts.find(t=>t.id===transcript.id).text,transcript.text);
+ pass('Reloaded audio document cannot leave a durable starting session blocking capture');
+ await voice.close();
+ await eventually(async()=>(await readState()).audioSessions.find(s=>s.id===replacement.value.id).captureStatus==='error');
+ voice=await context.newPage();await voice.goto(`chrome-extension://${id}/index.html`);
+ const orphan2=await begin();assert(orphan2.ok,orphan2.error);
+ pass('Closed audio owner is marked interrupted and permits a new session');
+ // Owner session was begun outside pagehide adapter state. Close/reopen entire browser to test durable recovery.
+ await context.close();context=await launch();
+ const worker2=context.serviceWorkers()[0]||await context.waitForEvent('serviceworker');
+ panel=context.pages()[0];await panel.goto(`chrome-extension://${new URL(worker2.url()).host}/panel.html`);
+ await panel.getByText('Local workspace ready.',{exact:true}).waitFor();
+ state=await readState();assert.equal(state.audioSessions.find(s=>s.id===orphan2.value.id).captureStatus,'error');
+ assert.equal(state.transcripts.find(t=>t.id===transcript.id).text,transcript.text);
+ voice=await context.newPage();await voice.goto(`chrome-extension://${id}/index.html`);
+ const newSession=await begin();assert(newSession.ok,newSession.error);
+ pass('Browser restart recovers stale owner records and retains real transcript before allowing capture');
+ await voice.close();
+ assert.deepEqual(report.errors,[]);
+ report.result='PASS';
+}catch(error){report.result='FAIL';report.failure=error.stack;report.pages=await Promise.all(context.pages().map(async p=>({url:p.url(),text:await p.locator('body').innerText().catch(()=>'' )})));console.error(error);process.exitCode=1;}
+finally{if(context)await context.close();report.finishedAt=new Date().toISOString();await writeFile(path.join(evidence,'report.json'),JSON.stringify(report,null,2));console.log('RESULT:',report.result);}

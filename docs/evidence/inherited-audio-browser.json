@@ -1,0 +1,9 @@
+{
+  "command": "CHROME_PATH=<Chrome for Testing 151 executable> npm run test:browser",
+  "result": "PASS",
+  "base": "bf79f61945cedbf18eaa061a753c09b548a8ee57",
+  "manifestSha256": "8953adc158c0e25b162a88dfbc76e360cdb59d5962d9730f7275941761f2e423",
+  "queue": "40 seconds FIFO and drain",
+  "transcript": "After early nightfall, the yellow lamps would light up here and there the squalid quarter of the brothels",
+  "sampleSha256": "6bc58a4efdf20daac252b6b1502632601a71efe0308f6757dc1eda34891a7e4f"
+}

@@ -1,0 +1,68 @@
+{
+  "startedAt": "2026-09-12T18:49:13.408Z",
+  "checks": [
+    {
+      "name": "Unpacked MV3 loads with registered capture command",
+      "detail": {
+        "id": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+        "chrome": "151.0.7922.34"
+      }
+    },
+    {
+      "name": "Ordinary page keyboard input is a negative control for browser command routing"
+    },
+    {
+      "name": "Real hotkey captures original page, selection, visible text, and time without focus or notification"
+    },
+    {
+      "name": "Manual note remains paired to pre-tab-change context and persists after reload"
+    },
+    {
+      "name": "Resume restores local context and next step with no task execution"
+    },
+    {
+      "name": "Missing local resume ID is explicit and cannot attach to another context"
+    },
+    {
+      "name": "Saved meeting time triggers a real chrome.alarms notification",
+      "detail": {
+        "remindAt": 1789238961000,
+        "firedAt": 1789238961003
+      }
+    },
+    {
+      "name": "Meeting join URL, absence boundaries, return/end persist; unavailable speech cannot fake Takeover"
+    },
+    {
+      "name": "Local mode has zero observed worker HTTP requests, with positive network instrumentation control"
+    },
+    {
+      "name": "Enabling sync does not enqueue private history; local mode denies batch approval"
+    },
+    {
+      "name": "Real IndexedDB multi-write failure rejects and rolls back prior writes"
+    },
+    {
+      "name": "Restricted browser page records explicit unavailable page text"
+    },
+    {
+      "name": "Full browser restart retains notes, tasks, meeting state, and absence boundaries"
+    }
+  ],
+  "errors": [],
+  "workerRequests": [
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/icon.png",
+      "method": "GET"
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/manifest.json",
+      "method": "GET"
+    }
+  ],
+  "extensionId": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+  "chrome": "151.0.7922.34",
+  "result": "PASS",
+  "finishedAt": "2026-09-12T18:49:22.371Z",
+  "command": "CHROME_PATH=<Chrome for Testing 151 executable> npm run test:foundation"
+}

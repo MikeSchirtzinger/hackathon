@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Voice Lab — local speech playground</title>
+  <title>Voice Lab | Context Carry</title>
   <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' blob:; worker-src 'self'; media-src 'self' blob:">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main>
     <header><a class="brand" href="index.html">VOICE LAB</a><span class="badge">ON DEVICE · WASM</span></header>
-    <section class="intro"><div class="eyebrow">A SMALL SPEECH EXPERIMENT</div><h1>Your voice.<br><span>Your browser.</span></h1><p>Hear it. Read it. Say it back. Two real speech models,<br class="wide"> running locally with sherpa-onnx WebAssembly.</p></section>
+    <p><a href="panel.html">Open notes and meeting controls</a></p><p id="local-save-status" role="status">Transcript storage connects when capture starts. Keep this tab open during capture.</p><section class="intro"><div class="eyebrow">A SMALL SPEECH EXPERIMENT</div><h1>Your voice.<br><span>Your browser.</span></h1><p>Hear it. Read it. Say it back. Two real speech models,<br class="wide"> running locally with sherpa-onnx WebAssembly.</p></section>
     <div class="pipeline"><span>01 &nbsp; Microphone</span><i>→</i><span>02 &nbsp; Nemotron</span><i>→</i><span>03 &nbsp; Kokoro</span></div>
     <section class="card">
       <h2>Zoom audio handoff</h2>
