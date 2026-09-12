@@ -12,14 +12,14 @@
     <p><a href="panel.html">Open notes and meeting controls</a></p><p id="local-save-status" role="status">Transcript storage connects when capture starts. Keep this tab open during capture.</p><section class="intro"><div class="eyebrow">A SMALL SPEECH EXPERIMENT</div><h1>Your voice.<br><span>Your browser.</span></h1><p>Hear it. Read it. Say it back. Two real speech models,<br class="wide"> running locally with sherpa-onnx WebAssembly.</p></section>
     <div class="pipeline"><span>01 &nbsp; Microphone</span><i>→</i><span>02 &nbsp; Nemotron</span><i>→</i><span>03 &nbsp; Kokoro</span></div>
     <section class="card">
-      <h2>Zoom audio handoff</h2>
-      <p>Click this extension on the Zoom meeting tab. Select BlackHole 2ch as Zoom’s microphone; keep Zoom’s speaker and your system output on headphones. Nemotron transcribes the other participants’ audio locally; Zoom captions are not needed.</p>
+      <h2>Meeting audio handoff</h2>
+      <p>On your Jitsi, Zoom, or other meeting tab, click the extension icon or press the capture hotkey to authorize that tab. Then return here and start listening. Select BlackHole 2ch as the meeting microphone for speech output; keep the meeting speaker and system output on headphones. Nemotron transcribes other participants locally.</p>
       <button id="connect-output">Connect BlackHole</button>
       <button id="test-output">Play bundled test phrase</button>
       <button id="stop-output">Stop audio</button>
       <div id="route-status" role="status">Output disconnected. No meeting audio will play until connected.</div>
-      <h3>Zoom audio → Nemotron</h3>
-      <button id="listen-zoom">Load Nemotron & listen to Zoom</button>
+      <h3>Authorized tab audio → Nemotron</h3>
+      <button id="listen-zoom">Load Nemotron & listen to meeting</button>
       <button id="stop-zoom" disabled>Stop listening</button>
       <div id="zoom-asr-status" role="status">Ready to load local speech recognition.</div>
       <pre id="zoom-transcript">Transcript appears here.</pre>

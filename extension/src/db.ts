@@ -1,7 +1,7 @@
 import { defaults, type Stores, type Settings } from './types';
 export const DATABASE_NAME = 'context-carry';
-export const DATABASE_VERSION = 2;
-const names: (keyof Stores)[] = ['contexts', 'notes', 'tasks', 'transcripts', 'meetings', 'absences', 'settings', 'outbox', 'audioSessions'];
+export const DATABASE_VERSION = 3;
+const names: (keyof Stores)[] = ['contexts', 'notes', 'tasks', 'transcripts', 'meetings', 'absences', 'settings', 'outbox', 'audioSessions', 'analyses'];
 let connection: Promise<IDBDatabase> | undefined;
 export function openDatabase(): Promise<IDBDatabase> {
   connection ??= new Promise((resolve, reject) => {

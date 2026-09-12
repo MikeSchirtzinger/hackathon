@@ -26,25 +26,35 @@ export interface Meeting extends BaseRecord {
   captureStatus: 'unavailable' | 'starting' | 'listening' | 'stopped' | 'error';
   speechStatus: 'unavailable' | 'stopped' | 'speaking' | 'error';
   contextId?: string; reminderFiredAt?: number; notificationError?: string; endedAt?: number;
+  reminderEnabled?: boolean;
+  remote?: { provider: 'ambiguous'; workspaceId: string; eventId: string; notesDocId?: string; importedAt: number };
 }
 export interface AudioSession extends BaseRecord {
-  tabId: number; ownerDocumentId: string; source: 'sample' | 'microphone' | 'zoom'; contextId?: string; meetingId?: string;
+  tabId: number; ownerDocumentId: string; source: 'sample' | 'microphone' | 'zoom' | 'tab'; contextId?: string; meetingId?: string;
   captureStatus: Meeting['captureStatus']; startedAt: number; endedAt?: number; detail?: string;
 }
 export interface Setting { id: string; value: unknown }
 export interface Settings {
   syncMode: 'local' | 'sync'; captureMode: 'push'; workspaceLabel: string;
+  hostedReasoning: boolean;
+}
+export interface Analysis extends BaseRecord {
+  kind: 'note' | 'meeting'; targetId: string; evidenceIds: string[];
+  state: 'pending' | 'complete' | 'error'; response?: string; error?: string;
+  summary?: string; proposals?: { kind: string; nextStep: string; evidenceIds: string[]; owner: null; dueDate: null; delivery: string }[];
+  toolActivity: string[]; finishedAt?: number;
 }
 export interface OutboxItem extends BaseRecord {
   recordId: string; kind: 'document' | 'task'; batchId: string; approvedAt: number;
   credentialEpoch: string; workspaceLabel: string;
-  payload: { title: string; content?: string; description?: string; type?: 'doc'; visibility?: 'private' };
+  payload: { title: string; content?: string; description?: string; type?: 'doc'; visibility?: 'restricted' | 'private'; due_date?: string };
   state: 'pending' | 'sending' | 'unknown' | 'failed' | 'confirmed';
   remoteId?: string; lastError?: string; confirmedAt?: number;
+  remoteDueDate?: string; remoteDueDateSource?: string;
 }
 export interface Stores {
   contexts: ContextSnapshot; notes: Note; tasks: TaskProposal; transcripts: TranscriptSegment;
-  meetings: Meeting; absences: Absence; settings: Setting; outbox: OutboxItem; audioSessions: AudioSession;
+  meetings: Meeting; absences: Absence; settings: Setting; outbox: OutboxItem; audioSessions: AudioSession; analyses: Analysis;
 }
-export const defaults: Settings = { syncMode: 'local', captureMode: 'push', workspaceLabel: '' };
+export const defaults: Settings = { syncMode: 'local', captureMode: 'push', workspaceLabel: '', hostedReasoning: false };
 export function base(): BaseRecord { return { id: crypto.randomUUID(), createdAt: Date.now(), revision: 1 }; }
