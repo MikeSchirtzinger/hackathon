@@ -1,5 +1,6 @@
 .env
 .env.*
+*.env
 node_modules/
 dist/
 *.log
@@ -38,3 +39,34 @@ credentials.*.json
 *.swp
 *.swo
 *.tmp
+
+# Raw captures and generated media belong in local storage or release assets.
+/video/src/
+/video/audio*/
+/video/frames*/
+/video/out/
+*.mp4
+*.mov
+*.webm
+*.mp3
+*.m4a
+*.flac
+*.ogg
+__pycache__/
+*.pyc
+
+# Local authentication, browser profiles, and agent runtime state.
+.claude/
+.codex/
+.local/
+browser-profiles/
+chrome-profile/
+pairing-secret
+bridge.lock
+auth.json
+storageState*.json
+cookies*.json
+.netrc
+.npmrc
+.pypirc
+.git-credentials

@@ -1,0 +1,149 @@
+{
+  "command": "node scripts/check-publication.mjs --history --secret-file <checkout-private-env> --secret-file <demo-private-env>",
+  "result": "PASS",
+  "files": 114,
+  "indexBlobs": 105,
+  "historyBlobs": 191,
+  "localSecretValuesChecked": 4,
+  "findings": [],
+  "ignoreCommand": "git check-ignore --no-index -q <path>",
+  "ignoreChecks": [
+    {
+      "path": ".env",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": ".agents/.env",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "private.env",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": ".claude/state.json",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": ".codex/auth.json",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": ".local/state.json",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "video/src/capture.png",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "video/audio2/voice.wav",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "video/frames2/card.png",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "video/out/Spark.mp4",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "pairing-secret",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "bridge.lock",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "chrome-profile/Preferences",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "cookies-demo.json",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "storageState-demo.json",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "credentials.json",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "server.key",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "extension/vendor/wasm.js",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "extension/models/asr.onnx",
+      "expectedIgnored": true,
+      "pass": true
+    },
+    {
+      "path": "video/build.py",
+      "expectedIgnored": false,
+      "pass": true
+    },
+    {
+      "path": "video/concept.py",
+      "expectedIgnored": false,
+      "pass": true
+    },
+    {
+      "path": "video/yt-upload.mjs",
+      "expectedIgnored": false,
+      "pass": true
+    },
+    {
+      "path": "video/yt-visibility.mjs",
+      "expectedIgnored": false,
+      "pass": true
+    },
+    {
+      "path": "docs/DEMO_SCRIPT.md",
+      "expectedIgnored": false,
+      "pass": true
+    },
+    {
+      "path": ".agents/demo-agents.json",
+      "expectedIgnored": false,
+      "pass": true
+    },
+    {
+      "path": "extension/public/icon.png",
+      "expectedIgnored": false,
+      "pass": true
+    },
+    {
+      "path": "tests/evidence/publication.json",
+      "expectedIgnored": false,
+      "pass": true
+    }
+  ],
+  "trackedIgnoredCommand": "git ls-files -ci --exclude-standard",
+  "trackedIgnored": []
+}

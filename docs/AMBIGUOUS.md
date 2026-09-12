@@ -59,3 +59,26 @@ Observed behaviors:
 Managed coworker provisioning returned HTTP 403 because `can_provision_coworkers` is false. These are ordinary API identities with local role instructions, not managed background workers. The hosted Assistant endpoint separately returned a real structured classification under Context Scout's identity, with no tool calls. No local reasoning model or autonomous Takeover is configured.
 
 The demo event was rescheduled and its reminder replaced on September 12. `GET /api/calendars/upcoming-reminders` returned its 19:55Z trigger. API receipts remain under ignored `.evidence/ambiguous/`.
+
+## CRM seed (all fictitious)
+
+Every company name carries "(demo)" and every email uses an `example.com` subdomain. Nothing here refers to a real business or person.
+
+| Company | Contact | Deal | Pipeline stage |
+|---|---|---|---|
+| Northwind Logistics (demo) | Priya Raman, VP Operations | Northwind annual license, 48,000 USD, won | Sales: Closed won |
+| Bluefin Analytics (demo) | Marcus Oyelaran, Head of Product | Bluefin team plan, 24,000 USD | Sales: Proposal |
+| Cedar & Vale Clinics (demo) | Hannah Lindqvist, Practice Manager | Cedar & Vale pilot, 9,000 USD | Sales: Pilot |
+| Orbital Toys (demo) | Diego Fuentes, Founder | Orbital Toys starter, 6,000 USD | Sales: Discovery |
+| Halcyon Ridge Ventures (demo), investor | Elena Marchetti, General Partner | Seed round, 1,500,000 USD | Fundraising: Partner meeting |
+
+Each deal has one note activity tying it to the onboarding redesign so the meeting summary has CRM context to reference.
+
+```bash
+# CRM reads the extension may use
+curl -s -H "$A" "$B/api/crm/contacts?limit=50"
+curl -s -H "$A" "$B/api/crm/deals?limit=50"
+curl -s -H "$A" "$B/api/crm/contacts/{id}/activities"
+```
+
+Create responses for CRM objects come back wrapped (`{"pipeline": {...}}`, `{"contact": {...}}`, `{"deal": {...}}`) while list responses use `data`.
