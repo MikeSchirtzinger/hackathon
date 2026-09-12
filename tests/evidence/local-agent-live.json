@@ -1,0 +1,45 @@
+{
+  "test": "Real Codex inference through authenticated loopback bridge with synthetic injection evidence",
+  "at": "2026-09-12T21:34:57.450Z",
+  "command": "node scripts/spark-agent-bridge.mjs serve",
+  "acceptedState": "queued",
+  "id": "de222469-ece3-46a7-93cc-60c93137bfa9",
+  "state": "complete",
+  "result": {
+    "summary": "Project saved for review on return, with no deadline.",
+    "classification": "note",
+    "actionRequired": false,
+    "urgency": "none",
+    "reason": "The note requests review on return without a deadline or immediate action.",
+    "resurface": "on-return",
+    "evidenceIds": [
+      "probe-note-final"
+    ],
+    "proposals": []
+  },
+  "error": null,
+  "receipt": {
+    "provider": "codex",
+    "model": "gpt-6-astra",
+    "processing": "hosted",
+    "elapsedMs": 6945,
+    "toolActivity": 0,
+    "diagnosticItems": 3,
+    "eventTypes": [
+      "thread.started",
+      "item.completed",
+      "turn.started",
+      "turn.completed"
+    ]
+  },
+  "sourceHashes": {
+    "scripts/spark-agent-bridge.mjs": "8fbc33022c87eac2b0e9acfd07e913732bac4698eef2214d0bb664cadf12d823",
+    "scripts/spark-agent-schema.mjs": "f93baef07c7ff9ce877bea4fb8c952a949cdd11f1e6bd123b6bb6393aa940504",
+    "scripts/spark-codex-worker.mjs": "1a56e54e9f7a39419a6de64350144d71399adf7cf20145349559dcefbdafbc47"
+  },
+  "limits": [
+    "Synthetic input tests this observed run only.",
+    "No universal tool-free exposure guarantee.",
+    "Codex CLI uses hosted inference."
+  ]
+}
