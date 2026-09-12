@@ -55,4 +55,3 @@ The original hackathon audio was unavailable. The real replacement LibriSpeech c
 No autonomous reasoning or Takeover authority is configured. No live Zoom/BlackHole delivery is claimed. The browser tests do not connect a virtual microphone or send speech to another participant. Transcript offsets are decoded-audio offsets, not aligned absence timestamps; no generated catch-up or action-item summary is claimed.
 
 The Ambiguous REST adapter and durable reviewed outbox use the public schema. External create/readback remains unverified because no identity or approved live records were provided. No captured content was sent. Local mode stops new and queued sends; an unknown write outcome requires reconciliation before another create.
-
