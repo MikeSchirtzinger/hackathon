@@ -1,0 +1,64 @@
+{
+  "startedAt": "2026-09-12T23:21:08.588Z",
+  "checks": [
+    {
+      "name": "Real tabCapture input and live Voice Lab owner produce the bottom-left listening pill",
+      "detail": {
+        "inputActive": true,
+        "captureStatus": "Listening \u00b7 1s captured \u00b7 0.0s queued \u00b7 0s digital silence skipped \u00b7 0.02\u00d7 RTF"
+      }
+    },
+    {
+      "name": "Stopping input removes the indicator while queued recognition may finish",
+      "detail": {
+        "inputActive": false,
+        "captureStatus": "listening"
+      }
+    },
+    {
+      "name": "Actual native popup has compact 380px geometry and reflects stopped input",
+      "detail": {
+        "width": 380,
+        "height": 429
+      }
+    },
+    {
+      "name": "Owner closure cannot leave a listening claim; no provider HTTP or system alert"
+    }
+  ],
+  "sourceSha256": {
+    "extension/src/background.ts": "f28c7b876162bdd65b1ab04ffba3b0a6cf01f58b7c8aa606222507d32b9ff67c",
+    "extension/src/surfaces.ts": "345df8802dacd25105b67d2d68864ce637ee8805f384f7d58726e57fe6dbc0e9",
+    "extension/src/surface-frame.ts": "ce61d1c929d3c339406e89839ae49396ec670d49714429d56cc4f2f9dc8d50b1",
+    "extension/src/types.ts": "9ae0106fa429305c4218a174922ac69e61a327e9b56a2037f07581faa51662c5",
+    "extension/src/popup.ts": "644def400380caebf8ebbeaa6b2cefc5bbe7995525ec9ae8a86513cfd03ec9fb",
+    "extension/app.js": "fb4df0813ed95264596fa42e323523da4aa946859ed691c9d3b2710ad9712065",
+    "extension/zoom-asr.js": "cb59221d9f11193ad8174094f3bd65633f9e4269f1f6f6794c56949462a5570c",
+    "extension/voice-bridge.js": "a8a099473a77ff1cb751268299b58c1d53b40424314a9f3b1d1b1a63fa24f6c8",
+    "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+    "extension/popup.css": "1f50280705efaaf7386f8537dee2ab478847d2defaab8e915c28f8f2c3ec4ff1",
+    "extension/surface.css": "46f69ac841b00422306e2150cd5e19afa0e9ba37a49adaf219b5bc6395ee0bf9",
+    "extension/foundation/background.js": "b37f5e2b2d7690dc55e886ff4788338d0bb84e1516df4f808308047c6b250b61",
+    "extension/foundation/surface-frame.js": "7a468d471c7f0d08cdcf3f0dfcff7ac9508facdaee503edc0a51298367f24b0d"
+  },
+  "requests": [],
+  "audio": {
+    "kind": "Real provenance-documented LibriSpeech playback in an authorized local test page",
+    "sha256": "6bc58a4efdf20daac252b6b1502632601a71efe0308f6757dc1eda34891a7e4f",
+    "participantDelivery": "unverified"
+  },
+  "chrome": "151.0.7922.34",
+  "captureStatus": "Listening \u00b7 1s captured \u00b7 0.0s queued \u00b7 0s digital silence skipped \u00b7 0.02\u00d7 RTF",
+  "afterStop": {
+    "inputActive": false,
+    "captureStatus": "listening"
+  },
+  "popup": {
+    "width": 380,
+    "height": 429,
+    "listeningHidden": true,
+    "text": "Spark\nLocal only\nKeep a thought\nNote for this page\nQuiet status\nSave note\n\nReady. Notes save before reasoning.\n\n0 jobs pending. Automatic reasoning: off.\n\n0 decisions and 0 summaries saved for when you are ready.\n\nReview saved results\nConnections and settings\nConnect local coding agent\nOpen Voice Lab"
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-12T23:21:16.350Z"
+}

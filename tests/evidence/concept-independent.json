@@ -1,0 +1,410 @@
+{
+  "startedAt": "2026-09-12T23:26:28.092Z",
+  "head": "f96328cc9710f85e212f5bf1e13fefd3b3894ae2",
+  "checks": [
+    {
+      "name": "Actual manifest has native popup and no sidebar; pristine Local only and no connected providers"
+    },
+    {
+      "name": "Native CmdShiftU opens actual 380px concept POPUP with semantic and computed-style readback",
+      "detail": {
+        "text": "Spark\nLocal only\nKeep a thought\nNote for this page\nQuiet status\nSave note\n\nReady. Notes save before reasoning.\n\n0 jobs pending. Automatic reasoning: off.\n\n0 decisions and 0 summaries saved for when you are ready.\n\nReview saved results\nConnections and settings\nConnect local coding agent\nOpen Voice Lab",
+        "width": 380,
+        "height": 429,
+        "scrollWidth": 380,
+        "cardBackground": "rgb(27, 31, 43)",
+        "quietAccent": "#82b78c"
+      }
+    },
+    {
+      "name": "Native CmdShiftY saves actual page context and shows 380px upper-right card without stealing focus, native alert, badge, top-level document, or private workspace access",
+      "detail": {
+        "x": 872,
+        "y": 28,
+        "width": 380,
+        "height": 167
+      }
+    },
+    {
+      "name": "Real capture card auto-dismisses; observed capture interval has zero HTTP"
+    },
+    {
+      "name": "Page-created forged capability and expired genuine capability both render nothing and deny private state, credentials, and surface actions"
+    },
+    {
+      "name": "Generic due reminder takes page delivery without private metadata or duplicate native alert; same live interrupt survives subsequent quiet capture"
+    },
+    {
+      "name": "Second real due alarm shares the ten-minute budget; synthetic Join is denied, trusted click on preserved reminder opens saved local URL and updates lifecycle"
+    },
+    {
+      "name": "Cross-document replay is denied and local-only workflow completes with no provider HTTP, credentials, or inference jobs"
+    }
+  ],
+  "requests": [
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/panel.html",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/concept.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/panel.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/panel.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/panel.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "http://127.0.0.1:63389/",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "http://127.0.0.1:63389/network-positive-control",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.html",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/concept.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.html",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/concept.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.html",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/concept.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.html",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/concept.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "http://127.0.0.1:63389/new-document",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.html",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/concept.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/surface.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/surface-frame.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/popup.html",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/concept.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/popup.css",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/popup.js",
+      "method": "GET",
+      "worker": false
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/popup.js",
+      "method": "GET",
+      "worker": false
+    }
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "beforeHashes": {
+    "extension/manifest.json": "7f65e37a9fa91dc2caaba580af3ca40f9cc221a13e2004667c25ff5c40e65993",
+    "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+    "extension/popup.css": "1f50280705efaaf7386f8537dee2ab478847d2defaab8e915c28f8f2c3ec4ff1",
+    "extension/popup.html": "1bfd4b3667dbd12b99006172da8b182a15a37790f3e8dc2f45765df5beeb7e61",
+    "extension/surface.html": "f48a393c5eb48409c4a13ee83169089a8cb8a4cc69f4da0400568a872832cefa",
+    "extension/surface.css": "46f69ac841b00422306e2150cd5e19afa0e9ba37a49adaf219b5bc6395ee0bf9",
+    "extension/src/surfaces.ts": "345df8802dacd25105b67d2d68864ce637ee8805f384f7d58726e57fe6dbc0e9",
+    "extension/src/surface-frame.ts": "ce61d1c929d3c339406e89839ae49396ec670d49714429d56cc4f2f9dc8d50b1",
+    "extension/src/surface-types.ts": "c69d92690ccdca56ea37f54e95f5e8bcfe12bdf419e7eff1cf294c6d7790c7b0",
+    "extension/src/cards.ts": "4d60208c0d5462e49c2a1448b53d5f203444dd1d735aefcc0e55f531279a90a7",
+    "extension/src/background.ts": "f28c7b876162bdd65b1ab04ffba3b0a6cf01f58b7c8aa606222507d32b9ff67c",
+    "extension/src/attention.ts": "b87b84bf62be868f2b2bbdc8dba5e1ac55525b2951b79b140509aecb67927d22",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/popup.ts": "644def400380caebf8ebbeaa6b2cefc5bbe7995525ec9ae8a86513cfd03ec9fb",
+    "extension/src/panel.ts": "728297e84b6e12f75dbfc838d7f265c9a867e735c3996cc5360885f996e747ba",
+    "extension/src/types.ts": "9ae0106fa429305c4218a174922ac69e61a327e9b56a2037f07581faa51662c5",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/app.js": "fb4df0813ed95264596fa42e323523da4aa946859ed691c9d3b2710ad9712065",
+    "extension/voice-bridge.js": "a8a099473a77ff1cb751268299b58c1d53b40424314a9f3b1d1b1a63fa24f6c8",
+    "extension/zoom-asr.js": "cb59221d9f11193ad8174094f3bd65633f9e4269f1f6f6794c56949462a5570c",
+    "extension/public/panel.css": "6ff9bd65eb1bc631db45c975df58cbc2d99c30cc43fa500d815928d09ca812a3",
+    "extension/foundation/background.js": "b37f5e2b2d7690dc55e886ff4788338d0bb84e1516df4f808308047c6b250b61",
+    "extension/foundation/surface-frame.js": "7a468d471c7f0d08cdcf3f0dfcff7ac9508facdaee503edc0a51298367f24b0d",
+    "extension/foundation/popup.js": "103ce060e1b66f5708a54606e42c832110a6259a43e96b3aeb83c896b1326fdf",
+    "extension/foundation/panel.js": "75fa095f63095b7ca8ea1fedcfc721cb01ec57730589847608a1625195db4820"
+  },
+  "extensionId": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+  "chrome": "151.0.7922.34",
+  "manifest": {
+    "action": {
+      "default_icon": "icon.png",
+      "default_popup": "popup.html",
+      "default_title": "Open Spark"
+    },
+    "background": {
+      "service_worker": "foundation/background.js",
+      "type": "module"
+    },
+    "commands": {
+      "capture-context": {
+        "description": "Save current page context quietly",
+        "suggested_key": {
+          "default": "Ctrl+Shift+Y",
+          "mac": "Command+Shift+Y"
+        }
+      },
+      "open-panel": {
+        "description": "Open the Spark popup",
+        "suggested_key": {
+          "default": "Ctrl+Shift+U",
+          "mac": "Command+Shift+U"
+        }
+      }
+    },
+    "content_security_policy": {
+      "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' blob: https://app.ambiguous.ai http://127.0.0.1:4318; worker-src 'self'; media-src 'self' blob:"
+    },
+    "description": "Keep browser context with local notes and meeting follow-through.",
+    "host_permissions": [
+      "https://app.ambiguous.ai/*"
+    ],
+    "icons": {
+      "128": "icon.png"
+    },
+    "manifest_version": 3,
+    "minimum_chrome_version": "127",
+    "name": "Spark",
+    "optional_host_permissions": [
+      "http://127.0.0.1:4318/*"
+    ],
+    "options_ui": {
+      "open_in_tab": true,
+      "page": "panel.html"
+    },
+    "permissions": [
+      "activeTab",
+      "tabCapture",
+      "storage",
+      "power",
+      "scripting",
+      "alarms",
+      "notifications"
+    ],
+    "version": "0.3.0",
+    "web_accessible_resources": [
+      {
+        "matches": [
+          "http://*/*",
+          "https://*/*"
+        ],
+        "resources": [
+          "surface.html"
+        ]
+      }
+    ]
+  },
+  "popupContexts": [
+    {
+      "contextType": "POPUP",
+      "documentUrl": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/popup.html"
+    }
+  ],
+  "popup": {
+    "text": "Spark\nLocal only\nKeep a thought\nNote for this page\nQuiet status\nSave note\n\nReady. Notes save before reasoning.\n\n0 jobs pending. Automatic reasoning: off.\n\n0 decisions and 0 summaries saved for when you are ready.\n\nReview saved results\nConnections and settings\nConnect local coding agent\nOpen Voice Lab",
+    "width": 380,
+    "height": 429,
+    "scrollWidth": 380,
+    "cardBackground": "rgb(27, 31, 43)",
+    "quietAccent": "#82b78c"
+  },
+  "capture": {
+    "geometry": {
+      "x": 872,
+      "y": 28,
+      "width": 380,
+      "height": 167
+    },
+    "text": "Context saved\n\nPage context captured. Pick it up when you return.\n\n127.0.0.1 \u00b7 page text captured \u00b7 saved locally\n\nQuiet status\n\u00d7",
+    "url": "http://127.0.0.1:63389/",
+    "title": "Independent concept source"
+  },
+  "pagePrivacy": {
+    "openShadow": false,
+    "visibleIframe": false,
+    "mountGlobal": "undefined",
+    "attributes": [
+      "data-spark-surface",
+      "style"
+    ],
+    "pageRuntime": "undefined"
+  },
+  "reminder": {
+    "text": "Your meeting starts soon\n\nYour saved reminder is due. Join now or review it in Spark.\n\nSaved deadline \u00b7 one interruption\n\nInterrupt\n\u00d7\nJoin meeting\nReview in Spark",
+    "mode": "interrupt",
+    "deliverySurface": "page"
+  },
+  "budget": {
+    "interruptCount": 1,
+    "secondMode": "negotiate",
+    "secondReason": "Ten-minute interruption budget spent. Available at the next return or request."
+  },
+  "afterHashes": {
+    "extension/manifest.json": "7f65e37a9fa91dc2caaba580af3ca40f9cc221a13e2004667c25ff5c40e65993",
+    "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+    "extension/popup.css": "1f50280705efaaf7386f8537dee2ab478847d2defaab8e915c28f8f2c3ec4ff1",
+    "extension/popup.html": "1bfd4b3667dbd12b99006172da8b182a15a37790f3e8dc2f45765df5beeb7e61",
+    "extension/surface.html": "f48a393c5eb48409c4a13ee83169089a8cb8a4cc69f4da0400568a872832cefa",
+    "extension/surface.css": "46f69ac841b00422306e2150cd5e19afa0e9ba37a49adaf219b5bc6395ee0bf9",
+    "extension/src/surfaces.ts": "345df8802dacd25105b67d2d68864ce637ee8805f384f7d58726e57fe6dbc0e9",
+    "extension/src/surface-frame.ts": "ce61d1c929d3c339406e89839ae49396ec670d49714429d56cc4f2f9dc8d50b1",
+    "extension/src/surface-types.ts": "c69d92690ccdca56ea37f54e95f5e8bcfe12bdf419e7eff1cf294c6d7790c7b0",
+    "extension/src/cards.ts": "4d60208c0d5462e49c2a1448b53d5f203444dd1d735aefcc0e55f531279a90a7",
+    "extension/src/background.ts": "f28c7b876162bdd65b1ab04ffba3b0a6cf01f58b7c8aa606222507d32b9ff67c",
+    "extension/src/attention.ts": "b87b84bf62be868f2b2bbdc8dba5e1ac55525b2951b79b140509aecb67927d22",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/popup.ts": "644def400380caebf8ebbeaa6b2cefc5bbe7995525ec9ae8a86513cfd03ec9fb",
+    "extension/src/panel.ts": "728297e84b6e12f75dbfc838d7f265c9a867e735c3996cc5360885f996e747ba",
+    "extension/src/types.ts": "9ae0106fa429305c4218a174922ac69e61a327e9b56a2037f07581faa51662c5",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/app.js": "fb4df0813ed95264596fa42e323523da4aa946859ed691c9d3b2710ad9712065",
+    "extension/voice-bridge.js": "a8a099473a77ff1cb751268299b58c1d53b40424314a9f3b1d1b1a63fa24f6c8",
+    "extension/zoom-asr.js": "cb59221d9f11193ad8174094f3bd65633f9e4269f1f6f6794c56949462a5570c",
+    "extension/public/panel.css": "6ff9bd65eb1bc631db45c975df58cbc2d99c30cc43fa500d815928d09ca812a3",
+    "extension/foundation/background.js": "b37f5e2b2d7690dc55e886ff4788338d0bb84e1516df4f808308047c6b250b61",
+    "extension/foundation/surface-frame.js": "7a468d471c7f0d08cdcf3f0dfcff7ac9508facdaee503edc0a51298367f24b0d",
+    "extension/foundation/popup.js": "103ce060e1b66f5708a54606e42c832110a6259a43e96b3aeb83c896b1326fdf",
+    "extension/foundation/panel.js": "75fa095f63095b7ca8ea1fedcfc721cb01ec57730589847608a1625195db4820"
+  },
+  "changedFiles": [],
+  "result": "PASS",
+  "finishedAt": "2026-09-12T23:28:15.914Z"
+}

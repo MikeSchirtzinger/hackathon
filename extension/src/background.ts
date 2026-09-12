@@ -1,3 +1,4 @@
+import { authorizeSurface, acknowledgeCapture, refreshListeningSurface, revokeTabSurfaces, surfaceMessage, listeningNow } from './surfaces';
 import { validateSegment } from './transcript';
 import { all, get, put, settings, writeBatch } from './db';
 import { base, type Meeting, type Note, type Settings, type TaskProposal, type AudioSession } from './types';
@@ -24,11 +25,13 @@ async function status(message: string, error = false) {
 }
 async function capture(tab: chrome.tabs.Tab, source: 'hotkey' | 'button') {
   const context = await captureContext(tab, source);
+  void acknowledgeCapture(context).catch(() => undefined);
   await status(context.availability === 'available' ? 'Context saved locally.' : 'Context saved. Page text unavailable.');
   void queueReasoning('context', context.id).catch(error => status(String(error), true));
   return context;
 }
 async function authorizeAudioTab(tab: chrome.tabs.Tab) {
+  await authorizeSurface(tab);
   if (typeof tab.id === 'number' && tab.url && /^https?:/.test(tab.url)) {
     await chrome.storage.session.set({ audioSourceTab: { id: tab.id, url: safeWebUrl(tab.url), title: tab.title ?? '' } });
   }
@@ -53,6 +56,7 @@ async function restoreAlarms() {
 }
 async function initialize() {
   await chrome.storage.local.setAccessLevel({ accessLevel: 'TRUSTED_CONTEXTS' });
+  await chrome.storage.session.setAccessLevel({ accessLevel: 'TRUSTED_CONTEXTS' });
   setSyncEnabled((await settings()).syncMode === 'sync');
   await recoverOutbox();
   await recoverAnalyses();
@@ -61,6 +65,7 @@ async function initialize() {
   await chrome.action.setBadgeText({ text: '' });
   await recoverAttention();
   await recoverJobs();
+  void refreshListeningSurface().catch(() => undefined);
 }
 const ready = initialize();
 chrome.runtime.onInstalled.addListener(() => { void ready.catch(error => status(String(error), true)); });
@@ -176,14 +181,23 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
       if (existing && (existing.revision >= segment.revision || existing.final)) return existing;
       await put('transcripts', segment); await changed(); return segment;
     }
+    case 'voice-input-status': {
+      const session = await get('audioSessions', text(message.sessionId, 100));
+      if (!session || session.tabId !== sender?.tab?.id || session.ownerDocumentId !== sender?.documentId || typeof message.active !== 'boolean') throw new Error('Audio input producer does not own this session.');
+      if (message.active && (session.source === 'sample' || session.captureStatus !== 'listening')) throw new Error('Audio input is not listening.');
+      await put('audioSessions', { ...session, inputActive: message.active, revision: session.revision + 1 });
+      void refreshListeningSurface().catch(() => undefined);
+      await changed(); return true;
+    }
     case 'voice-status': {
       const session = await get('audioSessions', text(message.sessionId, 100));
       if (!session || session.tabId !== sender?.tab?.id || session.ownerDocumentId !== sender?.documentId) throw new Error('Audio status producer does not own this session.');
       if (!['listening','stopped','error'].includes(String(message.status))) throw new Error('Invalid capture status.');
       const captureStatus = message.status as 'listening' | 'stopped' | 'error';
-      await put('audioSessions', { ...session, captureStatus, detail: typeof message.detail === 'string' ? message.detail.slice(0,1000) : undefined, endedAt: captureStatus === 'listening' ? undefined : Date.now(), revision: session.revision + 1 });
+      await put('audioSessions', { ...session, captureStatus, inputActive: captureStatus === 'listening' && session.inputActive === true, detail: typeof message.detail === 'string' ? message.detail.slice(0,1000) : undefined, endedAt: captureStatus === 'listening' ? undefined : Date.now(), revision: session.revision + 1 });
       const meeting = session.meetingId ? await get('meetings', session.meetingId) : undefined;
       if (meeting) await put('meetings', { ...meeting, captureStatus, revision: meeting.revision + 1 });
+      void refreshListeningSurface().catch(() => undefined);
       await changed(); return true;
     }
     case 'voice-output-status': {
@@ -192,11 +206,12 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
     }
     case 'state': {
       const [contexts, notes, tasks, meetings, absences, transcripts, outbox, prefs, current, last, auth, commands] = await Promise.all([all('contexts'), all('notes'), all('tasks'), all('meetings'), all('absences'), all('transcripts'), all('outbox'), settings(), get('settings', 'currentContext'), get('settings', 'lastStatus'), credentials(), chrome.commands.getAll()]);
-      return { contexts, notes, tasks, meetings, absences, transcripts, outbox, analyses: await all('analyses'), jobs: await all('jobs'), attention: await all('attention'), localAgent: { connected: (await pairing()).connected, processing: 'hosted', provider: 'codex' }, audioSessions: await all('audioSessions'), settings: prefs, currentContextId: current?.value, lastStatus: last?.value, credentialsConfigured: !!auth.token, commands };
+      return { contexts, notes, tasks, meetings, absences, transcripts, outbox, audioListening: await listeningNow(), analyses: await all('analyses'), jobs: await all('jobs'), attention: await all('attention'), localAgent: { connected: (await pairing()).connected, processing: 'hosted', provider: 'codex' }, audioSessions: await all('audioSessions'), settings: prefs, currentContextId: current?.value, lastStatus: last?.value, credentialsConfigured: !!auth.token, commands };
     }
     case 'popup-open': {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       if (tab) await authorizeAudioTab(tab);
+      void refreshListeningSurface().catch(() => undefined);
       return true;
     }
     case 'attention-request': return surfaceAttention('on-request');
@@ -209,12 +224,15 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
       const context = await captureContext(tab, 'button');
       const note: Note = { ...base(), contextId: context.id, text: text(message.text), source: 'manual', syncEligible: (await settings()).syncMode === 'sync', reasoning: 'unavailable' };
       await put('notes', note);
+      const noteContext = await get('contexts', note.contextId);
+      if (noteContext) void acknowledgeCapture(noteContext, true).catch(() => undefined);
       void queueReasoning('note', note.id).catch(error => status(String(error), true));
       await status('Note saved locally.'); return note;
     }
     case 'capture': {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       if (!tab) throw new Error('No active page is available.');
+      await authorizeSurface(tab);
       return capture(tab, 'button');
     }
     case 'save-note': {
@@ -223,6 +241,8 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
       const note: Note = { ...base(), contextId, text: text(message.text), source: 'manual', syncEligible: (await settings()).syncMode === 'sync', reasoning: 'unavailable' };
       if (typeof message.meetingId === 'string' && await get('meetings', message.meetingId)) note.meetingId = message.meetingId;
       await put('notes', note);
+      const noteContext = await get('contexts', note.contextId);
+      if (noteContext) void acknowledgeCapture(noteContext, true).catch(() => undefined);
       void queueReasoning('note', note.id).catch(error => status(String(error), true));
       await status('Note saved locally.');
       return note;
@@ -326,9 +346,17 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
 }
 chrome.runtime.onMessage.addListener((message, sender, reply) => {
   if (!message || ['changed','voice-control'].includes(message.type)) return;
+  if (typeof message.type === 'string' && message.type.startsWith('surface-')) {
+    void surfaceMessage(message, sender, async (id, action) => {
+      await ready;
+      if (action === 'join') await serialize(() => handle({ type: 'meeting-action', id, action: 'join' }));
+      else await chrome.tabs.create({ url: chrome.runtime.getURL('panel.html#meeting') });
+    }).then(value => reply({ok:true,value}), () => reply({ok:false,error:'Page surface unavailable.'}));
+    return true;
+  }
   const panelOrigin = ['panel.html', 'popup.html'].some(page => sender.url?.split(/[?#]/)[0] === chrome.runtime.getURL(page));
   const voiceOrigin = sender.url?.split(/[?#]/)[0] === chrome.runtime.getURL('index.html');
-  const voiceOperations = ['capture-zoom','capture-tab','voice-begin','voice-segment','voice-status','voice-output-status'];
+  const voiceOperations = ['capture-zoom','capture-tab','voice-begin','voice-segment','voice-status','voice-input-status','voice-output-status'];
   if (sender.id !== chrome.runtime.id || (voiceOperations.includes(message.type) ? !voiceOrigin : !panelOrigin)) { reply({ ok: false, error: 'This operation requires its extension workspace.' }); return; }
   if (message.type === 'meeting-action' && ['return','end'].includes(message.action)) void stopVoiceOutput().catch(() => undefined);
   if (message.type === 'settings' && message.syncMode === 'local') haltSync();
@@ -345,12 +373,16 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
   return true;
 });
 
+chrome.tabs.onUpdated.addListener((tabId, change) => { if (change.status === 'loading' || change.url) void revokeTabSurfaces(tabId).catch(() => undefined); });
+chrome.tabs.onActivated.addListener(() => { void ready.then(refreshListeningSurface).catch(() => undefined); });
 chrome.tabs.onRemoved.addListener(tabId => {
+  void revokeTabSurfaces(tabId).catch(() => undefined);
   void serialize(async () => {
     for (const session of await all('audioSessions')) {
       if (session.tabId !== tabId || ['stopped','error'].includes(session.captureStatus)) continue;
       await interruptAudioSession(session, 'Audio workspace closed before capture finished. Transcript retained.');
     }
+    await refreshListeningSurface();
     await changed();
   }).catch(() => undefined);
 });

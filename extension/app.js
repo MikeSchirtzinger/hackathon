@@ -1,5 +1,5 @@
 import { speechRequests, stopSpeechOutput } from './speech-output.js';
-import { beginLocalTranscript, persistTranscript, captureStatus } from './voice-bridge.js';
+import { beginLocalTranscript, persistTranscript, captureStatus, captureInputActive } from './voice-bridge.js';
 const $ = id => document.getElementById(id);
 const workers = {}, loaded = { asr: false, tts: false };
 let recording = false, asrBusy = false, ttsBusy = false, context, mic, source, capture;
@@ -88,6 +88,7 @@ async function sample() {
   finally { await decoder.close(); }
 }
 function cleanupMic() {
+  if (mic) void captureInputActive(false).catch(() => undefined);
   clearTimeout(timer); source?.disconnect(); capture?.disconnect();
   mic?.getTracks().forEach(track => track.stop());
   context?.close().catch(() => {}); source = capture = mic = context = null;
@@ -107,7 +108,7 @@ async function record() {
       if (data.samples) sendAudio(data.samples, rate);
       if (data.stopped) { cleanupMic(); workers.asr.postMessage({ type: 'finish' }); }
     };
-    recording = true; await captureStatus('listening'); startStream(); source.connect(capture); capture.connect(context.destination);
+    recording = true; await captureStatus('listening'); startStream(); source.connect(capture); capture.connect(context.destination); await captureInputActive(true);
     $('record').textContent = '■ Stop'; $('record').classList.add('recording');
     status('asr', 'Listening… click Stop when finished (30 second limit).'); buttons();
     timer = setTimeout(stop, 30000);
@@ -115,6 +116,7 @@ async function record() {
 }
 function stop() {
   if (!recording) return;
+  void captureInputActive(false).catch(() => undefined);
   recording = false; clearTimeout(timer); source?.disconnect();
   capture.port.postMessage('flush');
   $('record').textContent = '● Record'; $('record').classList.remove('recording');

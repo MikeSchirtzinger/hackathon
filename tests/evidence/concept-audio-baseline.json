@@ -1,0 +1,471 @@
+{
+  "baselineHead": "f96328cc9710f85e212f5bf1e13fefd3b3894ae2",
+  "proofSha256": "e9eb2721386a9d6af68f1312046d5cc39fb58182d6d17bca8e47c240f51516f3",
+  "baselineProofSha256": "e9eb2721386a9d6af68f1312046d5cc39fb58182d6d17bca8e47c240f51516f3",
+  "audioSource": {
+    "app.js": {
+      "candidate": "fb4df0813ed95264596fa42e323523da4aa946859ed691c9d3b2710ad9712065",
+      "baseline": "18319f981774b12de20e384ad7b92813a7302a8e8957e302c695a134b68bcab7"
+    },
+    "voice-bridge.js": {
+      "candidate": "a8a099473a77ff1cb751268299b58c1d53b40424314a9f3b1d1b1a63fa24f6c8",
+      "baseline": "3280996aa4f0cb8fabde97f2cae03c2db4ed49abbaffad5133ea0ad32d303ccf"
+    },
+    "zoom-asr.js": {
+      "candidate": "cb59221d9f11193ad8174094f3bd65633f9e4269f1f6f6794c56949462a5570c",
+      "baseline": "56f0e4cb94582c7390412f8e9db5dbe5c9b55270dc02aca873c495aae18e67b7"
+    },
+    "engine-worker.js": {
+      "candidate": "48dc0d7400b93929d5121ab9cc765effb0cc6d45a4678b7adf1b1f8d4512194b",
+      "baseline": "48dc0d7400b93929d5121ab9cc765effb0cc6d45a4678b7adf1b1f8d4512194b"
+    },
+    "speech-output.js": {
+      "candidate": "885392258e15a0db7178ed14fdde2cced73875e12e3917e9299270d7a529d64e",
+      "baseline": "885392258e15a0db7178ed14fdde2cced73875e12e3917e9299270d7a529d64e"
+    },
+    "audio-queue.js": {
+      "candidate": "4d44e8e5a2037428dd9004c44a66d5313a5a38ce8e4642cd42ed0027ad549063",
+      "baseline": "4d44e8e5a2037428dd9004c44a66d5313a5a38ce8e4642cd42ed0027ad549063"
+    },
+    "capture-worklet.js": {
+      "candidate": "33f85335555ba8fb9309959b336fb4d6bed5854a1742bc109e84104300ff07df",
+      "baseline": "33f85335555ba8fb9309959b336fb4d6bed5854a1742bc109e84104300ff07df"
+    },
+    "zoom.js": {
+      "candidate": "dfa5b49b824cfbf362810f3498a8c6781740a277ecbe8ee7829931efb45d7410",
+      "baseline": "dfa5b49b824cfbf362810f3498a8c6781740a277ecbe8ee7829931efb45d7410"
+    }
+  },
+  "assetCount": 384,
+  "assetManifestSha256": "02de9ee27a1d39f28773f6ebffa0e84ea686077225af0e5f7eda8a31a0f79e27",
+  "assets": "Both runs read the same local model/runtime files through symlinks. No assets were modified.",
+  "candidate": {
+    "result": "FAIL",
+    "startedAt": "2026-09-12T23:34:46.749Z",
+    "finishedAt": "2026-09-12T23:38:17.077Z",
+    "checks": [
+      {
+        "name": "Panel opens the inherited Voice Lab under the same extension ID"
+      },
+      {
+        "name": "Real Nemotron sample is saved through the UI bridge and retained after reload",
+        "detail": {
+          "text": "After early nightfall, the yellow lamps would light up here and there the squalid quarter of the brothels",
+          "elapsedMs": 12008
+        }
+      },
+      {
+        "name": "Stop audio discards a late result from real Kokoro synthesis",
+        "detail": {
+          "elapsedMs": 7994
+        }
+      },
+      {
+        "name": "A fresh explicit Kokoro request generates audio after cancellation",
+        "detail": {
+          "metric": "1.0s audio · 4.3s generation · 4.09× RTF",
+          "route": "not configured; no meeting delivery claim"
+        }
+      }
+    ],
+    "returnRequest": {
+      "at": 1789256113387,
+      "visibility": "visible",
+      "type": "speak-request",
+      "requestId": "49cd961f-eb7d-4cce-aa11-be6d3856cd9f",
+      "speechEpoch": 1,
+      "phase": "return"
+    },
+    "returnStopReceipt": {
+      "stops": 2,
+      "pending": false
+    },
+    "returnWaitStarted": 1789256113399,
+    "returnStatusPolls": [
+      {
+        "at": 1789256113401,
+        "elapsed": 2,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256128520,
+        "elapsed": 2965,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256129920,
+        "elapsed": 580,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256171172,
+        "elapsed": 783,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256176462,
+        "elapsed": 4538,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256202184,
+        "elapsed": 528,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256220116,
+        "elapsed": 4059,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256230030,
+        "elapsed": 2233,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256251723,
+        "elapsed": 1255,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256257100,
+        "elapsed": 1105,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256281548,
+        "elapsed": 3636,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256293846,
+        "elapsed": 918,
+        "text": "Speech output stopped. Pending results will be discarded."
+      }
+    ],
+    "errors": [],
+    "audioEvents": [
+      {
+        "at": 1789256099778,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Starting WebAssembly runtime…"
+      },
+      {
+        "at": 1789256100216,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Initializing kokoro model…"
+      },
+      {
+        "at": 1789256100831,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Ready · running locally in WebAssembly"
+      },
+      {
+        "at": 1789256100920,
+        "visibility": "visible",
+        "type": "speak-request",
+        "requestId": "56f84226-e0ec-4809-92ac-64035f4294c3",
+        "speechEpoch": 0
+      },
+      {
+        "at": 1789256100920,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Generating speech in WASM…"
+      },
+      {
+        "at": 1789256100938,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256108815,
+        "visibility": "visible",
+        "type": "audio-result",
+        "elapsed": 7894.5,
+        "requestId": "56f84226-e0ec-4809-92ac-64035f4294c3",
+        "speechEpoch": 0
+      },
+      {
+        "at": 1789256108815,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech cancelled. Late result discarded."
+      },
+      {
+        "at": 1789256108912,
+        "visibility": "visible",
+        "type": "speak-request",
+        "requestId": "7e8ee7d4-45f4-495c-b51e-cb2e2c4af62c",
+        "speechEpoch": 1
+      },
+      {
+        "at": 1789256108912,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Generating speech in WASM…"
+      },
+      {
+        "at": 1789256113204,
+        "visibility": "visible",
+        "type": "audio-result",
+        "elapsed": 4292.199999999255,
+        "requestId": "7e8ee7d4-45f4-495c-b51e-cb2e2c4af62c",
+        "speechEpoch": 1
+      },
+      {
+        "at": 1789256113206,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech generated locally · press play to listen"
+      },
+      {
+        "at": 1789256113387,
+        "visibility": "visible",
+        "type": "speak-request",
+        "requestId": "49cd961f-eb7d-4cce-aa11-be6d3856cd9f",
+        "speechEpoch": 1,
+        "phase": "return"
+      },
+      {
+        "at": 1789256113387,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Generating speech in WASM…"
+      },
+      {
+        "at": 1789256113395,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256113395,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech output stopped. Pending results will be discarded."
+      }
+    ],
+    "failure": "Error: Timed out waiting for real audio integration state.",
+    "harnessClosedAfterResult": true
+  },
+  "baseline": {
+    "result": "FAIL",
+    "startedAt": "2026-09-12T23:38:53.083Z",
+    "finishedAt": "2026-09-12T23:42:20.056Z",
+    "checks": [
+      {
+        "name": "Panel opens the inherited Voice Lab under the same extension ID"
+      },
+      {
+        "name": "Real Nemotron sample is saved through the UI bridge and retained after reload",
+        "detail": {
+          "text": "After early nightfall, the yellow lamps would light up here and there the squalid quarter of the brothels",
+          "elapsedMs": 11730
+        }
+      },
+      {
+        "name": "Stop audio discards a late result from real Kokoro synthesis",
+        "detail": {
+          "elapsedMs": 7984
+        }
+      },
+      {
+        "name": "A fresh explicit Kokoro request generates audio after cancellation",
+        "detail": {
+          "metric": "1.1s audio · 4.3s generation · 4.12× RTF",
+          "route": "not configured; no meeting delivery claim"
+        }
+      }
+    ],
+    "returnRequest": {
+      "at": 1789256359849,
+      "visibility": "visible",
+      "type": "speak-request",
+      "requestId": "d982b094-8d8e-4517-b8ee-e821c31fd3d8",
+      "speechEpoch": 1,
+      "phase": "return"
+    },
+    "returnStopReceipt": {
+      "stops": 2,
+      "pending": false
+    },
+    "returnWaitStarted": 1789256359869,
+    "returnStatusPolls": [
+      {
+        "at": 1789256359870,
+        "elapsed": 1,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256382400,
+        "elapsed": 591,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256405525,
+        "elapsed": 2710,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256449556,
+        "elapsed": 2685,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256453588,
+        "elapsed": 1808,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256466061,
+        "elapsed": 6758,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256467929,
+        "elapsed": 563,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256473376,
+        "elapsed": 2763,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256515493,
+        "elapsed": 1319,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256520560,
+        "elapsed": 3487,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256526612,
+        "elapsed": 2164,
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256531876,
+        "elapsed": 581,
+        "text": "Speech output stopped. Pending results will be discarded."
+      }
+    ],
+    "errors": [],
+    "audioEvents": [
+      {
+        "at": 1789256346216,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Starting WebAssembly runtime…"
+      },
+      {
+        "at": 1789256346680,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Initializing kokoro model…"
+      },
+      {
+        "at": 1789256347323,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Ready · running locally in WebAssembly"
+      },
+      {
+        "at": 1789256347362,
+        "visibility": "visible",
+        "type": "speak-request",
+        "requestId": "6038cf41-2f01-48bf-ad9d-78a1c420f8ff",
+        "speechEpoch": 0
+      },
+      {
+        "at": 1789256347362,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Generating speech in WASM…"
+      },
+      {
+        "at": 1789256347380,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256355256,
+        "visibility": "visible",
+        "type": "audio-result",
+        "elapsed": 7893.5,
+        "requestId": "6038cf41-2f01-48bf-ad9d-78a1c420f8ff",
+        "speechEpoch": 0
+      },
+      {
+        "at": 1789256355256,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech cancelled. Late result discarded."
+      },
+      {
+        "at": 1789256355355,
+        "visibility": "visible",
+        "type": "speak-request",
+        "requestId": "48345165-89a3-4445-a1c7-f705a7401d57",
+        "speechEpoch": 1
+      },
+      {
+        "at": 1789256355355,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Generating speech in WASM…"
+      },
+      {
+        "at": 1789256359685,
+        "visibility": "visible",
+        "type": "audio-result",
+        "elapsed": 4329.900000002235,
+        "requestId": "48345165-89a3-4445-a1c7-f705a7401d57",
+        "speechEpoch": 1
+      },
+      {
+        "at": 1789256359689,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech generated locally · press play to listen"
+      },
+      {
+        "at": 1789256359849,
+        "visibility": "visible",
+        "type": "speak-request",
+        "requestId": "d982b094-8d8e-4517-b8ee-e821c31fd3d8",
+        "speechEpoch": 1,
+        "phase": "return"
+      },
+      {
+        "at": 1789256359849,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Generating speech in WASM…"
+      },
+      {
+        "at": 1789256359861,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech output stopped. Pending results will be discarded."
+      },
+      {
+        "at": 1789256359862,
+        "visibility": "visible",
+        "type": "status",
+        "text": "Speech output stopped. Pending results will be discarded."
+      }
+    ],
+    "failure": "Error: Timed out waiting for real audio integration state.",
+    "harnessClosedAfterResult": true
+  },
+  "interpretation": "The same third-synthesis liveness timeout occurs on the previous main commit with the same proof and assets. This demonstrates the failure predates the concept UI change; it does not establish the model/runtime cause. Return revoked pending output in both runs. Later ASR/recovery assertions were not reached."
+}

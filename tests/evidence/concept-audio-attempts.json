@@ -1,0 +1,327 @@
+{
+  "attempts": [
+    {
+      "startedAt": "2026-09-12T23:24:58.337Z",
+      "finishedAt": "2026-09-12T23:28:26.844Z",
+      "result": "FAIL",
+      "checks": [
+        {
+          "name": "Panel opens the inherited Voice Lab under the same extension ID"
+        },
+        {
+          "name": "Real Nemotron sample is saved through the UI bridge and retained after reload",
+          "detail": {
+            "text": "After early nightfall, the yellow lamps would light up here and there the squalid quarter of the brothels",
+            "elapsedMs": 12768
+          }
+        },
+        {
+          "name": "Stop audio discards a late result from real Kokoro synthesis",
+          "detail": {
+            "elapsedMs": 8023
+          }
+        },
+        {
+          "name": "A fresh explicit Kokoro request generates audio after cancellation",
+          "detail": {
+            "metric": "1.0s audio \u00b7 4.3s generation \u00b7 4.10\u00d7 RTF",
+            "route": "not configured; no meeting delivery claim"
+          }
+        }
+      ],
+      "returnStopReceipt": {
+        "stops": 2,
+        "pending": false
+      },
+      "failure": "Return late-result status did not satisfy the unchanged 180-second assertion.",
+      "finalStatus": "Speech cancelled. Late result discarded.",
+      "returnWaitStarted": null,
+      "returnStatusPolls": [],
+      "audioEvents": [],
+      "runtimeSourceReceipt": "concept-build.json",
+      "localFullReceipt": ".evidence/concept-ui/audio-first-failure.json"
+    },
+    {
+      "startedAt": "2026-09-12T23:30:13.781Z",
+      "finishedAt": "2026-09-12T23:33:41.075Z",
+      "result": "FAIL",
+      "checks": [
+        {
+          "name": "Panel opens the inherited Voice Lab under the same extension ID"
+        },
+        {
+          "name": "Real Nemotron sample is saved through the UI bridge and retained after reload",
+          "detail": {
+            "text": "After early nightfall, the yellow lamps would light up here and there the squalid quarter of the brothels",
+            "elapsedMs": 12162
+          }
+        },
+        {
+          "name": "Stop audio discards a late result from real Kokoro synthesis",
+          "detail": {
+            "elapsedMs": 7989
+          }
+        },
+        {
+          "name": "A fresh explicit Kokoro request generates audio after cancellation",
+          "detail": {
+            "metric": "1.1s audio \u00b7 4.3s generation \u00b7 4.11\u00d7 RTF",
+            "route": "not configured; no meeting delivery claim"
+          }
+        }
+      ],
+      "returnStopReceipt": {
+        "stops": 2,
+        "pending": false
+      },
+      "failure": "Return late-result status did not satisfy the unchanged 180-second assertion.",
+      "finalStatus": "Speech output stopped. Pending results will be discarded.",
+      "returnWaitStarted": 1789255840728,
+      "returnStatusPolls": [
+        {
+          "at": 1789255840729,
+          "elapsed": 1,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255851297,
+          "elapsed": 1580,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255855098,
+          "elapsed": 752,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255859988,
+          "elapsed": 1293,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255864808,
+          "elapsed": 1040,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255865764,
+          "elapsed": 751,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255866734,
+          "elapsed": 764,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255873720,
+          "elapsed": 1430,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255875734,
+          "elapsed": 1064,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255879729,
+          "elapsed": 1962,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255882182,
+          "elapsed": 766,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255884366,
+          "elapsed": 501,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255886495,
+          "elapsed": 786,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255893453,
+          "elapsed": 4982,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255899699,
+          "elapsed": 1143,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255904446,
+          "elapsed": 1931,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255907972,
+          "elapsed": 3009,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255914304,
+          "elapsed": 4211,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255921108,
+          "elapsed": 1304,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255927896,
+          "elapsed": 1210,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255931347,
+          "elapsed": 1340,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255938917,
+          "elapsed": 1156,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255945825,
+          "elapsed": 549,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255948979,
+          "elapsed": 2330,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255954149,
+          "elapsed": 729,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255964058,
+          "elapsed": 1266,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255968839,
+          "elapsed": 1858,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255974693,
+          "elapsed": 2194,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255986314,
+          "elapsed": 637,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255995492,
+          "elapsed": 813,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255998911,
+          "elapsed": 797,
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789256001454,
+          "elapsed": 974,
+          "text": "Speech output stopped. Pending results will be discarded."
+        }
+      ],
+      "audioEvents": [
+        {
+          "at": 1789255827088,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Starting WebAssembly runtime\u2026"
+        },
+        {
+          "at": 1789255827542,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Initializing kokoro model\u2026"
+        },
+        {
+          "at": 1789255828173,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Ready \u00b7 running locally in WebAssembly"
+        },
+        {
+          "at": 1789255828238,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Generating speech in WASM\u2026"
+        },
+        {
+          "at": 1789255828255,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255836162,
+          "visibility": "visible",
+          "type": "audio-result",
+          "elapsed": 7923.900000002235
+        },
+        {
+          "at": 1789255836162,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Speech cancelled. Late result discarded."
+        },
+        {
+          "at": 1789255836229,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Generating speech in WASM\u2026"
+        },
+        {
+          "at": 1789255840543,
+          "visibility": "visible",
+          "type": "audio-result",
+          "elapsed": 4313.900000002235
+        },
+        {
+          "at": 1789255840547,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Speech generated locally \u00b7 press play to listen"
+        },
+        {
+          "at": 1789255840706,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Generating speech in WASM\u2026"
+        },
+        {
+          "at": 1789255840717,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Speech output stopped. Pending results will be discarded."
+        },
+        {
+          "at": 1789255840717,
+          "visibility": "visible",
+          "type": "status",
+          "text": "Speech output stopped. Pending results will be discarded."
+        }
+      ],
+      "runtimeSourceReceipt": "concept-build.json",
+      "localFullReceipt": ".evidence/concept-ui/audio-diagnostic-failure.json"
+    }
+  ],
+  "interpretation": "Return output authority was revoked. These attempts do not establish timely completion of the pending synthesis or the later ASR and owner-recovery assertions. No hidden-tab cause is claimed."
+}

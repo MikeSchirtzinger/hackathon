@@ -1,0 +1,57 @@
+{
+  "startedAt": "2026-09-12T23:22:34.383Z",
+  "checks": [
+    {
+      "name": "One MV3 build has a compact action popup, options page, and no sidebar or initial bridge permission"
+    },
+    {
+      "name": "Real native hotkey persists context without opening a popup or tab, adding a badge, sending a native notification, or making an HTTP request"
+    },
+    {
+      "name": "Explicit native shortcut opens the real Chrome action popup"
+    },
+    {
+      "name": "Popup saves notes first; Local only denies automatic and manual hosted processing with zero worker HTTP"
+    },
+    {
+      "name": "Real saved alarms coalesce to one real native notification; the durable ten-minute budget shelves the next reminder"
+    },
+    {
+      "name": "Explicit review resurfaces the saved digest and clears standing notifications"
+    },
+    {
+      "name": "Full browser restart retains saved notes and turns interrupted Assistant intent into explicit error without replay (lifecycle fixture)"
+    }
+  ],
+  "requests": [],
+  "sourceSha256": {
+    "extension/manifest.json": "7f65e37a9fa91dc2caaba580af3ca40f9cc221a13e2004667c25ff5c40e65993",
+    "extension/popup.html": "1bfd4b3667dbd12b99006172da8b182a15a37790f3e8dc2f45765df5beeb7e61",
+    "extension/popup.css": "1f50280705efaaf7386f8537dee2ab478847d2defaab8e915c28f8f2c3ec4ff1",
+    "extension/src/background.ts": "f28c7b876162bdd65b1ab04ffba3b0a6cf01f58b7c8aa606222507d32b9ff67c",
+    "extension/src/jobs.ts": "d4b34d661f408363dabdd85f16815dd6691feb7d8b1ad0859c2da79ddc3cd4dc",
+    "extension/src/local-agent.ts": "41f48c6fc41ce2e232a2a2c33251a6ec7f75028a205bc5646abc1d0ad3fb2777",
+    "extension/src/attention.ts": "b87b84bf62be868f2b2bbdc8dba5e1ac55525b2951b79b140509aecb67927d22",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/hosted.ts": "c1976195ddf760bfbb9fdaf9eee96a547035891a9b81887dbc50403dfa5811b2",
+    "extension/src/evidence.ts": "ffdfc776628a6265ffd1ed235ba7d43ae99413ed9646b94f70dcd91d97225ddd",
+    "extension/src/types.ts": "9ae0106fa429305c4218a174922ac69e61a327e9b56a2037f07581faa51662c5",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/src/popup.ts": "644def400380caebf8ebbeaa6b2cefc5bbe7995525ec9ae8a86513cfd03ec9fb",
+    "extension/src/panel.ts": "728297e84b6e12f75dbfc838d7f265c9a867e735c3996cc5360885f996e747ba",
+    "extension/public/panel.html": "1ab9f12d90df591cbc572f0a275a3540155f716a444c9a2b9526290256fee198",
+    "extension/foundation/background.js": "b37f5e2b2d7690dc55e886ff4788338d0bb84e1516df4f808308047c6b250b61"
+  },
+  "errors": [],
+  "chrome": "151.0.7922.34",
+  "extensionId": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+  "popupTarget": [
+    {
+      "type": "page",
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/popup.html"
+    }
+  ],
+  "bridge": "PENDING: real bridge execution not requested in this run",
+  "result": "PASS",
+  "finishedAt": "2026-09-12T23:22:50.075Z"
+}

@@ -30,9 +30,9 @@ try {
  const keyboard=async(key,code,native)=>{const cdp=await browser.newCDPSession(source);for(const type of ['rawKeyDown','keyUp'])await cdp.send('Input.dispatchKeyEvent',{type,modifiers:12,key,code:`Key${key}`,windowsVirtualKeyCode:code,nativeVirtualKeyCode:native,isSystemKey:true});await cdp.detach();};
  const targetsBefore=await worker.evaluate(()=>chrome.runtime.getContexts({}));const pagesBefore=browser.pages().length;
  await keyboard('Y',89,16);await eventually(async()=>(await state()).contexts.length===1);
- assert.equal(browser.pages().length,pagesBefore);assert.equal((await worker.evaluate(()=>chrome.runtime.getContexts({}))).length,targetsBefore.length);
+ assert.equal(browser.pages().length,pagesBefore);assert.equal((await worker.evaluate(()=>chrome.runtime.getContexts({}))).filter(c=>!c.documentUrl?.includes('/surface.html')).length,targetsBefore.filter(c=>!c.documentUrl?.includes('/surface.html')).length);
  assert.equal(await worker.evaluate(()=>chrome.action.getBadgeText({})), '');assert.deepEqual(await worker.evaluate(()=>chrome.notifications.getAll()),{});assert.equal((await state()).jobs.length,0);assert.equal(report.requests.length,0);
- pass('Real native hotkey persists context without opening any extension document, badge, notification, or HTTP request');
+ pass('Real native hotkey persists context without opening a popup or tab, adding a badge, sending a native notification, or making an HTTP request');
  await keyboard('U',85,32);
  await eventually(async()=> (await worker.evaluate(()=>chrome.runtime.getContexts({}))).some(c=>c.contextType==='POPUP'&&c.documentUrl.endsWith('/popup.html')));
  const cdp=await browser.browser().newBrowserCDPSession();const targets=await cdp.send('Target.getTargets');report.popupTarget=targets.targetInfos.filter(t=>t.url.endsWith('/popup.html')).map(t=>({type:t.type,url:t.url}));await cdp.detach();

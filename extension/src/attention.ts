@@ -1,3 +1,4 @@
+import { presentReminder } from './surfaces';
 import { all, get, put, writeBatch } from './db';
 import { base, type AttentionSignal, type Meeting, type ReasoningJob } from './types';
 import { INTERRUPT_INTERVAL, meetingCanInterrupt, reasoningMode } from './attention-policy';
@@ -47,8 +48,13 @@ export function flushAttention() {
     // Reserve the budget durably before notification, including when Chrome rejects delivery.
     await writeBatch([{ store: 'settings', value: { id: 'lastInterruptAt', value: now } }, { store: 'attention', value: signal }]);
     try {
+      if (await presentReminder(chosen.meeting, signal.id)) {
+        await put('attention', { ...signal, deliverySurface: 'page', revision: signal.revision + 1 });
+        return;
+      }
       await chrome.notifications.create(`meeting:${chosen.meeting.id}`, { type: 'basic', iconUrl: chrome.runtime.getURL('icon.png'), title: `Join ${chosen.meeting.title}`,
         message: `Starts ${new Date(chosen.meeting.startsAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}. Waiting risks missing the start. Click to join.${candidates.length > 1 ? ` ${candidates.length - 1} other reminders saved for review.` : ''}`, priority: 2, requireInteraction: false });
+      await put('attention', { ...signal, deliverySurface: 'system', revision: signal.revision + 1 });
       await chrome.alarms.create(`attention-clear:meeting:${chosen.meeting.id}`, { when: now + 60000 });
     } catch {
       await put('attention', { ...signal, notificationError: 'System notification unavailable. Saved reminder remains available on request.', revision: signal.revision + 1 });

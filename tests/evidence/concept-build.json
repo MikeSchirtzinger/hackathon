@@ -1,0 +1,43 @@
+{
+  "base": "f96328cc9710f85e212f5bf1e13fefd3b3894ae2",
+  "command": "npm run verify",
+  "result": "PASS",
+  "tests": 39,
+  "installedAssets": 362,
+  "publication": "PASS",
+  "sourceSha256": {
+    "extension/manifest.json": "7f65e37a9fa91dc2caaba580af3ca40f9cc221a13e2004667c25ff5c40e65993",
+    "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+    "extension/popup.css": "1f50280705efaaf7386f8537dee2ab478847d2defaab8e915c28f8f2c3ec4ff1",
+    "extension/popup.html": "1bfd4b3667dbd12b99006172da8b182a15a37790f3e8dc2f45765df5beeb7e61",
+    "extension/surface.html": "f48a393c5eb48409c4a13ee83169089a8cb8a4cc69f4da0400568a872832cefa",
+    "extension/surface.css": "46f69ac841b00422306e2150cd5e19afa0e9ba37a49adaf219b5bc6395ee0bf9",
+    "extension/src/surfaces.ts": "345df8802dacd25105b67d2d68864ce637ee8805f384f7d58726e57fe6dbc0e9",
+    "extension/src/surface-frame.ts": "ce61d1c929d3c339406e89839ae49396ec670d49714429d56cc4f2f9dc8d50b1",
+    "extension/src/surface-types.ts": "c69d92690ccdca56ea37f54e95f5e8bcfe12bdf419e7eff1cf294c6d7790c7b0",
+    "extension/src/cards.ts": "4d60208c0d5462e49c2a1448b53d5f203444dd1d735aefcc0e55f531279a90a7",
+    "extension/src/background.ts": "f28c7b876162bdd65b1ab04ffba3b0a6cf01f58b7c8aa606222507d32b9ff67c",
+    "extension/src/attention.ts": "b87b84bf62be868f2b2bbdc8dba5e1ac55525b2951b79b140509aecb67927d22",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/popup.ts": "644def400380caebf8ebbeaa6b2cefc5bbe7995525ec9ae8a86513cfd03ec9fb",
+    "extension/src/panel.ts": "728297e84b6e12f75dbfc838d7f265c9a867e735c3996cc5360885f996e747ba",
+    "extension/src/types.ts": "9ae0106fa429305c4218a174922ac69e61a327e9b56a2037f07581faa51662c5",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/app.js": "fb4df0813ed95264596fa42e323523da4aa946859ed691c9d3b2710ad9712065",
+    "extension/voice-bridge.js": "a8a099473a77ff1cb751268299b58c1d53b40424314a9f3b1d1b1a63fa24f6c8",
+    "extension/zoom-asr.js": "cb59221d9f11193ad8174094f3bd65633f9e4269f1f6f6794c56949462a5570c",
+    "extension/public/panel.css": "e4bed795977a9f7a7c492fe258d084173bd0a17b3530519f3132b06ef8509875",
+    "extension/foundation/background.js": "b37f5e2b2d7690dc55e886ff4788338d0bb84e1516df4f808308047c6b250b61",
+    "extension/foundation/surface-frame.js": "7a468d471c7f0d08cdcf3f0dfcff7ac9508facdaee503edc0a51298367f24b0d",
+    "extension/foundation/popup.js": "103ce060e1b66f5708a54606e42c832110a6259a43e96b3aeb83c896b1326fdf",
+    "extension/foundation/panel.js": "75fa095f63095b7ca8ea1fedcfc721cb01ec57730589847608a1625195db4820"
+  },
+  "postIndependentQaChanges": [
+    "extension/public/panel.css: inactive navigation hover uses headline text color; narrow mode pill uses 12px. Generated panel.css carries the same two properties."
+  ],
+  "audioBrowser": {
+    "command": "npm run test:browser",
+    "result": "PASS",
+    "receipt": "\n> brevity-hackathon@0.1.0 test:browser\n> node tests/browser.cjs\n\n{\n  queue: 'PASS 40 seconds FIFO + drain',\n  transcript: 'After early nightfall, the yellow lamps would light up here and there the squalid quarter of the brothels'\n}\n"
+  }
+}

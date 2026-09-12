@@ -1,9 +1,12 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Spark</title><link rel="stylesheet" href="popup.css"></head>
-<body><header><strong>Spark</strong><span id="mode">Local only</span></header>
-<form id="note-form"><label for="note">Keep a thought with this page</label><textarea id="note" rows="3" maxlength="20000" required placeholder="What should you come back to?"></textarea><button type="submit">Save note</button></form>
-<p id="status" role="status">Loading saved status.</p><p id="background-status"></p><p id="pending"></p>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Spark</title><link rel="stylesheet" href="concept.css"><link rel="stylesheet" href="popup.css"></head>
+<body><header><strong>Spark</strong><span id="mode" class="spark-meta">Local only</span></header>
+<article class="spark-card" data-kind="quiet"><h2><span class="spark-dot" aria-hidden="true"></span>Keep a thought</h2>
+<form id="note-form"><label class="sr-only" for="note">Note for this page</label><textarea id="note" rows="2" maxlength="20000" required placeholder="What should you come back to?"></textarea><div class="form-actions"><span class="spark-chip">Quiet status</span><button type="submit">Save note</button></div></form>
+<p id="status" class="spark-meta" role="status">Loading saved status.</p></article>
+<p id="background-status" class="spark-meta"></p><p id="pending" class="spark-meta"></p>
+<div id="latest"></div><div id="meetings"></div>
 <div class="row"><button id="review">Review saved results</button><button id="settings">Connections and settings</button></div>
 <details><summary>Connect local coding agent</summary><p>Codex uses hosted processing. Connecting checks capabilities only. Automatic reasoning needs a separate opt-in in Settings.</p><label for="pairing-secret">Private pairing secret</label><input id="pairing-secret" type="password" autocomplete="off"><button id="connect-local">Connect</button><p id="connection-status"></p></details>
-<div id="meetings"></div><button id="voice">Open Voice Lab</button><p class="hint">Spark stays in the background. Completed work never opens a window.</p>
+<div class="row"><button id="voice">Open Voice Lab</button><span id="listening" class="spark-listening" hidden><span class="spark-dot" aria-hidden="true"></span>Listening on device</span></div>
 <script type="module" src="foundation/popup.js"></script></body></html>

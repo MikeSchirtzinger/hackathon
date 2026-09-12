@@ -28,6 +28,9 @@ export function persistTranscript(text, final, endMs) {
   }).catch(error => { feedback(`Local transcript save failed: ${error.message}`); throw error; });
   return writeChain;
 }
+export async function captureInputActive(active) {
+  if (session) await voiceMessage('voice-input-status', { sessionId: session.id, active });
+}
 export async function captureStatus(status, detail) {
   if (!session) return;
   await voiceMessage('voice-status', { sessionId: session.id, status, detail });
