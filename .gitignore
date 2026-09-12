@@ -20,3 +20,21 @@ extension/foundation/
 extension/panel.html
 extension/panel.css
 extension/icon.png
+
+# Local caches, test reports, credentials, and editor files.
+.cache/
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+blob-report/
+.secrets/
+credentials.json
+credentials.*.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.swp
+*.swo
+*.tmp
