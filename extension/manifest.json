@@ -13,8 +13,12 @@
   ],
   "version": "0.3.0",
   "description": "Keep browser context with local notes and meeting follow-through.",
+  "icons": {
+    "128": "icon.png"
+  },
   "action": {
-    "default_title": "Open Context Carry"
+    "default_title": "Open Context Carry",
+    "default_icon": "icon.png"
   },
   "background": {
     "service_worker": "foundation/background.js",

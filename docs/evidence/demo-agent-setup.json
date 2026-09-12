@@ -1,0 +1,37 @@
+{
+  "commands": [
+    "node scripts/ambiguous-demo.mjs setup",
+    "node scripts/ambiguous-demo.mjs inspect"
+  ],
+  "agents": [
+    {
+      "slug": "context",
+      "displayName": "Context Scout",
+      "userId": "db66a861-b45b-4a7e-8238-2a03e8d41cef",
+      "operatingBriefId": "22547399-52e3-4855-b281-c3fe94704db1",
+      "identityVerified": true,
+      "meetingDocumentReadable": true,
+      "managedRuntimeAvailable": false
+    },
+    {
+      "slug": "meeting",
+      "displayName": "Meeting Steward",
+      "userId": "4fa6c981-611d-44f5-93c2-5ad9d6e29e44",
+      "operatingBriefId": "b0d1c4cc-7bbc-4ed0-becd-7d5341f5d3bc",
+      "identityVerified": true,
+      "meetingDocumentReadable": true,
+      "managedRuntimeAvailable": false
+    }
+  ],
+  "repeatSetup": "Second successful setup retained both user IDs and both operating brief IDs.",
+  "managedCoworkersAvailable": false,
+  "hostedAssistantProbe": {
+    "status": 200,
+    "elapsedMs": 23394,
+    "actor": "Context Scout",
+    "response": "{\"kind\":\"note\",\"delivery\":\"quiet\",\"evidenceIds\":[\"note-demo-002\"],\"nextStep\":\"Uncertain: no explicit saved meeting reminder, owner, or due date; keep as a note unless the user explicitly approves a document or task.\",\"owner\":null,\"dueDate\":null}",
+    "toolCalls": [],
+    "result": "success"
+  },
+  "inputKind": "Explicitly supplied sample note. This is not a live meeting transcript."
+}
