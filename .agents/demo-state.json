@@ -1,0 +1,26 @@
+{
+  "configuredAt": "2026-09-12T19:55:42.201Z",
+  "workspace": "Spark",
+  "managerId": "9716f910-7f41-4d70-82c2-75174c9414d2",
+  "managedCoworkersAvailable": false,
+  "agents": [
+    {
+      "slug": "context",
+      "displayName": "Context Scout",
+      "userId": "db66a861-b45b-4a7e-8238-2a03e8d41cef",
+      "operatingBriefId": "22547399-52e3-4855-b281-c3fe94704db1",
+      "identityVerified": true,
+      "meetingDocumentReadable": true,
+      "managedRuntimeAvailable": false
+    },
+    {
+      "slug": "meeting",
+      "displayName": "Meeting Steward",
+      "userId": "4fa6c981-611d-44f5-93c2-5ad9d6e29e44",
+      "operatingBriefId": "b0d1c4cc-7bbc-4ed0-becd-7d5341f5d3bc",
+      "identityVerified": true,
+      "meetingDocumentReadable": true,
+      "managedRuntimeAvailable": false
+    }
+  ]
+}
