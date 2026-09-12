@@ -1,0 +1,40 @@
+{
+  "startedAt": "2026-09-12T20:15:44.605Z",
+  "checks": [
+    "Real Logo event GET supplies one distinct Zoom join link despite duplicate Markdown",
+    "Real extension event-ID UI import persists the exact Zoom URL with passcode retained locally",
+    "Reload readback retains the imported meeting; all remote operations are GET only"
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "status": 200,
+      "path": "/api/calendars/events/d1b6e604-c7e3-4a96-aa39-ef415a13ce4e"
+    },
+    {
+      "method": "GET",
+      "status": 200,
+      "path": "/api/calendars/events/d1b6e604-c7e3-4a96-aa39-ef415a13ce4e/reminders"
+    }
+  ],
+  "sourceSha256": {
+    "extension/src/calendar.ts": "0bbc7a2c779bd43f3c2de57470b1a2c93031f669a4d3dc051935357bae14ed9e",
+    "extension/foundation/background.js": "5d7e83020886838551c748f4569815d733179c49c541e95d7e6a84f77b4eb83b",
+    "tests/calendar.test.ts": "6db19be485497e5680f8fa7c66e972038d22e45b8b2aaf8ce022a01cf1dd0a72"
+  },
+  "event": {
+    "id": "d1b6e604-c7e3-4a96-aa39-ef415a13ce4e",
+    "title": "Logo meeting",
+    "canonicalAbsent": true,
+    "joinHost": "us05web.zoom.us",
+    "joinPathShape": "/j/<meeting-id>",
+    "queryRetained": true
+  },
+  "chrome": "151.0.7922.34",
+  "localId": "7de8c22c-e598-40bb-bc76-94e721a9610f",
+  "result": "PASS",
+  "finishedAt": "2026-09-12T20:15:47.836Z",
+  "command": "CHROME_PATH=<Chrome for Testing executable> node --env-file=<authorized environment file> --import tsx tests/zoom-import-browser.mjs",
+  "verify": "PASS: TypeScript, 14 focused tests, combined build, inherited syntax, installed assets",
+  "base": "0d7a4eee33cef6d188e01f01ef9b3c6dde1345e8"
+}

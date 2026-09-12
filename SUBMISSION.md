@@ -12,25 +12,38 @@ Choose your city on the [global event page](https://aitinkerers.org/hackathons/g
 Imported the local Voice Lab / Zoom Voice speech prototype and its Nemotron/Kokoro sherpa-onnx integration. Uses sherpa-onnx, the bundled speech models, and BlackHole. The bounded audio queue was inspired by silent-notetaker. See docs/MIGRATION.md. Confirm creation timing and complete asset attribution before submission.
 
 **What we built during the hackathon**
-Current implementation: Zoom tab capture, local transcription, typed local speech synthesis, and virtual-microphone output. The broader approved-action / Ambiguous flow remains planned. Confirm which components were built during the official event period before completing the eligibility checklist.
+The extension foundation adds hotkey page-context capture, IndexedDB notes and task drafts, meeting reminders, absence intervals, and reviewed synchronization. The integration adds Ambiguous calendar import, real note/task creation with readback, and explicitly requested hosted analysis of saved evidence. Local Nemotron transcription and manual Kokoro synthesis are integrated with persistent meeting records and cancellation controls. Confirm creation timing against the inherited audio work before completing the eligibility checklist.
 
 ## Title and description
 
 **What you built**
-<!-- Explain the complete interaction your demo shows. -->
+Context Carry is a Chrome extension that saves the page behind a note and brings that evidence into meeting preparation and follow-through. Notes and transcripts stay in IndexedDB first. Optional Ambiguous integration turns selected records into shared work after review and returns requested analysis as proposals.
 
 **Who it is for**
-<!-- Name a person in a concrete situation. -->
+A person researching a project while preparing for a browser-based Zoom meeting. They need to capture an idea without interrupting their work and recover the relevant context when they return.
 
 **Why the context matters**
-<!-- What did the agent know or do because it lived in this surface? -->
+The hotkey saves the current URL, title, selection and available page text. A later note or proposed task retains that source, so the person does not need to reconstruct which page prompted the work.
 
 **Sponsor technologies used**
-<!-- Name the tools you actually used and the visible contribution of each. -->
+NVIDIA Nemotron performs local speech transcription. Ambiguous provides calendar records, shared tasks and documents, separate API agent identities, and optional hosted analysis. Kokoro provides local speech synthesis. Describe each contribution as implemented; separate API identities do not establish managed background execution.
+
+## Zoom demo rehearsal
+
+Use the actual Zoom browser meeting for the demo. Prior Jitsi document playback is evidence for the shared tab-capture path only.
+
+1. Show a project page, select relevant text and use the capture hotkey. Save a note and reload the panel to show the local record and its source.
+2. Show the saved meeting reminder. Open the Zoom meeting in Chrome, invoke the extension on that tab, then open Voice Lab and start meeting transcription. Keep Voice Lab open.
+3. Have another participant speak. Check that their actual words appear and persist in the meeting transcript. Bundled sample recognition does not satisfy this step.
+4. For manual speech, select BlackHole as Zoom's microphone, generate a short Kokoro phrase and have the other participant confirm hearing it. Use Stop or Return to check cancellation. Autonomous Takeover is unavailable.
+5. Request a meeting brief from the saved evidence with hosted analysis enabled. Show the actual response and its source evidence, then review and sync a selected task. Open the resulting Ambiguous record to confirm creation.
+6. Switch to local mode and show that hosted actions are unavailable while saved records remain accessible. If the provider fails, show the stored error without substituting a response.
+
+Live Zoom participant capture and outgoing virtual-microphone delivery still require this rehearsal. Transcript offsets are not aligned to absence wall-clock time, so a brief cannot identify exactly what the person missed while away. The video must describe the controls actually demonstrated.
 
 ## Evidence for the judging criteria
 
-Judges score each of the four official criteria from 1–5. This checklist helps you gather evidence; it does not guarantee a score. A working starter is a foundation for your own project.
+Judges score each of the four official criteria from 1 to 5. This checklist helps you gather evidence; it does not guarantee a score. A working starter is a foundation for your own project.
 
 | Official criterion | Show in your project and demo |
 |---|---|
