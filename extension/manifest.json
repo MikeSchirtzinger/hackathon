@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Context Carry",
+  "permissions": [
+    "activeTab",
+    "tabCapture",
+    "storage",
+    "power",
+    "scripting",
+    "sidePanel",
+    "alarms",
+    "notifications"
+  ],
+  "version": "0.3.0",
+  "description": "Keep browser context with local notes and meeting follow-through.",
+  "action": {
+    "default_title": "Open Context Carry"
+  },
+  "background": {
+    "service_worker": "foundation/background.js",
+    "type": "module"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' blob: https://app.ambiguous.ai; worker-src 'self'; media-src 'self' blob:"
+  },
+  "minimum_chrome_version": "120",
+  "host_permissions": [
+    "https://app.ambiguous.ai/*"
+  ],
+  "side_panel": {
+    "default_path": "panel.html"
+  },
+  "commands": {
+    "capture-context": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Save current page context quietly"
+    },
+    "open-panel": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U",
+        "mac": "Command+Shift+U"
+      },
+      "description": "Open notes and meeting controls"
+    }
+  }
+}

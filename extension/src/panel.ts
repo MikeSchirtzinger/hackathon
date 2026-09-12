@@ -1,5 +1,5 @@
-import type { Absence, ContextSnapshot, Meeting, Note, OutboxItem, Settings, TaskProposal, TranscriptSegment } from './types';
-interface State { contexts: ContextSnapshot[]; notes: Note[]; tasks: TaskProposal[]; meetings: Meeting[]; absences: Absence[]; transcripts: TranscriptSegment[]; outbox: OutboxItem[]; settings: Settings; currentContextId?: string; credentialsConfigured: boolean; commands: chrome.commands.Command[]; lastStatus?: { message: string; error: boolean } }
+import type { Absence, AudioSession, ContextSnapshot, Meeting, Note, OutboxItem, Settings, TaskProposal, TranscriptSegment } from './types';
+interface State { audioSessions: AudioSession[]; contexts: ContextSnapshot[]; notes: Note[]; tasks: TaskProposal[]; meetings: Meeting[]; absences: Absence[]; transcripts: TranscriptSegment[]; outbox: OutboxItem[]; settings: Settings; currentContextId?: string; credentialsConfigured: boolean; commands: chrome.commands.Command[]; lastStatus?: { message: string; error: boolean } }
 const $ = <T extends HTMLElement = HTMLElement>(selector: string) => {
   const element = document.querySelector<T>(selector);
   if (!element) throw new Error(`Missing panel control: ${selector}`);
@@ -49,17 +49,27 @@ function contextCard(context: ContextSnapshot) {
 function renderNotes() {
   const context = currentContext();
   const box = $('#context'); box.replaceChildren(context ? contextCard(context) : el('p', 'No context captured yet. Use the hotkey on a page or click the extension toolbar icon.'));
-  $('#note-form button').toggleAttribute('disabled', !context);
+  $('#note-form button[type=submit]').toggleAttribute('disabled', !context);
   $('#task-form button').toggleAttribute('disabled', !context);
   const notes = $('#notes'); notes.replaceChildren();
   for (const note of [...state.notes].sort((a,b) => b.createdAt - a.createdAt)) {
     const card = el('article'); card.dataset.noteId = note.id;
-    card.append(el('p', note.text), el('p', `${when(note.createdAt)} · Saved locally · Text entry`, 'meta'));
+    card.append(el('p', note.text), el('p', `${when(note.createdAt)} · Saved locally · ${note.source === 'manual' ? 'Text entry' : 'Speech transcript'}`, 'meta'));
     const source = state.contexts.find(c => c.id === note.contextId);
     if (source) card.append(el('p', source.title, 'hint'));
     card.append(button('Restore context', () => { selectedContextId = note.contextId; renderNotes(); })); notes.append(card);
   }
   if (!state.notes.length) notes.append(el('p', 'Your saved thoughts will appear here.', 'empty'));
+  const transcripts = $('#transcripts'); transcripts.replaceChildren();
+  for (const segment of state.transcripts.filter(s => s.final)) {
+    const session = state.audioSessions.find(a => a.id === segment.sessionId);
+    const card = el('article'); card.dataset.segmentId = segment.id;
+    card.append(el('p', segment.text), el('p', `${session?.source === 'sample' ? 'Bundled sample audio' : session?.source === 'zoom' ? 'Zoom audio' : 'Microphone'} · Saved locally`, 'meta'));
+    if (session?.contextId && segment.text.trim()) card.append(button('Save transcript as note', () => send('save-transcript-note', { segmentId: segment.id })));
+    transcripts.append(card);
+  }
+  for (const session of state.audioSessions.filter(a => a.captureStatus === 'error')) transcripts.append(el('p', session.detail ?? 'Transcript capture failed.', 'warning'));
+  if (!state.transcripts.some(s => s.final)) transcripts.append(el('p', 'No final speech transcript saved yet.', 'empty'));
   const resume = $('#resume');
   const hashId = new URLSearchParams(location.hash.slice(1)).get('context');
   resume.hidden = !hashId;
@@ -78,15 +88,16 @@ function renderMeetings() {
     if (meeting.notificationError) card.append(el('p', meeting.notificationError, 'warning'));
     const actions = el('div', undefined, 'row');
     const act = (action: string) => send('meeting-action', { id: meeting.id, action });
-    actions.append(button('Join', () => act('join'), meeting.status === 'ended'), button('Start listening', () => act('listen'), true), button('Takeover unavailable', () => act('takeover'), true));
+    actions.append(button('Join', () => act('join'), meeting.status === 'ended'), button('Open meeting audio', () => act('listen'), meeting.status === 'ended'), button('Takeover unavailable', () => act('takeover'), true));
     actions.append(button('Mark away', () => act('away'), meeting.status !== 'present'), button('Return', () => act('return'), meeting.status !== 'away'), button('End meeting', () => act('end'), meeting.status === 'ended'));
     card.append(actions);
     const absences = state.absences.filter(a => a.meetingId === meeting.id);
     for (const absence of absences) card.append(el('p', `Away ${when(absence.startAt)}${absence.endAt ? ` to ${when(absence.endAt)}` : ' (ongoing)'}`, 'meta'));
     if (absences.length || meeting.status === 'ended') {
-      const segments = state.transcripts.filter(t => t.sessionId === meeting.id && t.final);
+      const segments = state.transcripts.filter(t => state.audioSessions.some(a => a.id === t.sessionId && a.meetingId === meeting.id) && t.final);
       card.append(el('h3', meeting.status === 'ended' ? 'Meeting record' : 'Catch up'));
       if (!segments.length) card.append(el('p', 'No transcript captured. What you missed and action-item summaries are unavailable.', 'warning'));
+      if (segments.length) card.append(el('p', 'Saved transcript. Decoded-audio offsets are not aligned to absence boundaries. No generated summary is available.', 'hint'));
       for (const segment of segments) card.append(el('p', `${segment.source === 'agent' ? 'Agent' : segment.speaker ?? 'Speaker unknown'}: ${segment.text}`));
       const related = state.notes.filter(n => n.meetingId === meeting.id || n.contextId === meeting.contextId);
       for (const note of related) card.append(el('p', `Saved note: ${note.text}`));
@@ -138,6 +149,7 @@ async function refresh() {
   renderNotes(); renderMeetings(); renderReview(); switchView(view);
 }
 for (const tab of document.querySelectorAll<HTMLElement>('[data-view]')) tab.onclick = () => switchView(tab.dataset.view!);
+$('#open-voice').onclick = () => void run(() => send('open-voice'));
 $('#capture').onclick = () => void run(async () => { selectedContextId = undefined; await send('capture'); showStatus('Context saved locally.'); });
 $('#note-form').onsubmit = event => { event.preventDefault(); void run(async () => { const context = currentContext(); if (!context) throw new Error('Capture a page first.'); await send('save-note', { contextId: context.id, text: $<HTMLTextAreaElement>('#note').value }); $<HTMLTextAreaElement>('#note').value = ''; showStatus('Note saved locally.'); }); };
 $('#task-form').onsubmit = event => { event.preventDefault(); void run(async () => { await send('save-task', { contextId: currentContext()?.id, title: $<HTMLInputElement>('#task-title').value, nextStep: $<HTMLTextAreaElement>('#next-step').value }); $<HTMLFormElement>('#task-form').reset(); showStatus('Task draft saved for review.'); }); };

@@ -9,10 +9,10 @@ Choose your city on the [global event page](https://aitinkerers.org/hackathons/g
 - [ ] We identify inherited templates, libraries, prompts, components, and starter code separately from our event work
 
 **What we inherited**
-<!-- Include this starter kit and any reused examples. -->
+Imported the local Voice Lab / Zoom Voice speech prototype and its Nemotron/Kokoro sherpa-onnx integration. Uses sherpa-onnx, the bundled speech models, and BlackHole. The bounded audio queue was inspired by silent-notetaker. See docs/MIGRATION.md. Confirm creation timing and complete asset attribution before submission.
 
 **What we built during the hackathon**
-<!-- Describe the new core interaction and point to its implementation. Running the supplied incident demo alone does not establish a new project. -->
+Current implementation: Zoom tab capture, local transcription, typed local speech synthesis, and virtual-microphone output. The broader approved-action / Ambiguous flow remains planned. Confirm which components were built during the official event period before completing the eligibility checklist.
 
 ## Title and description
 

@@ -5,7 +5,7 @@ export interface ContextSnapshot extends BaseRecord {
   source: 'hotkey' | 'button'; trust: 'untrusted-page';
 }
 export interface Note extends BaseRecord {
-  contextId: string; text: string; source: 'manual' | 'transcript'; meetingId?: string;
+  contextId: string; text: string; source: 'manual' | 'transcript'; transcriptId?: string; meetingId?: string;
   syncEligible: boolean; reasoning: 'unavailable' | 'pending' | 'complete';
 }
 export type Delivery = 'quiet-status' | 'digest-on-return' | 'queued-decision' | 'timed-interruption';
@@ -27,6 +27,10 @@ export interface Meeting extends BaseRecord {
   speechStatus: 'unavailable' | 'stopped' | 'speaking' | 'error';
   contextId?: string; reminderFiredAt?: number; notificationError?: string; endedAt?: number;
 }
+export interface AudioSession extends BaseRecord {
+  tabId: number; ownerDocumentId: string; source: 'sample' | 'microphone' | 'zoom'; contextId?: string; meetingId?: string;
+  captureStatus: Meeting['captureStatus']; startedAt: number; endedAt?: number; detail?: string;
+}
 export interface Setting { id: string; value: unknown }
 export interface Settings {
   syncMode: 'local' | 'sync'; captureMode: 'push'; workspaceLabel: string;
@@ -40,7 +44,7 @@ export interface OutboxItem extends BaseRecord {
 }
 export interface Stores {
   contexts: ContextSnapshot; notes: Note; tasks: TaskProposal; transcripts: TranscriptSegment;
-  meetings: Meeting; absences: Absence; settings: Setting; outbox: OutboxItem;
+  meetings: Meeting; absences: Absence; settings: Setting; outbox: OutboxItem; audioSessions: AudioSession;
 }
 export const defaults: Settings = { syncMode: 'local', captureMode: 'push', workspaceLabel: '' };
 export function base(): BaseRecord { return { id: crypto.randomUUID(), createdAt: Date.now(), revision: 1 }; }

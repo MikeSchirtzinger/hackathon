@@ -9,9 +9,9 @@
   <div class="section-heading"><h2>Current context</h2><button id="capture" class="subtle">Capture page</button></div>
   <p class="hint" id="shortcut">Capture quietly with Command+Shift+Y.</p>
   <article id="context" class="context"><p>No context captured yet. Use the hotkey on a page or click the extension toolbar icon.</p></article>
-  <form id="note-form"><label for="note">Keep a thought with this page</label><textarea id="note" rows="4" placeholder="What should you come back to?" required maxlength="20000"></textarea><p class="hint">Text entry. Voice capture is not connected.</p><button class="primary" type="submit">Save note locally</button></form>
+  <form id="note-form"><label for="note">Keep a thought with this page</label><textarea id="note" rows="4" placeholder="What should you come back to?" required maxlength="20000"></textarea><p class="hint">Text entry. Use Voice Lab for real local speech capture.</p><button type="button" id="open-voice">Open Voice Lab</button><button class="primary" type="submit">Save note locally</button></form>
   <div id="resume" hidden></div>
-  <h2 class="spaced">Saved notes</h2><div id="notes" class="stack"></div>
+  <h2 class="spaced">Saved notes</h2><div id="notes" class="stack"></div><h2 class="spaced">Saved transcripts</h2><div id="transcripts" class="stack"></div>
 </section>
 <section id="view-meeting" hidden>
   <h2>Meeting timeline</h2><p class="hint">Save your own reminder. Calendar is not connected.</p>
@@ -29,8 +29,8 @@
   <h2>Your capture, your control.</h2>
   <div class="setting"><label for="sync-mode">Ambiguous sync</label><select id="sync-mode"><option value="local">Local only</option><option value="sync">Enable reviewed sync</option></select><p class="hint">Enabling sync does not upload earlier notes. Every outgoing batch is selected and approved in Review. Turning it off stops pending requests. A request already sent may have reached the server.</p></div>
   <form id="identity-form"><label for="workspace-label">Receiving workspace / identity</label><input id="workspace-label" placeholder="Name of the workspace tied to your API key"><label for="api-token">Ambiguous API key</label><input id="api-token" type="password" autocomplete="off" placeholder="Stored only in this browser profile"><p id="credential-status" class="hint"></p><button>Save connection settings</button><button type="button" id="clear-token">Remove key</button></form>
-  <div class="setting"><h3>Capture mode</h3><p>Push to capture</p><button disabled>Continuous capture unavailable</button><p class="hint">No audio stream or microphone is active. Closing this panel does not delete saved records.</p></div>
-  <div class="setting"><h3>Reasoning and speech</h3><p>No reasoning provider configured.</p><p>Nemotron transcription: not connected.</p><p>Kokoro meeting speech: not connected.</p></div>
+  <div class="setting"><h3>Capture mode</h3><p>Push to capture</p><button disabled>Continuous capture unavailable</button><p class="hint">Voice Lab owns audio capture in a persistent tab. Keep that tab open while listening. Closing this side panel does not stop Voice Lab.</p></div>
+  <div class="setting"><h3>Reasoning and speech</h3><p>No reasoning provider configured.</p><p>Nemotron transcription: available in Voice Lab when local assets are installed.</p><p>Kokoro speech: manual generation in Voice Lab. BlackHole delivery needs a connected route and participant verification.</p></div>
 </section>
-</main><footer>Saved on this browser. Background work stays quiet.</footer><script type="module" src="panel.js"></script>
+</main><footer>Saved on this browser. Background work stays quiet.</footer><script type="module" src="foundation/panel.js"></script>
 </body></html>

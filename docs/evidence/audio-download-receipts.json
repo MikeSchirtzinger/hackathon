@@ -1,0 +1,22 @@
+{
+  "kokoro-int8-en-v0_19.tar.bz2": {
+    "bytes": 103248205,
+    "sha256": "c9f0dd393615805b0bab050c340834d5e684e732aec91c0e860cd30e982c08bd",
+    "source": "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-int8-en-v0_19.tar.bz2"
+  },
+  "demo.wav": {
+    "bytes": 212044,
+    "sha256": "6bc58a4efdf20daac252b6b1502632601a71efe0308f6757dc1eda34891a7e4f",
+    "source": "https://huggingface.co/csukuangfj2/sherpa-onnx-nemotron-speech-streaming-en-0.6b-560ms-int8-2026-04-25/resolve/main/test_wavs/0.wav"
+  },
+  "sherpa_onnx_web-1.13.8.tar.gz": {
+    "bytes": 4351745,
+    "sha256": "e25a3813eb080636280b23dd4b0098252902675158b66dceda1efba061adf5d7",
+    "source": "https://pub.dev/api/archives/sherpa_onnx_web-1.13.8.tar.gz"
+  },
+  "nemotron-560ms-int8.tar.bz2": {
+    "bytes": 463945051,
+    "sha256": "78e2b79fcf7271553a74402a76b771b09ea40117a39566a79f52235b23db6358",
+    "source": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemotron-speech-streaming-en-0.6b-560ms-int8-2026-04-25.tar.bz2"
+  }
+}

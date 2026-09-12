@@ -2,9 +2,9 @@ import { chromium } from 'playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 await mkdir('.evidence', { recursive: true });
-const extensionPath = path.resolve('dist');
+const extensionPath = path.resolve('extension');
 const context = await chromium.launchPersistentContext(path.resolve('.evidence/chrome-profile'), {
-  executablePath: process.env.CHROME_PATH || '/Users/mike/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing',
+  executablePath: process.env.CHROME_PATH || chromium.executablePath(),
   headless: true, viewport: { width: 430, height: 1000 },
   ignoreDefaultArgs: ['--disable-extensions'],
   args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`, '--remote-debugging-port=9347']

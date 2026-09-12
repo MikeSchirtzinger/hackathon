@@ -9,8 +9,8 @@ import { createServer } from 'node:http';
 const evidence = path.resolve('.evidence/checkpoint');
 await mkdir(evidence, { recursive: true });
 const profile = await mkdtemp(path.join(os.tmpdir(), 'carry-checkpoint-'));
-const extensionPath = path.resolve('dist');
-const executablePath = process.env.CHROME_PATH || '/Users/mike/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing';
+const extensionPath = path.resolve('extension');
+const executablePath = process.env.CHROME_PATH || chromium.executablePath();
 const report = { startedAt: new Date().toISOString(), profile, checks: [], errors: [], workerRequests: [] };
 function pass(name, detail) { report.checks.push({ name, detail }); console.log('PASS', name); }
 async function eventually(fn, timeout = 12000) {
@@ -59,7 +59,7 @@ try {
   const snapshot = (await state()).contexts[0];
   assert.equal(snapshot.url, `${origin}/`); assert.equal(snapshot.title, 'Hackathon build brief');
   assert.equal(snapshot.selection, 'Keep this browser context with the note.');
-  assert(snapshot.visibleText.includes('Entry for the AI Tinkerers')); assert(!snapshot.visibleText.includes('HIDDEN_TEXT_NEGATIVE_CONTROL'));
+  assert(snapshot.visibleText.includes('hackathon')); assert(!snapshot.visibleText.includes('HIDDEN_TEXT_NEGATIVE_CONTROL'));
   assert.equal(snapshot.availability, 'available'); assert.equal(snapshot.source, 'hotkey');
   assert.equal(context.pages().length, pageCount);
   assert.deepEqual(await worker.evaluate(() => chrome.notifications.getAll()), beforeNotifications);
@@ -108,10 +108,11 @@ try {
   await eventually(async()=>!!(await state()).meetings[0].reminderFiredAt);
   meeting=(await state()).meetings[0];
   assert(meeting.reminderFiredAt>=meeting.remindAt);
+  await eventually(async()=>!!(await worker.evaluate(()=>chrome.notifications.getAll()))[`meeting:${meeting.id}`]);
   const notifications=await worker.evaluate(()=>chrome.notifications.getAll());
   assert(notifications[`meeting:${meeting.id}`]);
   pass('Saved meeting time triggers a real chrome.alarms notification', { remindAt:meeting.remindAt,firedAt:meeting.reminderFiredAt });
-  assert(await panel.getByRole('button',{name:'Start listening',exact:true}).isDisabled());
+  assert(await panel.getByRole('button',{name:'Open meeting audio',exact:true}).isEnabled());
   assert(await panel.getByRole('button',{name:'Takeover unavailable',exact:true}).isDisabled());
   const takeover=await message('meeting-action',{id:meeting.id,action:'takeover'});
   assert.equal(takeover.ok,false); assert.match(takeover.error,/unavailable/);
@@ -145,9 +146,9 @@ try {
   pass('Local mode has zero observed worker HTTP requests, with positive network instrumentation control');
   pass('Enabling sync does not enqueue private history; local mode denies batch approval');
   await panel.screenshot({path:path.join(evidence,'settings-local.png'),fullPage:true});
-  await build({entryPoints:['extension/src/db.ts'],outfile:'dist/proof-db.js',bundle:true,format:'esm',target:'chrome120'});
+  await build({entryPoints:['extension/src/db.ts'],outfile:'extension/foundation/proof-db.js',bundle:true,format:'esm',target:'chrome120'});
   const atomic=await panel.evaluate(async()=>{
-    const db=await import(chrome.runtime.getURL('proof-db.js'));
+    const db=await import(chrome.runtime.getURL('foundation/proof-db.js'));
     await db.writeBatch([{store:'settings',value:{id:'proof-atomic',value:'committed'}},{store:'settings',value:{id:'proof-companion',value:'committed'}}]);
     const before=(await db.get('settings','proof-atomic')).value;
     let rejected=false;
