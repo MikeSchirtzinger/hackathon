@@ -1,0 +1,168 @@
+{
+  "startedAt": "2026-09-12T19:59:37.341Z",
+  "checks": [
+    {
+      "name": "Fresh local mode denies calendar imports and produces zero worker HTTP requests"
+    },
+    {
+      "name": "Real Chrome capture hotkey authorizes and snapshots the seeded Jitsi document",
+      "detail": {
+        "url": "https://meet.jit.si/ambi-d2b2d9d529564140ba37410f",
+        "title": "Jitsi Meet"
+      }
+    },
+    {
+      "name": "UI note and dated task save locally with no HTTP egress"
+    },
+    {
+      "name": "A real HTTP 404 is shown in the UI without creating a local meeting"
+    },
+    {
+      "name": "Real upcoming reminder and event import share one persisted meeting and a Chrome alarm",
+      "detail": {
+        "eventId": "d2b2d9d5-2956-4140-ba37-410fe4c68065",
+        "localId": "65d9ee04-1ef6-441b-a73c-8ee429390c79",
+        "startsAt": "2026-09-12T20:05:00.000Z",
+        "reminderAt": "2026-09-12T20:04:00.000Z"
+      }
+    },
+    {
+      "name": "UI approved note and task are created by real HTTP and confirmed by independent readback",
+      "detail": [
+        {
+          "kind": "task",
+          "state": "confirmed",
+          "localId": "2347b483-3fa7-4d86-9c52-1d9cf82f94f8",
+          "remoteId": "68071598-ed85-4c36-bc84-b720c509968e",
+          "remoteDueDate": "2026-09-18",
+          "remoteDueDateSource": "manual"
+        },
+        {
+          "kind": "document",
+          "state": "confirmed",
+          "localId": "975cfcfb-bb3e-4fc9-bbf0-14d324ba8f5b",
+          "remoteId": "83fa5288-1639-42be-9514-fb0f484deaec"
+        }
+      ]
+    },
+    {
+      "name": "Returning to local mode blocks calendar and readback egress while retaining the imported meeting and alarm"
+    },
+    {
+      "name": "Authorized Jitsi tab playback passes through real tabCapture, Nemotron, and persistent transcript bridge",
+      "detail": {
+        "text": "After early nightfall the yellow lamps would light up here and there the squalid quarter of the brothels",
+        "sessionId": "cff57196-f4cf-4d6d-87a7-dedd1c04b70d",
+        "meetingId": "65d9ee04-1ef6-441b-a73c-8ee429390c79",
+        "kind": "document playback of real LibriSpeech replacement clip",
+        "sha256": "6bc58a4efdf20daac252b6b1502632601a71efe0308f6757dc1eda34891a7e4f",
+        "liveParticipantDelivery": "unverified"
+      }
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://app.ambiguous.ai/api/calendars/events/00000000-0000-4000-8000-000000000000",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "url": "https://app.ambiguous.ai/api/calendars/events/d2b2d9d5-2956-4140-ba37-410fe4c68065",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "https://app.ambiguous.ai/api/calendars/events/d2b2d9d5-2956-4140-ba37-410fe4c68065/reminders",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "https://app.ambiguous.ai/api/calendars/upcoming-reminders?window_hours=168&limit=50",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "https://app.ambiguous.ai/api/calendars/events/d2b2d9d5-2956-4140-ba37-410fe4c68065",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "https://app.ambiguous.ai/api/tasks",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "url": "https://app.ambiguous.ai/api/tasks/68071598-ed85-4c36-bc84-b720c509968e",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "https://app.ambiguous.ai/api/documents",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "url": "https://app.ambiguous.ai/api/documents/83fa5288-1639-42be-9514-fb0f484deaec",
+      "status": 200
+    }
+  ],
+  "errors": [],
+  "sourceSha256": {
+    "extension/src/ambiguous.ts": "c57ecdc7aad53b14c34e536a102799a61cd35245e5256d87809dda22c50aac6c",
+    "extension/src/calendar.ts": "8546edaa76fb9f23838b0dc28fa565748d4e089ffec6cf863a4d8e6eb2c85a28",
+    "extension/src/background.ts": "50727af94f52aec279a19f20c9956d77f97babd9b946ae7e9934dfc0df94cad5",
+    "extension/src/panel.ts": "2741483fb3b7aca4836b5bc1edd96753e1a9945036013464059fadc5c6e7b1bd",
+    "extension/src/types.ts": "8f98efda9e844021b4b638335768cf6e8f9d14fbfe88e08944d73f45303dba1d",
+    "extension/public/panel.html": "558642e94f6e7cf4ee6f702c9123bf8489bd0f56a3c853b30555924ce91c004f",
+    "extension/zoom-asr.js": "56f0e4cb94582c7390412f8e9db5dbe5c9b55270dc02aca873c495aae18e67b7",
+    "extension/index.html": "8607eae5ae87de14014fde992c350f712d0ef4a5d316b8a06b360227cc723d98",
+    "extension/manifest.json": "8953adc158c0e25b162a88dfbc76e360cdb59d5962d9730f7275941761f2e423"
+  },
+  "chrome": "151.0.7922.34",
+  "extensionId": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+  "workerRequests": [
+    "https://app.ambiguous.ai/api/calendars/events/00000000-0000-4000-8000-000000000000",
+    "https://app.ambiguous.ai/api/calendars/events/d2b2d9d5-2956-4140-ba37-410fe4c68065",
+    "https://app.ambiguous.ai/api/calendars/events/d2b2d9d5-2956-4140-ba37-410fe4c68065/reminders",
+    "https://app.ambiguous.ai/api/calendars/upcoming-reminders?window_hours=168&limit=50",
+    "https://app.ambiguous.ai/api/calendars/events/d2b2d9d5-2956-4140-ba37-410fe4c68065",
+    "https://app.ambiguous.ai/api/tasks",
+    "https://app.ambiguous.ai/api/tasks/68071598-ed85-4c36-bc84-b720c509968e",
+    "https://app.ambiguous.ai/api/documents",
+    "https://app.ambiguous.ai/api/documents/83fa5288-1639-42be-9514-fb0f484deaec"
+  ],
+  "otherWorkerRequests": [
+    {
+      "worker": "https://meet.jit.si/pwa-worker.js",
+      "url": "https://meet.jit.si/pwa-worker.js"
+    },
+    {
+      "worker": "https://meet.jit.si/pwa-worker.js",
+      "url": "https://meet.jit.si/static/offline.html"
+    }
+  ],
+  "outbox": [
+    {
+      "kind": "task",
+      "state": "confirmed",
+      "localId": "2347b483-3fa7-4d86-9c52-1d9cf82f94f8",
+      "remoteId": "68071598-ed85-4c36-bc84-b720c509968e",
+      "remoteDueDate": "2026-09-18",
+      "remoteDueDateSource": "manual"
+    },
+    {
+      "kind": "document",
+      "state": "confirmed",
+      "localId": "975cfcfb-bb3e-4fc9-bbf0-14d324ba8f5b",
+      "remoteId": "83fa5288-1639-42be-9514-fb0f484deaec"
+    }
+  ],
+  "tabAudioSource": {
+    "kind": "document playback of real LibriSpeech replacement clip",
+    "sha256": "6bc58a4efdf20daac252b6b1502632601a71efe0308f6757dc1eda34891a7e4f",
+    "liveParticipantDelivery": "unverified"
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-12T19:59:59.904Z"
+}

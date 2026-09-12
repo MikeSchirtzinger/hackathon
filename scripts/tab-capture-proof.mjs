@@ -41,7 +41,7 @@ const created=await panel.evaluate(()=>chrome.runtime.sendMessage({type:'save-me
  assert.match(captured, /yellow lamps/i); assert.match(captured, /squalid quarter/i);
  await voice.screenshot({ path: path.join(evidence, 'jitsi-tab-transcription.png'), fullPage: true });
  pass('Authorized Jitsi tab playback passes through real tabCapture, Nemotron, and persistent transcript bridge', { text: captured, sessionId: session.id, meetingId: first.id, ...report.tabAudioSource });
- 
+
  report.result='PASS';
 }catch(error){report.result='FAIL';report.error=error.stack;process.exitCode=1;console.error(error);if(voice)report.voice=await voice.locator('body').innerText();}
 finally{await context.close();await writeFile(path.join(evidence,'report.json'),JSON.stringify(report,null,2));console.log('RESULT:',report.result);}

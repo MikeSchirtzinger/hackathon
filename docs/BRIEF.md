@@ -1,6 +1,6 @@
 # Build brief
 
-The extension carries context from browsing into a meeting and brings the user back to the decisions and work they missed. A hotkey note triggers reasoning without requiring the user to explain the current page. Captured records go to IndexedDB first. Ambiguous sync is optional.
+The extension carries context from browsing into a meeting and brings the user back to the decisions and work they missed. The intended flow analyzes a hotkey note without requiring a manual context prompt. The implemented checkpoint saves context first and requires a separate explicit hosted-analysis action. Captured records go to IndexedDB first. Ambiguous sync is optional.
 
 Deadline: September 12, 2026, 4:30 PM EDT. Target submission: 4:00 PM.
 
@@ -10,7 +10,7 @@ Submission needs: title, written description, public repo, two-minute video, and
 
 - Automatic current-page context when the hotkey note starts.
 - Push-to-capture by default, with optional continuous capture.
-- Hotkey notes trigger reasoning; background work must not interrupt the current task.
+- Hotkey notes save context quietly. Optional hosted analysis currently requires an explicit click; automatic analysis remains outside this checkpoint.
 - IndexedDB first for context, notes, transcripts, proposed actions, and sync state.
 - A toggle keeps records local or enables Ambiguous sync.
 - Teammate owns silent-notetaker/Nemotron transcription and Kokoro speech work, including the proposed virtual microphone route.
@@ -47,7 +47,7 @@ Keep listening separate from speech output. Returning cancels queued speech and 
 
 ## Local storage and sync
 
-Local mode keeps captured content and reasoning on-device. Turning off Ambiguous sync alone cannot justify a local-only claim if a reasoning provider receives the transcript. Describe setup downloads separately from content uploads.
+Local mode keeps captured content on-device and blocks hosted reasoning. No local reasoning model is implemented. Turning off Ambiguous sync alone cannot justify a local-only claim if a reasoning provider receives the transcript. Describe setup downloads separately from content uploads.
 
 Commit each record locally before classification or outbound sync. Use stable local IDs, source timestamps, revisions, and durable sync states. A failed local write must not show a saved confirmation or proceed to sync.
 
@@ -67,25 +67,28 @@ Use the extension's resume view for prefilled context. A remote task URL alone d
 
 ## Integration evidence and boundaries
 
-The local extension foundation now passes the browser checks recorded in `docs/EXTENSION-HANDOFF.md`. The complete voice and meeting demo remains unverified.
+The confirmed demo meeting runs in Zoom in Chrome. The Jitsi document replay below is shared tab-capture proof, not evidence of live Zoom participant delivery.
 
-The integrated audio base is `bf79f61`, the inherited Voice Lab implementation. It uses sherpa-onnx WebAssembly workers for Nemotron and Kokoro, a bounded IndexedDB audio queue, Zoom tab capture, and BlackHole output selection. The earlier silent-notetaker inspection informed the planning boundary; its Rust/WASM engine was not ported into this extension.
+The current extension passes the local, calendar, reviewed-write, tab-capture and explicitly requested hosted-analysis checks recorded in [EXTENSION-HANDOFF.md](EXTENSION-HANDOFF.md). The complete autonomous meeting demo remains unverified.
 
-The working transport is a versioned Chrome runtime message bridge from Voice Lab to the extension service worker. Transcript events carry session and segment IDs, sequence/revision, decoded-audio offsets, text, source, and partial/final state. The worker validates the owning tab and document before committing records to IndexedDB. Actual sample recognition, transcript persistence, and reload recovery passed the combined browser checks in the handoff.
+The inherited audio base is `bf79f61`. Its Voice Lab uses sherpa-onnx WebAssembly workers for Nemotron and Kokoro, an IndexedDB audio queue and BlackHole output selection. Tab capture now accepts an explicitly authorized Jitsi, Zoom or other web tab. A real clip played in the seeded Jitsi document was captured, recognized and persisted. This does not prove live participant delivery.
 
-Actual Kokoro synthesis and cancellation of late results passed the combined UI checks. Return reaches the audio owner and cancels output while the existing ASR worker remains usable. Virtual microphone delivery still requires a second participant; local synthesis does not prove meeting delivery. Autonomous Takeover remains unavailable.
+The versioned Chrome runtime bridge carries session and segment IDs, sequence/revision, decoded-audio offsets, text, source and partial/final state. The worker validates the owning tab and document before committing to IndexedDB. The persistent Voice Lab tab remains the audio owner; closing the side panel does not stop it. Closing or reloading that owner preserves captured transcripts and permits a new session. Offscreen ownership remains a later option.
 
-The persistent Voice Lab tab owns the current audio workers and capture. Closing the side panel leaves that tab running. Closing or reloading the audio owner interrupts capture; session recovery preserves transcripts and allows a new capture. An offscreen document is a later ownership option, not part of this checkpoint. The current bundled runtime was exercised under the combined extension manifest and CSP.
+Earlier real Kokoro checks prove synthesis and late-result cancellation. Return stops output while the existing ASR worker remains usable. Virtual microphone delivery still needs participant verification. Autonomous Takeover is unavailable.
 
-The live Ambiguous OpenAPI schema was fetched successfully from `https://app.ambiguous.ai/api/openapi.json` during planning. It lists document and task create/read operations, calendar events under `/api/calendars/`, and event meeting-note associations. Create/read schemas and bearer authentication are encoded in the adapter. Actual remote writes, readback, and canonical record links remain unverified. Use the schema's plural calendar routes rather than the singular route on the overview page.
+Ambiguous supplies the seeded Jitsi event, reminder and notes-document association. Real event/upcoming import and task/note creation with HTTP readback passed through the extension UI. The key is entered through Settings and stored in trusted browser storage. Local mode blocks network integration, and enabling sync does not enqueue earlier private history.
 
-## Inputs still needed
+The hosted Assistant endpoint supplies actual note analysis and meeting preparation proposals after a separate visible opt-in and per-request click. Actual responses and evidence IDs persist locally. Meeting requests include saved absence intervals and state that decoded-audio offsets cannot identify what was missed during those intervals. Owners and dates remain null in generated proposals. The extension executes none of them.
 
-- Meeting app and reminder source for the demo.
-- A live Zoom session and another participant for meeting audio delivery verification.
-- Reasoning model and local or hosted execution location. Speech transcription and synthesis do not supply action reasoning.
-- Takeover speaking authority.
-- Ambiguous credentials and the identity creating records. Keep credentials out of repo files and chat output.
+The provider API offers no hard tool restriction for this request. Prompts request analysis only; returned tool activity is displayed as an error and proposals are rejected. Actual hosted checks returned no tool activity. Workspace agent identities and their independent execution receipts are documented in [AMBIGUOUS.md](AMBIGUOUS.md); the extension's measured hosted UI used the saved workspace key. Managed coworker runtime remains unavailable.
+
+## Inputs and evidence still needed
+
+- A live meeting and another participant to verify speech delivery and sustained capture.
+- Explicit Takeover speaking authority and an implemented execution path before enabling that control.
+- Verified wall-clock alignment before attributing transcript content to an absence.
+- Full voice-note and meeting acceptance across the complete proposed demo.
 
 ## Acceptance evidence
 
