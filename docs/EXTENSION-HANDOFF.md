@@ -1,6 +1,6 @@
 # Extension integration handoff
 
-Branch: `feat/proactive-attention`. Starting base: `daf8c93e01170f85c0e4622201c107556490865f`. This change preserves the inherited audio pipeline, calendar import, reviewed writes, branding and local records.
+Branch: `feat/proactive-attention`. Starting base: `daf8c93e01170f85c0e4622201c107556490865f`. Merged bridge base: `46190eecbd955c4dffe8200864062a3569ad654e`. This change preserves the inherited audio pipeline, calendar import, reviewed writes, branding and local records.
 
 ## Current behavior
 
@@ -29,6 +29,7 @@ Provider results are proposals, not execution authority. Ambiguous's API exposes
 
 The focused browser proofs use the canonical built manifest and real Chrome. Reports separate real provider results from explicitly labeled lifecycle fixtures. No fixture is counted as inference.
 
+- `npm run verify`: TypeScript, 33 tests including the bridge HTTP/subprocess regressions, build and 362 installed assets passed.
 - `npm run test:foundation`: 13 browser checks for capture, local records, real alarms/notifications, zero local-mode worker HTTP, rollback and restart.
 - `npm run test:proactive`: no-sidebar capture and native popup, local negative gates, notification coalescing/budget, interrupted Assistant recovery. With `SPARK_TEST_BRIDGE=1 SPARK_VISIBLE_PROOF=1`, it also performs actual Connect, Codex inference, same-ID restart polling and real opt-out cancellation/readback.
 - `npm run test:auto-hosted`: separate automatic consent, a real Assistant note response with no tool activity, responsive local saves during inference, persistence and opt-out.

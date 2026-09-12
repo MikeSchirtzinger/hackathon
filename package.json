@@ -8,14 +8,15 @@
     "prepare:assets": "node prepare-assets.mjs",
     "build": "node scripts/build.mjs",
     "check": "tsc --noEmit",
-    "test": "node --import tsx --test tests/*.test.ts",
+    "test": "node --import tsx --test tests/*.test.ts tests/*.test.mjs",
     "test:foundation": "node scripts/browser-proof.mjs",
     "test:integration": "node scripts/audio-integration-proof.mjs",
     "test:demo": "node scripts/demo-browser-proof.mjs",
     "test:hosted": "node scripts/hosted-browser-proof.mjs",
     "test:tab-capture": "node scripts/tab-capture-proof.mjs",
     "test:proactive": "node scripts/proactive-browser-proof.mjs",
-    "test:auto-hosted": "node scripts/automatic-hosted-proof.mjs"
+    "test:auto-hosted": "node scripts/automatic-hosted-proof.mjs",
+    "test:disconnect": "node scripts/disconnect-browser-proof.mjs"
   },
   "devDependencies": {
     "@types/chrome": "^0.1.0",

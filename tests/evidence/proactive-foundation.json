@@ -1,6 +1,5 @@
 {
-  "startedAt": "2026-09-12T21:31:20.293Z",
-  "profile": "/var/folders/hs/4drnknz502x_87q589_17qn40000gp/T/carry-checkpoint-sgaOyB",
+  "startedAt": "2026-09-12T21:43:44.575Z",
   "checks": [
     {
       "name": "Unpacked MV3 loads with registered capture command",
@@ -27,8 +26,8 @@
     {
       "name": "Saved meeting time triggers a real chrome.alarms notification",
       "detail": {
-        "remindAt": 1789248686000,
-        "firedAt": 1789248686006
+        "remindAt": 1789249431000,
+        "firedAt": 1789249431007
       }
     },
     {
@@ -64,5 +63,5 @@
   "extensionId": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
   "chrome": "151.0.7922.34",
   "result": "PASS",
-  "finishedAt": "2026-09-12T21:31:29.130Z"
+  "finishedAt": "2026-09-12T21:43:54.204Z"
 }

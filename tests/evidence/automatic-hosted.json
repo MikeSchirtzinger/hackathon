@@ -1,5 +1,5 @@
 {
-  "startedAt": "2026-09-12T21:35:48.228Z",
+  "startedAt": "2026-09-12T21:43:43.212Z",
   "checks": [
     {
       "name": "Saved ordinary agent key, sync consent, and manual hosted consent still do not authorize automatic reasoning"
@@ -9,6 +9,9 @@
     },
     {
       "name": "Automatic opt-out prevents new sends and real results remain saved after reload"
+    },
+    {
+      "name": "Turning automatic consent off during a second real Assistant request cancels client acceptance and its pending analysis"
     }
   ],
   "requests": [
@@ -19,9 +22,9 @@
     }
   ],
   "sourceSha256": {
-    "extension/src/jobs.ts": "bb80781013405bc2700dbeceedf631063741aa3af7cbcd64c279fbc3743c1956",
+    "extension/src/jobs.ts": "d4b34d661f408363dabdd85f16815dd6691feb7d8b1ad0859c2da79ddc3cd4dc",
     "extension/src/background.ts": "c013ccc5ef1592873f43da837a0693437e002c79746c2ba473f9df9029b7f694",
-    "extension/src/hosted.ts": "cacb914e13a1995b187327c81540f8cc091315d70e310200d3e37cfd4de45da6",
+    "extension/src/hosted.ts": "c1976195ddf760bfbb9fdaf9eee96a547035891a9b81887dbc50403dfa5811b2",
     "extension/src/attention.ts": "fc4a20e15029f2c6a8917b8fe01934048bacb711d5c26f02e8ea92fd8b73ec39",
     "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
     "extension/src/evidence.ts": "ffdfc776628a6265ffd1ed235ba7d43ae99413ed9646b94f70dcd91d97225ddd",
@@ -29,70 +32,65 @@
     "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
     "extension/src/local-agent.ts": "41f48c6fc41ce2e232a2a2c33251a6ec7f75028a205bc5646abc1d0ad3fb2777",
     "extension/manifest.json": "a5c32ec33dbacc9e5ada698d8762c5e99e4d0e8823140cbb90aacacfdb5244c4",
-    "extension/foundation/background.js": "9983beb76e37f89a845ae7086558d583acc2face2b2449c4392a0786389e7ac5"
+    "extension/foundation/background.js": "34128ac22483cbf311a96fddc131c22732242291f7e01d06bf5f938e50892fdb"
   },
   "chrome": "151.0.7922.34",
   "job": {
-    "id": "983a1cf3-e37e-4ebc-8960-221a8e3ce3d4",
+    "id": "6d667138-31e1-4eff-99fe-1cce6c9d4a1f",
     "state": "complete",
     "result": {
-      "summary": "Untrusted evidence contains a single onboarding research note: compare progressive profile setup with one long signup form, and consult the accessibility checklist. No owner, deadline, or decision is recorded. There is no transcript, so absence-to-transcript timing is unavailable, and this is preparation-only context rather than a report of what happened.",
+      "summary": "The evidence records an unowned onboarding research note comparing progressive profile setup with a single long signup form, with a reference to an accessibility checklist. No decision, owner, or deadline has been agreed, and no transcript is available, so timing/attribution context cannot be established.",
       "proposals": [
         {
-          "kind": "follow-up",
-          "nextStep": "Confirm whether this onboarding research note should be assigned to someone and given a deadline.",
-          "evidenceIds": [
-            "4ff7acba-114a-4784-b2f5-658b6b22f5ae"
-          ],
-          "owner": null,
-          "dueDate": null,
-          "delivery": "quiet-status"
-        },
-        {
           "kind": "research",
-          "nextStep": "Compare progressive profile setup versus a single long signup form, using the accessibility checklist as the evaluation frame.",
+          "nextStep": "Compare progressive profile setup against one long signup form using the referenced accessibility checklist as the evaluation frame.",
           "evidenceIds": [
-            "4ff7acba-114a-4784-b2f5-658b6b22f5ae"
+            "28373a5a-a728-4577-8d50-9742dd552a9d"
           ],
           "owner": null,
           "dueDate": null,
           "delivery": "digest-on-return"
         },
         {
-          "kind": "decision",
-          "nextStep": "Decide whether the onboarding flow should favor progressive profile setup or a single long signup form.",
+          "kind": "follow-up",
+          "nextStep": "Clarify which accessibility checklist to use and what success criteria should determine the preferred signup approach.",
           "evidenceIds": [
-            "4ff7acba-114a-4784-b2f5-658b6b22f5ae"
+            "28373a5a-a728-4577-8d50-9742dd552a9d"
           ],
           "owner": null,
           "dueDate": null,
-          "delivery": "queued-decision"
+          "delivery": "quiet-status"
         }
       ],
       "evidenceIds": [
-        "4ff7acba-114a-4784-b2f5-658b6b22f5ae",
-        "5dfeba20-6966-42ab-97bd-9b0fd3e73643"
+        "28373a5a-a728-4577-8d50-9742dd552a9d",
+        "407ae244-f217-464d-b3bf-4f9abb186d77"
       ],
-      "classification": "decision",
-      "actionRequired": true,
+      "classification": "note",
+      "actionRequired": false,
       "urgency": "when-available",
       "reason": "Saved analysis is a proposal for review, not execution authority.",
       "resurface": "on-return"
     },
     "evidenceIds": [
-      "4ff7acba-114a-4784-b2f5-658b6b22f5ae",
-      "5dfeba20-6966-42ab-97bd-9b0fd3e73643"
+      "28373a5a-a728-4577-8d50-9742dd552a9d",
+      "407ae244-f217-464d-b3bf-4f9abb186d77"
     ]
   },
   "analysis": {
-    "id": "1a02b7a2-5fce-4b0a-9548-e98bef6f6819",
+    "id": "e43b1eca-5419-40da-a267-8a2a574f4a8a",
     "toolActivity": [],
-    "response": "{\"summary\":\"Untrusted evidence contains a single onboarding research note: compare progressive profile setup with one long signup form, and consult the accessibility checklist. No owner, deadline, or decision is recorded. There is no transcript, so absence-to-transcript timing is unavailable, and this is preparation-only context rather than a report of what happened.\",\"proposals\":[{\"kind\":\"follow-up\",\"nextStep\":\"Confirm whether this onboarding research note should be assigned to someone and given a deadline.\",\"evidenceIds\":[\"4ff7acba-114a-4784-b2f5-658b6b22f5ae\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"quiet-status\"},{\"kind\":\"research\",\"nextStep\":\"Compare progressive profile setup versus a single long signup form, using the accessibility checklist as the evaluation frame.\",\"evidenceIds\":[\"4ff7acba-114a-4784-b2f5-658b6b22f5ae\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"digest-on-return\"},{\"kind\":\"decision\",\"nextStep\":\"Decide whether the onboarding flow should favor progressive profile setup or a single long signup form.\",\"evidenceIds\":[\"4ff7acba-114a-4784-b2f5-658b6b22f5ae\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"queued-decision\"}]}",
+    "response": "{\"summary\":\"The evidence records an unowned onboarding research note comparing progressive profile setup with a single long signup form, with a reference to an accessibility checklist. No decision, owner, or deadline has been agreed, and no transcript is available, so timing/attribution context cannot be established.\",\"proposals\":[{\"kind\":\"research\",\"nextStep\":\"Compare progressive profile setup against one long signup form using the referenced accessibility checklist as the evaluation frame.\",\"evidenceIds\":[\"28373a5a-a728-4577-8d50-9742dd552a9d\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"digest-on-return\"},{\"kind\":\"follow-up\",\"nextStep\":\"Clarify which accessibility checklist to use and what success criteria should determine the preferred signup approach.\",\"evidenceIds\":[\"28373a5a-a728-4577-8d50-9742dd552a9d\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"quiet-status\"}]}",
     "evidenceIds": [
-      "4ff7acba-114a-4784-b2f5-658b6b22f5ae",
-      "5dfeba20-6966-42ab-97bd-9b0fd3e73643"
+      "28373a5a-a728-4577-8d50-9742dd552a9d",
+      "407ae244-f217-464d-b3bf-4f9abb186d77"
     ]
   },
+  "cancelledJob": {
+    "id": "539b6e2d-b77a-419a-b05d-695ec17281ad",
+    "state": "cancelled",
+    "resultAccepted": false
+  },
   "result": "PASS",
-  "finishedAt": "2026-09-12T21:36:16.863Z"
+  "finishedAt": "2026-09-12T21:44:08.446Z"
 }

@@ -39,7 +39,17 @@ assert.equal(posts,1);assert.equal(browser.pages().length,count);assert.deepEqua
 pass('Separate automatic opt-in plus new UI note triggers one real Assistant request, stores proposals and no-tool receipt, and does not block local saves or open UI');
 await panel.getByRole('button',{name:'Settings',exact:true}).click();await panel.locator('#auto-ambiguous').uncheck();await eventually(async()=>!(await state()).settings.autoAmbiguous);
 await send('save-note',{contextId,text:'After revocation, this new note must remain local.'});assert.equal(posts,1);await panel.reload();await panel.getByText('Local workspace ready.',{exact:true}).waitFor();assert.equal((await state()).jobs.find(j=>j.id===job.id).result.summary,completed.result.summary);
+
 pass('Automatic opt-out prevents new sends and real results remain saved after reload');
+await panel.locator('#auto-ambiguous').check();await eventually(async()=>(await state()).settings.autoAmbiguous);
+await panel.getByRole('button',{name:'Notes',exact:true}).click();await panel.locator('#note').fill('Cancel this in-flight analysis before completion. Preserve this note locally and do not execute anything.');await panel.getByRole('button',{name:'Save note locally',exact:true}).click();
+await eventually(()=>posts===2);const cancelledId=(await state()).jobs.find(j=>j.id!==job.id).id;
+await panel.getByRole('button',{name:'Settings',exact:true}).click();await panel.locator('#auto-ambiguous').uncheck();
+await eventually(async()=>(await state()).jobs.find(j=>j.id===cancelledId).state==='cancelled');await eventually(async()=>(await state()).analyses.every(a=>a.state!=='pending'));
+assert.equal((await state()).jobs.find(j=>j.id===cancelledId).result,undefined);assert.equal((await state()).analyses.filter(a=>a.state==='complete').length,1);
+report.cancelledJob={id:cancelledId,state:'cancelled',resultAccepted:false};
+pass('Turning automatic consent off during a second real Assistant request cancels client acceptance and its pending analysis');
+
 await panel.getByRole('button',{name:'Attention',exact:true}).click();await panel.screenshot({path:path.join(evidence,'saved-automatic-result.png'),fullPage:true});
 report.result='PASS';
 }catch(error){report.result='FAIL';report.failure=String(error.stack).replaceAll(auth,'[REDACTED]');console.error(report.failure);process.exitCode=1;}
