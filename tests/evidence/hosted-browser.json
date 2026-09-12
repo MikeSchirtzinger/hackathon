@@ -1,0 +1,168 @@
+{
+  "checks": [
+    {
+      "name": "Local mode and the separate hosted opt-in each independently block Assistant HTTP"
+    },
+    {
+      "name": "Explicit UI action receives and persists real Assistant note proposals without tool activity or task execution",
+      "detail": {
+        "elapsedMs": 16849,
+        "analysisId": "9a9a125d-8581-4fd1-94d2-26177adbe015"
+      }
+    },
+    {
+      "name": "Two simultaneous requests for the same note admit exactly one real Assistant request"
+    },
+    {
+      "name": "Explicit meeting brief uses associated saved evidence and returns real persisted preparation proposals",
+      "detail": {
+        "elapsedMs": 21898,
+        "analysisId": "5b5deed5-e95a-419e-a5ec-c24a5ac6d20b"
+      }
+    },
+    {
+      "name": "Actual responses and evidence survive reload; local mode blocks further hosted requests"
+    }
+  ],
+  "requests": [
+    {
+      "url": "https://app.ambiguous.ai/api/assistant/chat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "url": "https://app.ambiguous.ai/api/assistant/chat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "url": "https://app.ambiguous.ai/api/assistant/chat",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "sourceSha256": {
+    "extension/src/hosted.ts": "b27252e1bdc90954816d59d1c40422f424fe78b488e9162035c51ee23738e580",
+    "extension/src/analysis-result.ts": "58470b97570c749c4cddc5287a61e7ec3ff83190919e3ef171fa71bcd1401131",
+    "extension/src/background.ts": "50727af94f52aec279a19f20c9956d77f97babd9b946ae7e9934dfc0df94cad5",
+    "extension/src/types.ts": "8f98efda9e844021b4b638335768cf6e8f9d14fbfe88e08944d73f45303dba1d",
+    "extension/src/db.ts": "d2467a35aec99be6f437866350c798ef07c7026cc7b4c14a13e0c7efef434951",
+    "extension/src/panel.ts": "2741483fb3b7aca4836b5bc1edd96753e1a9945036013464059fadc5c6e7b1bd",
+    "extension/public/panel.html": "558642e94f6e7cf4ee6f702c9123bf8489bd0f56a3c853b30555924ce91c004f",
+    "extension/foundation/background.js": "83923dbbb183d041c756807ceef78cf326505e40925937d4d4526a82995d58f7",
+    "extension/foundation/panel.js": "5e89019a70bdde9a8a054f7e68dfac2a8e6b01eb474086b7ec3a06ad483d2672"
+  },
+  "startedAt": "2026-09-12T20:07:17.778Z",
+  "chrome": "151.0.7922.34",
+  "noteAnalysis": {
+    "id": "9a9a125d-8581-4fd1-94d2-26177adbe015",
+    "createdAt": 1789243638832,
+    "revision": 2,
+    "kind": "note",
+    "targetId": "80d1e320-c026-48f4-b86f-39a106b86115",
+    "evidenceIds": [
+      "80d1e320-c026-48f4-b86f-39a106b86115",
+      "14bc1745-d70f-4fc1-a9c5-c6e12f6ab6d3"
+    ],
+    "state": "complete",
+    "toolActivity": [],
+    "response": "{\"summary\":\"Saved note is a preparation brief for an onboarding design meeting: compare the progressive profile with the existing signup flow and keep the accessibility checklist handy. No owner or due date has been decided, and there is no transcript; absence-to-transcript timing is unavailable.\",\"proposals\":[{\"kind\":\"decision\",\"nextStep\":\"Decide who owns the onboarding design meeting prep and whether a due date should be set.\",\"evidenceIds\":[\"80d1e320-c026-48f4-b86f-39a106b86115\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"queued-decision\"},{\"kind\":\"research\",\"nextStep\":\"Review the progressive profile approach against the existing signup flow and note accessibility implications.\",\"evidenceIds\":[\"80d1e320-c026-48f4-b86f-39a106b86115\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"digest-on-return\"},{\"kind\":\"reminder\",\"nextStep\":\"Keep the accessibility checklist available for the onboarding design meeting prep.\",\"evidenceIds\":[\"80d1e320-c026-48f4-b86f-39a106b86115\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"quiet-status\"}]}",
+    "summary": "Saved note is a preparation brief for an onboarding design meeting: compare the progressive profile with the existing signup flow and keep the accessibility checklist handy. No owner or due date has been decided, and there is no transcript; absence-to-transcript timing is unavailable.",
+    "proposals": [
+      {
+        "kind": "decision",
+        "nextStep": "Decide who owns the onboarding design meeting prep and whether a due date should be set.",
+        "evidenceIds": [
+          "80d1e320-c026-48f4-b86f-39a106b86115"
+        ],
+        "owner": null,
+        "dueDate": null,
+        "delivery": "queued-decision"
+      },
+      {
+        "kind": "research",
+        "nextStep": "Review the progressive profile approach against the existing signup flow and note accessibility implications.",
+        "evidenceIds": [
+          "80d1e320-c026-48f4-b86f-39a106b86115"
+        ],
+        "owner": null,
+        "dueDate": null,
+        "delivery": "digest-on-return"
+      },
+      {
+        "kind": "reminder",
+        "nextStep": "Keep the accessibility checklist available for the onboarding design meeting prep.",
+        "evidenceIds": [
+          "80d1e320-c026-48f4-b86f-39a106b86115"
+        ],
+        "owner": null,
+        "dueDate": null,
+        "delivery": "quiet-status"
+      }
+    ],
+    "finishedAt": 1789243655378
+  },
+  "meetingBrief": {
+    "id": "5b5deed5-e95a-419e-a5ec-c24a5ac6d20b",
+    "createdAt": 1789243682218,
+    "revision": 2,
+    "kind": "meeting",
+    "targetId": "bca9495a-f01b-415d-a1bc-c012fe043e94",
+    "evidenceIds": [
+      "bca9495a-f01b-415d-a1bc-c012fe043e94",
+      "80d1e320-c026-48f4-b86f-39a106b86115",
+      "76e00048-9c57-4d36-836d-b5dc48684edf",
+      "14bc1745-d70f-4fc1-a9c5-c6e12f6ab6d3"
+    ],
+    "state": "complete",
+    "toolActivity": [],
+    "response": "{\"summary\":\"Prep-only evidence: there is no transcript, so no meeting outcome can be reported. The saved note says to prepare for an onboarding design meeting by comparing progressive profile with the existing signup flow and keeping the accessibility checklist handy; owner and due date are still undecided. Absence-to-transcript timing is unavailable, so no claim can be made about what was said during any absence.\",\"proposals\":[{\"kind\":\"follow-up\",\"nextStep\":\"Confirm who owns the onboarding design preparation and whether a due date should be set.\",\"evidenceIds\":[\"80d1e320-c026-48f4-b86f-39a106b86115\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"queued-decision\"},{\"kind\":\"research\",\"nextStep\":\"Compare the progressive profile approach against the existing signup flow and capture any accessibility impacts for review.\",\"evidenceIds\":[\"80d1e320-c026-48f4-b86f-39a106b86115\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"digest-on-return\"},{\"kind\":\"reminder\",\"nextStep\":\"Keep the accessibility checklist handy for the onboarding design meeting prep.\",\"evidenceIds\":[\"80d1e320-c026-48f4-b86f-39a106b86115\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"quiet-status\"},{\"kind\":\"follow-up\",\"nextStep\":\"Wait for a transcript or other direct meeting evidence before summarizing any discussion content.\",\"evidenceIds\":[\"bca9495a-f01b-415d-a1bc-c012fe043e94\",\"76e00048-9c57-4d36-836d-b5dc48684edf\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"digest-on-return\"}]}",
+    "summary": "Prep-only evidence: there is no transcript, so no meeting outcome can be reported. The saved note says to prepare for an onboarding design meeting by comparing progressive profile with the existing signup flow and keeping the accessibility checklist handy; owner and due date are still undecided. Absence-to-transcript timing is unavailable, so no claim can be made about what was said during any absence.",
+    "proposals": [
+      {
+        "kind": "follow-up",
+        "nextStep": "Confirm who owns the onboarding design preparation and whether a due date should be set.",
+        "evidenceIds": [
+          "80d1e320-c026-48f4-b86f-39a106b86115"
+        ],
+        "owner": null,
+        "dueDate": null,
+        "delivery": "queued-decision"
+      },
+      {
+        "kind": "research",
+        "nextStep": "Compare the progressive profile approach against the existing signup flow and capture any accessibility impacts for review.",
+        "evidenceIds": [
+          "80d1e320-c026-48f4-b86f-39a106b86115"
+        ],
+        "owner": null,
+        "dueDate": null,
+        "delivery": "digest-on-return"
+      },
+      {
+        "kind": "reminder",
+        "nextStep": "Keep the accessibility checklist handy for the onboarding design meeting prep.",
+        "evidenceIds": [
+          "80d1e320-c026-48f4-b86f-39a106b86115"
+        ],
+        "owner": null,
+        "dueDate": null,
+        "delivery": "quiet-status"
+      },
+      {
+        "kind": "follow-up",
+        "nextStep": "Wait for a transcript or other direct meeting evidence before summarizing any discussion content.",
+        "evidenceIds": [
+          "bca9495a-f01b-415d-a1bc-c012fe043e94",
+          "76e00048-9c57-4d36-836d-b5dc48684edf"
+        ],
+        "owner": null,
+        "dueDate": null,
+        "delivery": "digest-on-return"
+      }
+    ],
+    "finishedAt": 1789243703944
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-12T20:08:24.297Z"
+}

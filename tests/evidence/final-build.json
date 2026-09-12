@@ -1,0 +1,48 @@
+{
+  "demoTestHead": "2ffdcc1b375a3693aabf159b3c6316690b97c9f5",
+  "hostedAndFoundationTestHead": "5e134a9cb3ba2a0656792a0bef55a0b9bbd49848",
+  "base": "dbb47bae4d128edf211cde974bf2d51050de452d",
+  "commands": {
+    "verify": "PASS: TypeScript, 11 focused tests, combined build, inherited syntax, 362 assets",
+    "foundation": "PASS: 13 real browser checks with merged manifest and logo",
+    "demo": "PASS: 8 real integration checks",
+    "hosted": "PASS: 5 real checks after final consent guard correction; earlier HTTP 504 retained separately"
+  },
+  "priorDemoReportDifference": {
+    "files": [
+      "extension/manifest.json"
+    ],
+    "reason": "Teammate added icon declarations. The final foundation test exercises the merged manifest and logo. Hosted consent guard change is covered by the fresh hosted source map."
+  },
+  "sha256": {
+    "extension/app.js": "18319f981774b12de20e384ad7b92813a7302a8e8957e302c695a134b68bcab7",
+    "extension/audio-queue.js": "4d44e8e5a2037428dd9004c44a66d5313a5a38ce8e4642cd42ed0027ad549063",
+    "extension/captions.js": "5635c2e369451b00bbd5219062ced69c01de21ef074abb01ff7bfbb97e68614c",
+    "extension/capture-worklet.js": "33f85335555ba8fb9309959b336fb4d6bed5854a1742bc109e84104300ff07df",
+    "extension/engine-worker.js": "48dc0d7400b93929d5121ab9cc765effb0cc6d45a4678b7adf1b1f8d4512194b",
+    "extension/index.html": "8607eae5ae87de14014fde992c350f712d0ef4a5d316b8a06b360227cc723d98",
+    "extension/manifest.json": "1ef4eaa6bb2e4ef7f90db0bdf91ea081d594ca54a7f08fe534b737449e92fc68",
+    "extension/public/icon.png": "499367b88d3e88c0b582e640da1f97372b48bd6aaad95793f4c627e7c3953d0f",
+    "extension/public/panel.css": "324c4e0ab7a3c38f4cd2223a26cccae0ddb22e1952fb5379b71b27e1f2bac8b0",
+    "extension/public/panel.html": "558642e94f6e7cf4ee6f702c9123bf8489bd0f56a3c853b30555924ce91c004f",
+    "extension/speech-output.js": "885392258e15a0db7178ed14fdde2cced73875e12e3917e9299270d7a529d64e",
+    "extension/src/ambiguous.ts": "c57ecdc7aad53b14c34e536a102799a61cd35245e5256d87809dda22c50aac6c",
+    "extension/src/analysis-result.ts": "58470b97570c749c4cddc5287a61e7ec3ff83190919e3ef171fa71bcd1401131",
+    "extension/src/background.ts": "50727af94f52aec279a19f20c9956d77f97babd9b946ae7e9934dfc0df94cad5",
+    "extension/src/calendar.ts": "8546edaa76fb9f23838b0dc28fa565748d4e089ffec6cf863a4d8e6eb2c85a28",
+    "extension/src/capture.ts": "165fcdec9502b4db20b4840aa9374ef40fde6bea61086f700f5d9667c30f0d7e",
+    "extension/src/db.ts": "d2467a35aec99be6f437866350c798ef07c7026cc7b4c14a13e0c7efef434951",
+    "extension/src/hosted.ts": "b27252e1bdc90954816d59d1c40422f424fe78b488e9162035c51ee23738e580",
+    "extension/src/panel.ts": "2741483fb3b7aca4836b5bc1edd96753e1a9945036013464059fadc5c6e7b1bd",
+    "extension/src/policy.ts": "4f5c7a8fef401b943bcddc4d6b7df69cc747a7eaf761f870dbdcbd1a658ae3d9",
+    "extension/src/transcript.ts": "5fe892d8cf841eb98d5c804babeb31b8ee3d91c273bcc72fdf9f10257c9805f4",
+    "extension/src/types.ts": "8f98efda9e844021b4b638335768cf6e8f9d14fbfe88e08944d73f45303dba1d",
+    "extension/style.css": "67bca36755be3d81889edabb942c7ef1d9d7199fe88f14f7accee1c3e13ac610",
+    "extension/voice-bridge.js": "3280996aa4f0cb8fabde97f2cae03c2db4ed49abbaffad5133ea0ad32d303ccf",
+    "extension/zoom-asr.js": "56f0e4cb94582c7390412f8e9db5dbe5c9b55270dc02aca873c495aae18e67b7",
+    "extension/zoom.js": "dfa5b49b824cfbf362810f3498a8c6781740a277ecbe8ee7829931efb45d7410",
+    "extension/foundation/background.js": "83923dbbb183d041c756807ceef78cf326505e40925937d4d4526a82995d58f7",
+    "extension/foundation/panel.js": "5e89019a70bdde9a8a054f7e68dfac2a8e6b01eb474086b7ec3a06ad483d2672",
+    "extension/icon.png": "499367b88d3e88c0b582e640da1f97372b48bd6aaad95793f4c627e7c3953d0f"
+  }
+}

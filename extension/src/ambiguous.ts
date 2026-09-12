@@ -1,18 +1,20 @@
 import { all, get, put, settings, writeBatch } from './db';
 import { canSend } from './policy';
 import { base, type OutboxItem } from './types';
+import { calendarId, object } from './calendar';
 const API = 'https://app.ambiguous.ai/api';
-let inFlight: AbortController | undefined;
+const inFlight = new Set<AbortController>();
 let pumping: Promise<void> | undefined;
 let outboundAllowed = false;
-export function haltSync() { outboundAllowed = false; inFlight?.abort(); }
-export function setSyncEnabled(enabled: boolean) { outboundAllowed = enabled; if (!enabled) inFlight?.abort(); }
+function abortRequests() { for (const controller of inFlight) controller.abort(); }
+export function haltSync() { outboundAllowed = false; abortRequests(); }
+export function setSyncEnabled(enabled: boolean) { outboundAllowed = enabled; if (!enabled) abortRequests(); }
 export async function credentials(): Promise<{ token: string; epoch: string }> {
   const result = await chrome.storage.local.get(['apiToken', 'credentialEpoch']);
   return { token: typeof result.apiToken === 'string' ? result.apiToken : '', epoch: typeof result.credentialEpoch === 'string' ? result.credentialEpoch : '' };
 }
 export async function storeCredentials(token: string) {
-  inFlight?.abort();
+  abortRequests();
   await chrome.storage.local.set({ apiToken: token.trim(), credentialEpoch: crypto.randomUUID() });
 }
 export async function approveBatch(noteIds: string[], taskIds: string[]) {
@@ -33,7 +35,7 @@ export async function approveBatch(noteIds: string[], taskIds: string[]) {
       const text = 'text' in record ? record.text : record.nextStep;
       const title = 'title' in record ? record.title : record.text.slice(0, 100);
       const body = `${text}\n\nSource: ${context.title}\n${context.url}\nCaptured: ${new Date(context.capturedAt).toISOString()}\nSelection: ${context.selection}\n\nResume on the originating browser: ${resume}\nLocal record: ${record.id}`;
-      items.push({ ...base(), recordId: id, kind, batchId, approvedAt: Date.now(), credentialEpoch: auth.epoch, workspaceLabel: prefs.workspaceLabel, payload: kind === 'document' ? { type: 'doc', title, content: body, visibility: 'private' } : { title, description: body }, state: 'pending' });
+      items.push({ ...base(), recordId: id, kind, batchId, approvedAt: Date.now(), credentialEpoch: auth.epoch, workspaceLabel: prefs.workspaceLabel, payload: kind === 'document' ? { type: 'doc', title, content: body, visibility: 'restricted' } : { title, description: body, ...('dueDate' in record && record.dueDate ? { due_date: record.dueDate } : {}) }, state: 'pending' });
     }
   }
   if (!items.length) throw new Error('Select records that have not already entered the outbox.');
@@ -45,7 +47,7 @@ async function request(item: OutboxItem, method: 'POST' | 'GET', token: string):
   const path = item.kind === 'task' ? 'tasks' : 'documents';
   const url = `${API}/${path}${method === 'GET' ? `/${encodeURIComponent(item.remoteId!)}` : ''}`;
   const controller = new AbortController();
-  inFlight = controller;
+  inFlight.add(controller);
   const timeout = setTimeout(() => controller.abort(), 20000);
   try {
     const response = await fetch(url, { method, credentials: 'omit', redirect: 'error', signal: controller.signal, headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', 'API-Version': '1' }, ...(method === 'POST' ? { body: JSON.stringify(item.payload) } : {}) });
@@ -57,7 +59,7 @@ async function request(item: OutboxItem, method: 'POST' | 'GET', token: string):
     const record = item.kind === 'task' ? (body as { task?: unknown })?.task : body;
     if (!record || typeof record !== 'object' || typeof (record as { id?: unknown }).id !== 'string') throw new Error('Ambiguous response did not contain a record ID.');
     return record as Record<string, unknown>;
-  } finally { clearTimeout(timeout); if (inFlight === controller) inFlight = undefined; }
+  } finally { clearTimeout(timeout); inFlight.delete(controller); }
 }
 export async function reconcile(item: OutboxItem) {
   const prefs = await settings();
@@ -68,7 +70,28 @@ export async function reconcile(item: OutboxItem) {
   if (remote.id !== item.remoteId || remote.title !== item.payload.title) throw new Error('Remote readback does not match the reviewed record.');
   const body = item.kind === 'task' ? remote.description : remote.content;
   if (typeof body !== 'string' || !body.includes(item.recordId)) throw new Error('Remote readback is missing the source record marker.');
-  await put('outbox', { ...item, state: 'confirmed', lastError: undefined, confirmedAt: Date.now(), revision: item.revision + 1 });
+  if (item.kind === 'document' && remote.visibility !== 'restricted' && remote.visibility !== 'private') throw new Error('Remote document visibility is not restricted. Inspect the workspace.');
+  if (item.payload.due_date && remote.due_date !== item.payload.due_date) throw new Error('Remote due date does not match the reviewed date.');
+  await put('outbox', { ...item, state: 'confirmed', lastError: undefined, confirmedAt: Date.now(), revision: item.revision + 1, remoteDueDate: typeof remote.due_date === 'string' ? remote.due_date : undefined, remoteDueDateSource: typeof remote.due_date_source === 'string' ? remote.due_date_source : undefined });
+}
+export async function calendarRead(path: string): Promise<Record<string, unknown>> {
+  const auth = await credentials();
+  if (!outboundAllowed || (await settings()).syncMode !== 'sync' || !auth.token) throw new Error('Enable reviewed sync and configure an API key before importing calendar events.');
+  const controller = new AbortController(); inFlight.add(controller);
+  const timeout = setTimeout(() => controller.abort(), 20000);
+  try {
+    const response = await fetch(`${API}/calendars/${path}`, { credentials: 'omit', redirect: 'error', signal: controller.signal, headers: { Authorization: `Bearer ${auth.token}`, 'API-Version': '1' } });
+    if (!response.ok) throw new Error(`Ambiguous calendar returned HTTP ${response.status}. No event imported from this response.`);
+    const body: unknown = await response.json();
+    if (!outboundAllowed || (await settings()).syncMode !== 'sync' || (await credentials()).epoch !== auth.epoch) throw new Error('Calendar import stopped because sync or credentials changed.');
+    return object(body);
+  } finally { clearTimeout(timeout); inFlight.delete(controller); }
+}
+export async function readCalendarEvent(id: string) {
+  const eventId = calendarId(id);
+  const event = await calendarRead(`events/${eventId}`);
+  if (event.id !== eventId) throw new Error('Ambiguous returned a different event ID.');
+  return event;
 }
 export function pumpOutbox(): Promise<void> {
   pumping ??= runPump().finally(() => { pumping = undefined; });

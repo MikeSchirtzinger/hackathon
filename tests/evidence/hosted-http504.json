@@ -1,0 +1,46 @@
+{
+  "checks": [
+    {
+      "name": "Local mode and the separate hosted opt-in each independently block Assistant HTTP"
+    }
+  ],
+  "requests": [
+    {
+      "url": "https://app.ambiguous.ai/api/assistant/chat",
+      "method": "POST",
+      "status": 504
+    }
+  ],
+  "sourceSha256": {
+    "extension/src/hosted.ts": "b27252e1bdc90954816d59d1c40422f424fe78b488e9162035c51ee23738e580",
+    "extension/src/analysis-result.ts": "58470b97570c749c4cddc5287a61e7ec3ff83190919e3ef171fa71bcd1401131",
+    "extension/src/background.ts": "50727af94f52aec279a19f20c9956d77f97babd9b946ae7e9934dfc0df94cad5",
+    "extension/src/types.ts": "8f98efda9e844021b4b638335768cf6e8f9d14fbfe88e08944d73f45303dba1d",
+    "extension/src/db.ts": "d2467a35aec99be6f437866350c798ef07c7026cc7b4c14a13e0c7efef434951",
+    "extension/src/panel.ts": "2741483fb3b7aca4836b5bc1edd96753e1a9945036013464059fadc5c6e7b1bd",
+    "extension/public/panel.html": "558642e94f6e7cf4ee6f702c9123bf8489bd0f56a3c853b30555924ce91c004f",
+    "extension/foundation/background.js": "83923dbbb183d041c756807ceef78cf326505e40925937d4d4526a82995d58f7",
+    "extension/foundation/panel.js": "5e89019a70bdde9a8a054f7e68dfac2a8e6b01eb474086b7ec3a06ad483d2672"
+  },
+  "startedAt": "2026-09-12T20:04:28.263Z",
+  "chrome": "151.0.7922.34",
+  "noteAnalysis": {
+    "id": "ff5f2140-79a7-4d19-a5ff-3fd918708f99",
+    "createdAt": 1789243469484,
+    "revision": 2,
+    "kind": "note",
+    "targetId": "09e6d975-9c33-4bff-90dd-002dbc57a603",
+    "evidenceIds": [
+      "09e6d975-9c33-4bff-90dd-002dbc57a603",
+      "86191896-3a39-4d53-9fcc-4df06c535b82"
+    ],
+    "state": "error",
+    "toolActivity": [],
+    "error": "Hosted analysis returned HTTP 504. No proposal was accepted.",
+    "finishedAt": 1789243499901
+  },
+  "result": "FAIL",
+  "failure": "AssertionError [ERR_ASSERTION]: Hosted analysis returned HTTP 504. No proposal was accepted.\n+ actual - expected\n\n+ 'error'\n- 'complete'\n\n    at file:///Users/mike/.herdr/worktrees/hackathon/extension-foundation/scripts/hosted-browser-proof.mjs:47:9",
+  "status": "Hosted analysis returned HTTP 504. No proposal was accepted.",
+  "finishedAt": "2026-09-12T20:04:59.991Z"
+}

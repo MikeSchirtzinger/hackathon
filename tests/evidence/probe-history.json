@@ -1,0 +1,32 @@
+{
+  "failures": [
+    {
+      "probe": "Upcoming reminders limit=100",
+      "status": 400,
+      "detail": "Live API rejected limits above 50. Import now requests limit=50; real UI retry passes."
+    },
+    {
+      "probe": "Outbox terminal-state observer",
+      "detail": "The first test treated the intermediate unknown state after POST as final and stopped before readback completed. Observer now waits for confirmed or unknown with an actual error. Real create/readback passed."
+    },
+    {
+      "probe": "Headless tab playback with default --mute-audio",
+      "detail": "Actual capture started but yielded an empty transcript. Removing the Playwright audio-muting flag, with unchanged extension code, produced the expected real transcript. This establishes flag-dependent behavior for this tested setup."
+    }
+  ],
+  "negativeControls": [
+    {
+      "probe": "Local mode import and hosted analysis",
+      "result": "Denied with zero extension worker HTTP"
+    },
+    {
+      "probe": "Unknown event ID",
+      "status": 404,
+      "result": "Real HTTP failure shown; no local event created"
+    },
+    {
+      "probe": "Concurrent same-target analysis",
+      "result": "Exactly one real Assistant request; duplicate rejected"
+    }
+  ]
+}

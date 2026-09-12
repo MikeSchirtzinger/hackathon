@@ -55,10 +55,9 @@ $('listen-zoom').onclick=async()=>{
   $('listen-zoom').disabled=true;
   try{
     if(!ready)await load();
-    await beginLocalTranscript('zoom');
+    await beginLocalTranscript('tab');
     queue=new AudioQueue();await queue.open();
-    const tab=await chrome.tabs.getCurrent();
-    const response=await chrome.runtime.sendMessage({type:'capture-zoom'});
+    const response=await chrome.runtime.sendMessage({type:'capture-tab'});
     if(!response.ok)throw Error(response.error);
     const result=response.value;
     media=await navigator.mediaDevices.getUserMedia({audio:{mandatory:{chromeMediaSource:'tab',chromeMediaSourceId:result.streamId}},video:false});
@@ -84,7 +83,7 @@ $('listen-zoom').onclick=async()=>{
     source.connect(ctx.destination);
     media.getAudioTracks()[0].onended=()=>stop();
     await captureStatus('listening');
-    $('stop-zoom').disabled=false;status('Listening to Zoom tab audio. Another participant must speak; your own mic is not in tab playback.');
+    $('stop-zoom').disabled=false;status(`Listening to ${result.title || 'authorized meeting tab'}. Another participant must speak; your own mic is not in tab playback.`);
   }catch(e){fail(e.message);}
 };
 function stop(){if(!active)return;cleanup();finishing=true;pump();status('Finishing queued recognition…');}
