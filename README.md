@@ -1,6 +1,6 @@
-# Brevity hackathon
+# Spark
 
-Context Carry brings saved browser context into meeting preparation and follow-through. One Chrome extension combines local notes, reminders and transcript storage with Voice Lab's Nemotron transcription and Kokoro speech. Optional Ambiguous integration imports calendar events, syncs selected notes and tasks, and analyzes saved evidence when requested.
+Spark brings saved browser context into meeting preparation and follow-through. One Chrome extension combines local notes, reminders and transcript storage with Voice Lab's Nemotron transcription and Kokoro speech. Optional Ambiguous integration imports calendar events, syncs selected notes and tasks, and analyzes saved evidence when requested.
 
 ## Run locally
 
