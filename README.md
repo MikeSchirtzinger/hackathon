@@ -4,18 +4,20 @@ Entry for the AI Tinkerers "Agents, Everywhere" global hackathon, Columbus, Sept
 
 ## What it is
 
-A local-first browser extension. A hotkey tags the current page or starts a voice note. The agent hears what you said, sees what you were looking at, and turns the two into a proposed action. Nothing is written until you approve it. Approved actions land in an Ambiguous AI workspace as real records, with links back to the page and a prefilled session so the next person can pick up where you left off.
+A browser extension being built to carry context from browsing into meetings and follow-up work. A hotkey captures a note with the current page. Notes and transcripts land in IndexedDB first, with optional Ambiguous sync. Background notes stay quiet. Meeting reminders surface when needed. A Takeover control is planned to connect the teammate's transcription and speech components, followed by a summary of what the user missed and the actions that need attention.
+
+Current status: the local extension foundation passes browser checks. Audio integration is in progress. See [the build brief](docs/BRIEF.md) for the proposed demo and acceptance checks.
 
 ## Layout
 
-- `extension/` Manifest V3 extension: hotkey, side panel, page context capture, voice capture, approval gate, Ambiguous writes.
+- Planned `extension/`: Manifest V3 hotkey, side panel, context capture, local storage, attention routing, Takeover controls, and Ambiguous sync.
 - `docs/` build notes and the submission plan.
 - `SUBMISSION.md` the event checklist. Fill in "what we inherited" and "what we built" before submitting.
 
 ## Inherited
 
-Libraries and starter code only. The extension, the capture pipeline, the approval gate, and the Ambiguous integration are built during the event. See `SUBMISSION.md`.
+The design intends to reuse the existing silent-notetaker/Nemotron transcription work and integrate a teammate's Kokoro speech work. Record the exact reused revisions and distinguish them from new extension work in [the submission checklist](SUBMISSION.md). Planned work is not yet a completed event contribution.
 
 ## Run
 
-Instructions land here once the extension loads unpacked. Until then, treat this repo as a build in progress.
+Run `npm install` and `npm run verify`. Load `dist/` unpacked in Chrome. Run `node scripts/browser-proof.mjs` for real extension checks. See `docs/EXTENSION-HANDOFF.md` for the measured scope and integration gaps.

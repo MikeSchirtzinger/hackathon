@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Context Carry</title><link rel="stylesheet" href="panel.css"></head>
+<body>
+<header><div><p class="eyebrow">CONTEXT CARRY</p><h1>Pick up where you left off.</h1></div><span class="pill" id="mode">Local only</span></header>
+<nav aria-label="Workspace"><button data-view="notes" class="active">Notes</button><button data-view="meeting">Meeting</button><button data-view="review">Review</button><button data-view="settings">Settings</button></nav>
+<p id="status" role="status" aria-live="polite">Opening local workspace.</p>
+<main>
+<section id="view-notes">
+  <div class="section-heading"><h2>Current context</h2><button id="capture" class="subtle">Capture page</button></div>
+  <p class="hint" id="shortcut">Capture quietly with Command+Shift+Y.</p>
+  <article id="context" class="context"><p>No context captured yet. Use the hotkey on a page or click the extension toolbar icon.</p></article>
+  <form id="note-form"><label for="note">Keep a thought with this page</label><textarea id="note" rows="4" placeholder="What should you come back to?" required maxlength="20000"></textarea><p class="hint">Text entry. Voice capture is not connected.</p><button class="primary" type="submit">Save note locally</button></form>
+  <div id="resume" hidden></div>
+  <h2 class="spaced">Saved notes</h2><div id="notes" class="stack"></div>
+</section>
+<section id="view-meeting" hidden>
+  <h2>Meeting timeline</h2><p class="hint">Save your own reminder. Calendar is not connected.</p>
+  <form id="meeting-form"><label for="meeting-title">Meeting name</label><input id="meeting-title" required maxlength="255"><label for="join-url">Join URL</label><input id="join-url" type="url" required placeholder="https://"><label for="starts-at">Starts at</label><input id="starts-at" type="datetime-local" required step="1"><label for="remind-at">Remind at</label><input id="remind-at" type="datetime-local" required step="1"><button class="primary">Save reminder</button></form>
+  <div id="meetings" class="stack spaced"></div>
+</section>
+<section id="view-review" hidden>
+  <h2>Decisions stay with you.</h2><p class="hint">Reasoning is not configured. You can write a task draft and review it here.</p>
+  <form id="task-form"><label for="task-title">Task draft</label><input id="task-title" required maxlength="255"><label for="next-step">Next step</label><textarea id="next-step" required rows="3"></textarea><button>Create local draft</button></form>
+  <h2 class="spaced">Review a sync batch</h2><p class="hint">Selected notes include their text, page URL, title, selection, capture time, and local resume link. Tasks include your next step. Raw audio and full page text stay local.</p>
+  <div id="review-items" class="stack"></div><button id="approve-sync">Approve selected records</button>
+  <h2 class="spaced">Outbox</h2><p class="hint">Approval saves a batch locally. Send it when ready. Unknown outcomes require readback or workspace reconciliation.</p><button id="send-approved">Send approved batch</button><div id="outbox" class="stack spaced"></div>
+</section>
+<section id="view-settings" hidden>
+  <h2>Your capture, your control.</h2>
+  <div class="setting"><label for="sync-mode">Ambiguous sync</label><select id="sync-mode"><option value="local">Local only</option><option value="sync">Enable reviewed sync</option></select><p class="hint">Enabling sync does not upload earlier notes. Every outgoing batch is selected and approved in Review. Turning it off stops pending requests. A request already sent may have reached the server.</p></div>
+  <form id="identity-form"><label for="workspace-label">Receiving workspace / identity</label><input id="workspace-label" placeholder="Name of the workspace tied to your API key"><label for="api-token">Ambiguous API key</label><input id="api-token" type="password" autocomplete="off" placeholder="Stored only in this browser profile"><p id="credential-status" class="hint"></p><button>Save connection settings</button><button type="button" id="clear-token">Remove key</button></form>
+  <div class="setting"><h3>Capture mode</h3><p>Push to capture</p><button disabled>Continuous capture unavailable</button><p class="hint">No audio stream or microphone is active. Closing this panel does not delete saved records.</p></div>
+  <div class="setting"><h3>Reasoning and speech</h3><p>No reasoning provider configured.</p><p>Nemotron transcription: not connected.</p><p>Kokoro meeting speech: not connected.</p></div>
+</section>
+</main><footer>Saved on this browser. Background work stays quiet.</footer><script type="module" src="panel.js"></script>
+</body></html>

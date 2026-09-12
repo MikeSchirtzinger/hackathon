@@ -1,0 +1,18 @@
+import { chromium } from 'playwright';
+const browser = await chromium.connectOverCDP('http://127.0.0.1:9347');
+const context = browser.contexts()[0];
+const panel = context.pages().find(p => p.url().startsWith('chrome-extension:'));
+const page = await context.newPage();
+await page.goto('https://example.com');
+const worker = context.serviceWorkers()[0];
+console.log('commands', await worker.evaluate(() => chrome.commands.getAll()));
+console.log('before', await panel.evaluate(() => chrome.runtime.sendMessage({type:'state'})).then(r=>r.value.contexts.length));
+await page.bringToFront();
+await page.keyboard.press('Meta+Shift+y');
+await new Promise(r=>setTimeout(r,500));
+console.log('after', await panel.evaluate(() => chrome.runtime.sendMessage({type:'state'})).then(r=>r.value.contexts));
+const client = await context.newCDPSession(page);
+for (const type of ['rawKeyDown','keyUp']) await client.send('Input.dispatchKeyEvent',{type,modifiers:12,key:'Y',code:'KeyY',windowsVirtualKeyCode:89,nativeVirtualKeyCode:16,isSystemKey:true});
+await new Promise(r=>setTimeout(r,500));
+console.log('after system', await panel.evaluate(() => chrome.runtime.sendMessage({type:'state'})).then(r=>r.value.contexts));
+await browser.close();
