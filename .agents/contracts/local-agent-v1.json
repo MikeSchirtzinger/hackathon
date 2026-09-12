@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "origin": "http://127.0.0.1:4318",
+  "authentication": "Bearer pairing secret. Saved only in trusted extension storage and private bridge state. All routes require authorization; CORS preflight is origin-checked.",
+  "routes": {
+    "GET /v1/capabilities": {"protocol":1,"name":"Spark local agents","providers":[{"id":"codex","label":"Codex CLI","processing":"hosted","available":true}]},
+    "POST /v1/jobs": {"request":{"id":"client UUID","provider":"codex","kind":"context|note|meeting","createdAt":0,"evidenceIds":["saved IDs"],"evidence":{}},"response":{"id":"same UUID","state":"queued|running|complete|error","result":null,"error":null}},
+    "GET /v1/jobs/{id}": {"id":"UUID","state":"queued|running|complete|error","result":null,"error":null},
+    "POST /v1/jobs/{id}/cancel": {"id":"UUID","state":"cancelled"}
+  },
+  "result": {
+    "summary":"Evidence-based summary",
+    "classification":"note|research|follow-up|reminder|decision",
+    "actionRequired":false,
+    "urgency":"none|when-available|time-sensitive",
+    "reason":"Why this should stay quiet or need attention",
+    "resurface":"on-request|on-return",
+    "evidenceIds":["exact supplied IDs"],
+    "proposals":[{"kind":"follow-up|decision|research|reminder","nextStep":"Proposed next step","evidenceIds":["exact supplied IDs"],"owner":null,"dueDate":null,"delivery":"quiet-status|digest-on-return|queued-decision"}]
+  },
+  "behavior": [
+    "Persist the client job and evidence in IndexedDB before dispatch.",
+    "The same job ID and payload is idempotent. A changed payload with the same ID returns 409.",
+    "Only the configured provider executes. A Codex CLI on this computer still uses hosted inference and is denied in local-only mode.",
+    "Automatic reasoning requires explicit connection opt-in. No task execution or remote workspace writes follow from a reasoning result.",
+    "Cancel invalidates result acceptance immediately in the extension; the bridge stops the local process and rejects late results.",
+    "GET is immediate. The extension owns bounded polling and durable alarm recovery. No hidden infinite retry.",
+    "The attention controller owns final delivery. Agent urgency alone never bypasses the interrupt budget or creates authority.",
+    "An unfinished queued or running job after bridge restart becomes an explicit error. It is not automatically executed again."
+  ]
+}
