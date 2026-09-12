@@ -17,7 +17,7 @@ The extension foundation adds hotkey page-context capture, IndexedDB notes and t
 ## Title and description
 
 **What you built**
-Context Carry is a Chrome extension that saves the page behind a note and brings that evidence into meeting preparation and follow-through. Notes and transcripts stay in IndexedDB first. Optional Ambiguous integration turns selected records into shared work after review and returns requested analysis as proposals.
+Spark is a Chrome extension that saves the page behind a note and brings that evidence into meeting preparation and follow-through. Notes and transcripts stay in IndexedDB first. Optional Ambiguous integration turns selected records into shared work after review and returns requested analysis as proposals.
 
 **Who it is for**
 A person researching a project while preparing for a browser-based Zoom meeting. They need to capture an idea without interrupting their work and recover the relevant context when they return.
