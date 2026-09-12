@@ -24,7 +24,7 @@ const escaped = readme.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll
 const server = createServer((req,res) => { res.setHeader('Content-Type','text/html'); res.end(`<!doctype html><html><head><title>Hackathon build brief</title></head><body><h1>Hackathon build brief</h1><p id="selection">Keep this browser context with the note.</p><pre>${escaped}</pre><p hidden>HIDDEN_TEXT_NEGATIVE_CONTROL</p><a href="/next">Next page</a></body></html>`); });
 await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
-const launch = () => chromium.launchPersistentContext(profile, { executablePath, headless: true, viewport: { width: 430, height: 1000 }, ignoreDefaultArgs: ['--disable-extensions'], args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`] });
+const launch = () => chromium.launchPersistentContext(profile, { executablePath, headless: true, viewport: { width: 430, height: 1000 }, ignoreDefaultArgs: ['--disable-extensions'], args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`, '--use-mock-keychain'] });
 async function keyboard(page, key, nativeCode, windowsCode) {
   const session = await context.newCDPSession(page);
   for (const type of ['rawKeyDown', 'keyUp']) await session.send('Input.dispatchKeyEvent', { type, modifiers: 12, key, code: `Key${key}`, windowsVirtualKeyCode: windowsCode, nativeVirtualKeyCode: nativeCode, isSystemKey: true });
@@ -59,7 +59,7 @@ try {
   const snapshot = (await state()).contexts[0];
   assert.equal(snapshot.url, `${origin}/`); assert.equal(snapshot.title, 'Hackathon build brief');
   assert.equal(snapshot.selection, 'Keep this browser context with the note.');
-  assert(snapshot.visibleText.includes('hackathon')); assert(!snapshot.visibleText.includes('HIDDEN_TEXT_NEGATIVE_CONTROL'));
+  assert(snapshot.visibleText.includes('Keep this browser context with the note.')); assert(!snapshot.visibleText.includes('HIDDEN_TEXT_NEGATIVE_CONTROL'));
   assert.equal(snapshot.availability, 'available'); assert.equal(snapshot.source, 'hotkey');
   assert.equal(context.pages().length, pageCount);
   assert.deepEqual(await worker.evaluate(() => chrome.notifications.getAll()), beforeNotifications);
@@ -67,6 +67,7 @@ try {
   pass('Real hotkey captures original page, selection, visible text, and time without focus or notification');
   await page.goto(`${origin}/changed-after-capture`);
   await panel.bringToFront();
+  await panel.getByRole('button', { name: 'Notes', exact: true }).click();
   await panel.locator('#note').fill('Keep this option for our project meeting.');
   await panel.getByRole('button', {name:'Save note locally', exact:true}).click();
   await eventually(async () => (await state()).notes.length === 1);

@@ -1,0 +1,151 @@
+{
+  "startedAt": "2026-09-12T21:36:43.512Z",
+  "checks": [
+    {
+      "name": "One MV3 build has a compact action popup, options page, and no sidebar or initial bridge permission"
+    },
+    {
+      "name": "Real native hotkey persists context without opening any extension document, badge, notification, or HTTP request"
+    },
+    {
+      "name": "Explicit native shortcut opens the real Chrome action popup"
+    },
+    {
+      "name": "Popup saves notes first; Local only denies automatic and manual hosted processing with zero worker HTTP"
+    },
+    {
+      "name": "Real saved alarms coalesce to one real native notification; the durable ten-minute budget shelves the next reminder"
+    },
+    {
+      "name": "Explicit review resurfaces the saved digest and clears standing notifications"
+    },
+    {
+      "name": "Full browser restart retains saved notes and turns interrupted Assistant intent into explicit error without replay (lifecycle fixture)"
+    },
+    {
+      "name": "Explicit Connect requests optional host permission and receives real authenticated Codex capabilities"
+    },
+    {
+      "name": "Actual Codex job survives browser restart through GET polling of the same ID, with no repeated POST or new job"
+    },
+    {
+      "name": "Real connected Codex analyzes a newly saved note automatically, persists evidence and proposals, and completes without UI, notifications, or task execution"
+    },
+    {
+      "name": "Local opt-out cancels a real dispatched Codex job with daemon readback, rejects result acceptance, and sends no new evidence"
+    }
+  ],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:4318/v1/capabilities",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:4318/v1/jobs",
+      "method": "POST"
+    },
+    {
+      "url": "http://127.0.0.1:4318/v1/jobs/a4400be9-7f29-4dc3-9fae-de2433a9b00c",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:4318/v1/jobs/a4400be9-7f29-4dc3-9fae-de2433a9b00c",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:4318/v1/jobs/a4400be9-7f29-4dc3-9fae-de2433a9b00c",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:4318/v1/jobs",
+      "method": "POST"
+    },
+    {
+      "url": "http://127.0.0.1:4318/v1/jobs/c7bf4215-c91b-4e20-951b-9aa2100c0c77/cancel",
+      "method": "POST"
+    }
+  ],
+  "sourceSha256": {
+    "extension/manifest.json": "a5c32ec33dbacc9e5ada698d8762c5e99e4d0e8823140cbb90aacacfdb5244c4",
+    "extension/popup.html": "bb18c1b76124808970984944d11b99047ca31207e29985b19ff83364a8f6c12a",
+    "extension/popup.css": "2a6fe265cf10de07178cc11441a7b92f7e89b76aad1bb1be9d3758192067c827",
+    "extension/src/background.ts": "c013ccc5ef1592873f43da837a0693437e002c79746c2ba473f9df9029b7f694",
+    "extension/src/jobs.ts": "bb80781013405bc2700dbeceedf631063741aa3af7cbcd64c279fbc3743c1956",
+    "extension/src/local-agent.ts": "41f48c6fc41ce2e232a2a2c33251a6ec7f75028a205bc5646abc1d0ad3fb2777",
+    "extension/src/attention.ts": "fc4a20e15029f2c6a8917b8fe01934048bacb711d5c26f02e8ea92fd8b73ec39",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/hosted.ts": "cacb914e13a1995b187327c81540f8cc091315d70e310200d3e37cfd4de45da6",
+    "extension/src/evidence.ts": "ffdfc776628a6265ffd1ed235ba7d43ae99413ed9646b94f70dcd91d97225ddd",
+    "extension/src/types.ts": "51dfa165702ce36bc339ad9fe5b0dfd95ddf95b679134215582ae0fe4d002c04",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/src/popup.ts": "4513c0b8fe187dac3fb0c8e587a5330aee0a69515dd5c6ddd774cd05ae770f6f",
+    "extension/src/panel.ts": "1c6e635aad40ffdebe18bbd0c34e5c071d0b246e7142e2d9d2f2035d40f1c120",
+    "extension/public/panel.html": "384a83f4b481796effb8ca671b4c9fd7ea5a00fb8247415452ba5437e0c28201",
+    "extension/foundation/background.js": "9983beb76e37f89a845ae7086558d583acc2face2b2449c4392a0786389e7ac5"
+  },
+  "errors": [],
+  "chrome": "151.0.7922.34",
+  "extensionId": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+  "popupTarget": [
+    {
+      "type": "page",
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/popup.html"
+    }
+  ],
+  "bridgeJob": {
+    "id": "a4400be9-7f29-4dc3-9fae-de2433a9b00c",
+    "state": "complete",
+    "evidenceIds": [
+      "28d0fa42-9537-4617-80c2-fedc7f232c0c",
+      "cb7e7be9-68e1-4ef8-91dc-0d773ab2b4d5"
+    ],
+    "result": {
+      "summary": "Deferred research: compare two onboarding approaches, using the signup flow and accessibility checklist as context.",
+      "proposals": [
+        {
+          "kind": "research",
+          "nextStep": "Later, compare the two onboarding approaches against the accessibility checklist.",
+          "evidenceIds": [
+            "28d0fa42-9537-4617-80c2-fedc7f232c0c",
+            "cb7e7be9-68e1-4ef8-91dc-0d773ab2b4d5"
+          ],
+          "owner": null,
+          "dueDate": null,
+          "delivery": "digest-on-return"
+        }
+      ],
+      "classification": "research",
+      "actionRequired": false,
+      "urgency": "none",
+      "reason": "The note requests a short proposal for later; no required action or trusted deadline is established.",
+      "resurface": "on-return",
+      "evidenceIds": [
+        "28d0fa42-9537-4617-80c2-fedc7f232c0c",
+        "cb7e7be9-68e1-4ef8-91dc-0d773ab2b4d5"
+      ]
+    }
+  },
+  "bridgeAttention": {
+    "id": "cdb5b4e3-3e5a-48af-bd9c-ae94f406ee79",
+    "createdAt": 1789249126848,
+    "revision": 1,
+    "source": "reasoning",
+    "sourceId": "a4400be9-7f29-4dc3-9fae-de2433a9b00c",
+    "mode": "digest",
+    "summary": "Deferred research: compare two onboarding approaches, using the signup flow and accessibility checklist as context.",
+    "reason": "Useful saved analysis needs no immediate action.",
+    "resurface": "on-return",
+    "evidenceIds": [
+      "28d0fa42-9537-4617-80c2-fedc7f232c0c",
+      "cb7e7be9-68e1-4ef8-91dc-0d773ab2b4d5"
+    ],
+    "actionRequired": false
+  },
+  "cancellation": {
+    "id": "c7bf4215-c91b-4e20-951b-9aa2100c0c77",
+    "state": "cancelled",
+    "delivery": "confirmed"
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-12T21:38:48.469Z"
+}

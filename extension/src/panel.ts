@@ -1,5 +1,6 @@
-import type { Analysis, Absence, AudioSession, ContextSnapshot, Meeting, Note, OutboxItem, Settings, TaskProposal, TranscriptSegment } from './types';
-interface State { analyses: Analysis[]; audioSessions: AudioSession[]; contexts: ContextSnapshot[]; notes: Note[]; tasks: TaskProposal[]; meetings: Meeting[]; absences: Absence[]; transcripts: TranscriptSegment[]; outbox: OutboxItem[]; settings: Settings; currentContextId?: string; credentialsConfigured: boolean; commands: chrome.commands.Command[]; lastStatus?: { message: string; error: boolean } }
+import { BRIDGE_PERMISSION } from './local-agent';
+import type { ReasoningJob, AttentionSignal, Analysis, Absence, AudioSession, ContextSnapshot, Meeting, Note, OutboxItem, Settings, TaskProposal, TranscriptSegment } from './types';
+interface State { jobs: ReasoningJob[]; attention: AttentionSignal[]; localAgent: { connected: boolean }; analyses: Analysis[]; audioSessions: AudioSession[]; contexts: ContextSnapshot[]; notes: Note[]; tasks: TaskProposal[]; meetings: Meeting[]; absences: Absence[]; transcripts: TranscriptSegment[]; outbox: OutboxItem[]; settings: Settings; currentContextId?: string; credentialsConfigured: boolean; commands: chrome.commands.Command[]; lastStatus?: { message: string; error: boolean } }
 const $ = <T extends HTMLElement = HTMLElement>(selector: string) => {
   const element = document.querySelector<T>(selector);
   if (!element) throw new Error(`Missing panel control: ${selector}`);
@@ -7,7 +8,7 @@ const $ = <T extends HTMLElement = HTMLElement>(selector: string) => {
 };
 let state: State;
 let selectedContextId: string | undefined;
-let view = 'notes';
+let view = location.hash === '#attention' ? 'attention' : location.hash ? 'notes' : 'settings';
 let refreshSequence = 0;
 let analysisRunning = false;
 function showStatus(message: string, error = false) { $('#status').textContent = message; $('#status').classList.toggle('error', error); }
@@ -163,6 +164,31 @@ function renderReview() {
     outbox.append(card);
   }
 }
+function renderBackground() {
+  const attention = $('#attention'); attention.replaceChildren();
+  const pending = state.attention.filter(a => !a.surfacedAt && a.mode === 'negotiate').length;
+  attention.append(el('p', `${pending} decisions queued when you are ready.`));
+  for (const signal of [...state.attention].sort((a,b) => b.createdAt - a.createdAt)) {
+    const card = el('article'); card.dataset.attentionId = signal.id;
+    card.append(el('p', signal.summary), el('p', `${signal.mode} · ${signal.reason}`, 'meta'), el('p', `Resurface: ${signal.resurface}. Evidence: ${signal.evidenceIds.join(', ')}`, 'hint'));
+    if (signal.notificationError) card.append(el('p', signal.notificationError, 'warning'));
+    attention.append(card);
+  }
+  const jobs = $('#jobs'); jobs.replaceChildren();
+  for (const job of [...state.jobs].sort((a,b) => b.createdAt - a.createdAt)) {
+    const card = el('article'); card.dataset.jobId = job.id;
+    card.append(el('h3', `${job.provider === 'codex' ? 'Connected Codex' : 'Ambiguous'} · ${job.state}`), el('p', `${job.kind} · ${when(job.createdAt)} · Hosted processing`, 'meta'));
+    if (job.error) card.append(el('p', job.error, 'warning'));
+    if (job.cancelDelivery) card.append(el('p', `Bridge cancellation: ${job.cancelDelivery}${job.cancelError ? `. ${job.cancelError}` : ''}`, 'hint'));
+    if (job.result) {
+      card.append(el('p', job.result.summary), el('p', `Provider reason: ${job.result.reason}`, 'hint'));
+      for (const proposal of job.result.proposals) card.append(el('p', proposal.nextStep), el('p', `Proposal only · ${proposal.delivery} · ${proposal.evidenceIds.join(', ')}`, 'meta'));
+    }
+    card.append(el('p', `Saved evidence: ${job.evidenceIds.join(', ')}`, 'hint'));
+    if (job.state === 'queued' || job.state === 'running') card.append(button('Cancel reasoning', () => send('cancel-job', { id: job.id })));
+    jobs.append(card);
+  }
+}
 async function refresh() {
   const sequence = ++refreshSequence;
   const next = await send<State>('state');
@@ -176,7 +202,10 @@ async function refresh() {
   $('#credential-status').textContent = state.credentialsConfigured ? 'An API key is stored in this browser. Leave blank to keep it.' : 'No API key stored. Nothing can be synced.';
   const shortcut = state.commands.find(c => c.name === 'capture-context')?.shortcut;
   $('#shortcut').textContent = shortcut ? `Capture quietly with ${shortcut}.` : 'Capture shortcut is unassigned. Set it at chrome://extensions/shortcuts.';
-  renderNotes(); renderMeetings(); renderReview(); switchView(view);
+  $<HTMLInputElement>('#auto-ambiguous').checked = state.settings.autoAmbiguous;
+  $<HTMLInputElement>('#auto-local').checked = state.settings.autoLocalAgent;
+  $('#local-status').textContent = state.localAgent.connected ? 'Codex paired. Processing is hosted.' : 'No local coding agent connected.';
+  renderNotes(); renderMeetings(); renderReview(); renderBackground(); switchView(view);
 }
 for (const tab of document.querySelectorAll<HTMLElement>('[data-view]')) tab.onclick = () => switchView(tab.dataset.view!);
 $('#open-voice').onclick = () => void run(() => send('open-voice'));
@@ -186,6 +215,13 @@ $('#task-form').onsubmit = event => { event.preventDefault(); void run(async () 
 $('#meeting-form').onsubmit = event => { event.preventDefault(); void run(async () => { await send('save-meeting', { title: $<HTMLInputElement>('#meeting-title').value, joinUrl: $<HTMLInputElement>('#join-url').value, startsAt: new Date($<HTMLInputElement>('#starts-at').value).getTime(), remindAt: new Date($<HTMLInputElement>('#remind-at').value).getTime() }); showStatus('Meeting reminder saved.'); }); };
 $('#import-event-form').onsubmit = event => { event.preventDefault(); void run(async () => { await send('import-event', { eventId: $<HTMLInputElement>('#event-id').value.trim() }); showStatus('Ambiguous meeting saved locally.'); }); };
 $('#import-upcoming').onclick = () => void run(async () => { const result = await send<{ count: number; errors: string[] }>('import-upcoming'); showStatus(`${result.count} upcoming meetings imported.${result.errors.length ? ` Import errors: ${result.errors.join(' ')}` : result.count ? '' : ' No upcoming reminders returned.'}`, result.errors.length > 0); });
+$('#read-attention').onclick = () => void run(async () => { await send('attention-request'); showStatus('Saved digest and decisions are shown here.'); });
+for (const [selector, key] of [['#auto-ambiguous', 'autoAmbiguous'], ['#auto-local', 'autoLocalAgent']]) $(selector).onchange = () => void run(async () => { await send('settings', { syncMode: state.settings.syncMode, [key]: $<HTMLInputElement>(selector).checked }); showStatus('Automatic reasoning preference saved.'); });
+$('#connect-local').onclick = () => {
+  const permission = chrome.permissions.request({ origins: [BRIDGE_PERMISSION] });
+  void run(async () => { if (!await permission) throw new Error('Local bridge permission was not granted.'); await send('connect-local', { secret: $<HTMLInputElement>('#pairing-secret').value }); $<HTMLInputElement>('#pairing-secret').value = ''; showStatus('Codex connected. Automatic reasoning remains a separate opt-in.'); });
+};
+$('#disconnect-local').onclick = () => void run(async () => { await send('disconnect-local'); showStatus('Local coding agent disconnected.'); });
 $('#hosted-reasoning').onchange = () => void run(async () => { await send('settings', { syncMode: state.settings.syncMode, hostedReasoning: $<HTMLInputElement>('#hosted-reasoning').checked }); showStatus('Hosted analysis preference saved.'); });
 $('#sync-mode').onchange = () => void run(async () => { await send('settings', { syncMode: $<HTMLSelectElement>('#sync-mode').value }); showStatus('Sync preference saved.'); });
 $('#identity-form').onsubmit = event => { event.preventDefault(); void run(async () => { const token = $<HTMLInputElement>('#api-token').value; if (token) await send('credentials', { token }); $<HTMLInputElement>('#api-token').value = ''; await send('settings', { syncMode: state.settings.syncMode, workspaceLabel: $<HTMLInputElement>('#workspace-label').value }); showStatus('Connection settings saved.'); }); };
@@ -197,6 +233,6 @@ $('#approve-sync').onclick = () => void run(async () => {
 $('#send-approved').onclick = () => void run(async () => { await send('send-approved'); showStatus('Sending approved records. Local copies remain saved.'); });
 chrome.runtime.onMessage.addListener(message => { if (message.type === 'changed') void refresh().catch(error => showStatus(String(error), true)); });
 function readHash() { selectedContextId = new URLSearchParams(location.hash.slice(1)).get('context') ?? undefined; }
-window.onhashchange = () => { readHash(); switchView('notes'); void refresh(); };
+window.onhashchange = () => { readHash(); switchView(location.hash === '#attention' ? 'attention' : 'notes'); void refresh(); };
 readHash();
 void refresh().then(() => showStatus('Local workspace ready.')).catch(error => showStatus(String(error), true));

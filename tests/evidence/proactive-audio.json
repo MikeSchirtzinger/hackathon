@@ -1,0 +1,50 @@
+{
+  "startedAt": "2026-09-12T21:36:45.098Z",
+  "checks": [
+    {
+      "name": "Panel opens the inherited Voice Lab under the same extension ID"
+    },
+    {
+      "name": "Real Nemotron sample is saved through the UI bridge and retained after reload",
+      "detail": {
+        "text": "After early nightfall, the yellow lamps would light up here and there the squalid quarter of the brothels",
+        "elapsedMs": 12804
+      }
+    },
+    {
+      "name": "Stop audio discards a late result from real Kokoro synthesis",
+      "detail": {
+        "elapsedMs": 8149
+      }
+    },
+    {
+      "name": "A fresh explicit Kokoro request generates audio after cancellation",
+      "detail": {
+        "metric": "1.0s audio · 4.3s generation · 4.14× RTF",
+        "route": "not configured; no meeting delivery claim"
+      }
+    },
+    {
+      "name": "Return cancels real pending synthesis; the existing ASR worker still decodes another real clip"
+    },
+    {
+      "name": "Reloaded audio document cannot leave a durable starting session blocking capture"
+    },
+    {
+      "name": "Closed audio owner is marked interrupted and permits a new session"
+    },
+    {
+      "name": "Browser restart recovers stale owner records and retains real transcript before allowing capture"
+    }
+  ],
+  "errors": [],
+  "sampleSha256": "6bc58a4efdf20daac252b6b1502632601a71efe0308f6757dc1eda34891a7e4f",
+  "chrome": "151.0.7922.34",
+  "extensionId": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+  "returnStopReceipt": {
+    "stops": 2,
+    "pending": false
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-12T21:39:30.244Z"
+}

@@ -7,7 +7,6 @@
     "storage",
     "power",
     "scripting",
-    "sidePanel",
     "alarms",
     "notifications"
   ],
@@ -18,22 +17,20 @@
   },
   "action": {
     "default_title": "Open Spark",
-    "default_icon": "icon.png"
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
   },
   "background": {
     "service_worker": "foundation/background.js",
     "type": "module"
   },
   "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' blob: https://app.ambiguous.ai; worker-src 'self'; media-src 'self' blob:"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' blob: https://app.ambiguous.ai http://127.0.0.1:4318; worker-src 'self'; media-src 'self' blob:"
   },
-  "minimum_chrome_version": "120",
+  "minimum_chrome_version": "127",
   "host_permissions": [
     "https://app.ambiguous.ai/*"
   ],
-  "side_panel": {
-    "default_path": "panel.html"
-  },
   "commands": {
     "capture-context": {
       "suggested_key": {
@@ -47,7 +44,14 @@
         "default": "Ctrl+Shift+U",
         "mac": "Command+Shift+U"
       },
-      "description": "Open notes and meeting controls"
+      "description": "Open the Spark popup"
     }
-  }
+  },
+  "options_ui": {
+    "page": "panel.html",
+    "open_in_tab": true
+  },
+  "optional_host_permissions": [
+    "http://127.0.0.1:4318/*"
+  ]
 }

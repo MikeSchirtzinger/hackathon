@@ -11,14 +11,14 @@ const extension=path.resolve('extension');
 const report={startedAt:new Date().toISOString(),checks:[],errors:[],sampleSha256:createHash('sha256').update(await readFile('extension/demo.wav')).digest('hex')};
 function pass(name,detail){report.checks.push({name,detail});console.log('PASS',name,detail??'');}
 async function eventually(fn,timeout=20000){const until=Date.now()+timeout;while(Date.now()<until){if(await fn())return;await new Promise(r=>setTimeout(r,100));}throw Error('Timed out waiting for real audio integration state.');}
-const launch=()=>chromium.launchPersistentContext(profile,{...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{channel:'chromium'}),headless:true,viewport:{width:1100,height:1000},ignoreDefaultArgs:['--disable-extensions'],args:[`--disable-extensions-except=${extension}`,`--load-extension=${extension}`]});
+const launch=()=>chromium.launchPersistentContext(profile,{...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{channel:'chromium'}),headless:true,viewport:{width:1100,height:1000},ignoreDefaultArgs:['--disable-extensions'],args:[`--disable-extensions-except=${extension}`,`--load-extension=${extension}`,'--use-mock-keychain']});
 let context;
 try{
  context=await launch();report.chrome=context.browser().version();
  const worker=context.serviceWorkers()[0]||await context.waitForEvent('serviceworker');
  const id=new URL(worker.url()).host;report.extensionId=id;
  let panel=context.pages()[0];await panel.goto(`chrome-extension://${id}/panel.html`);
- await panel.getByText('Local workspace ready.',{exact:true}).waitFor();
+ await panel.getByText('Local workspace ready.',{exact:true}).waitFor();await panel.getByRole('button',{name:'Notes',exact:true}).click();
  const readState=()=>panel.evaluate(async()=>{const r=await chrome.runtime.sendMessage({type:'state'});if(!r.ok)throw Error(r.error);return r.value;});
  const control=(type,values={})=>panel.evaluate(async({type,values})=>chrome.runtime.sendMessage({type,...values}),{type,values});
  const sourcePage=await context.newPage();await sourcePage.goto('https://example.com/');
@@ -44,7 +44,7 @@ try{
  const audioSession=asrState.audioSessions.find(s=>s.id===transcript.sessionId);
  assert.equal(audioSession.source,'sample');assert.equal(audioSession.meetingId,undefined);
  assert(audioSession.ownerDocumentId);assert(transcript.endMs>transcript.startMs);
- await panel.reload();await panel.getByText('Local workspace ready.',{exact:true}).waitFor();
+ await panel.reload();await panel.getByText('Local workspace ready.',{exact:true}).waitFor();await panel.getByRole('button',{name:'Notes',exact:true}).click();
  assert.equal((await readState()).transcripts.find(t=>t.id===transcript.id).text,transcript.text);
  await panel.getByText(transcript.text,{exact:true}).waitFor();
  await panel.screenshot({path:path.join(evidence,'transcript-persisted.png'),fullPage:true});
@@ -107,7 +107,7 @@ try{
  await context.close();context=await launch();
  const worker2=context.serviceWorkers()[0]||await context.waitForEvent('serviceworker');
  panel=context.pages()[0];await panel.goto(`chrome-extension://${new URL(worker2.url()).host}/panel.html`);
- await panel.getByText('Local workspace ready.',{exact:true}).waitFor();
+ await panel.getByText('Local workspace ready.',{exact:true}).waitFor();await panel.getByRole('button',{name:'Notes',exact:true}).click();
  state=await readState();assert.equal(state.audioSessions.find(s=>s.id===orphan2.value.id).captureStatus,'error');
  assert.equal(state.transcripts.find(t=>t.id===transcript.id).text,transcript.text);
  voice=await context.newPage();await voice.goto(`chrome-extension://${id}/index.html`);

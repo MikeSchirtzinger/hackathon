@@ -13,7 +13,9 @@
     "test:integration": "node scripts/audio-integration-proof.mjs",
     "test:demo": "node scripts/demo-browser-proof.mjs",
     "test:hosted": "node scripts/hosted-browser-proof.mjs",
-    "test:tab-capture": "node scripts/tab-capture-proof.mjs"
+    "test:tab-capture": "node scripts/tab-capture-proof.mjs",
+    "test:proactive": "node scripts/proactive-browser-proof.mjs",
+    "test:auto-hosted": "node scripts/automatic-hosted-proof.mjs"
   },
   "devDependencies": {
     "@types/chrome": "^0.1.0",

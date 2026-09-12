@@ -1,0 +1,98 @@
+{
+  "startedAt": "2026-09-12T21:35:48.228Z",
+  "checks": [
+    {
+      "name": "Saved ordinary agent key, sync consent, and manual hosted consent still do not authorize automatic reasoning"
+    },
+    {
+      "name": "Separate automatic opt-in plus new UI note triggers one real Assistant request, stores proposals and no-tool receipt, and does not block local saves or open UI"
+    },
+    {
+      "name": "Automatic opt-out prevents new sends and real results remain saved after reload"
+    }
+  ],
+  "requests": [
+    {
+      "url": "https://app.ambiguous.ai/api/assistant/chat",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "sourceSha256": {
+    "extension/src/jobs.ts": "bb80781013405bc2700dbeceedf631063741aa3af7cbcd64c279fbc3743c1956",
+    "extension/src/background.ts": "c013ccc5ef1592873f43da837a0693437e002c79746c2ba473f9df9029b7f694",
+    "extension/src/hosted.ts": "cacb914e13a1995b187327c81540f8cc091315d70e310200d3e37cfd4de45da6",
+    "extension/src/attention.ts": "fc4a20e15029f2c6a8917b8fe01934048bacb711d5c26f02e8ea92fd8b73ec39",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/evidence.ts": "ffdfc776628a6265ffd1ed235ba7d43ae99413ed9646b94f70dcd91d97225ddd",
+    "extension/src/types.ts": "51dfa165702ce36bc339ad9fe5b0dfd95ddf95b679134215582ae0fe4d002c04",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/src/local-agent.ts": "41f48c6fc41ce2e232a2a2c33251a6ec7f75028a205bc5646abc1d0ad3fb2777",
+    "extension/manifest.json": "a5c32ec33dbacc9e5ada698d8762c5e99e4d0e8823140cbb90aacacfdb5244c4",
+    "extension/foundation/background.js": "9983beb76e37f89a845ae7086558d583acc2face2b2449c4392a0786389e7ac5"
+  },
+  "chrome": "151.0.7922.34",
+  "job": {
+    "id": "983a1cf3-e37e-4ebc-8960-221a8e3ce3d4",
+    "state": "complete",
+    "result": {
+      "summary": "Untrusted evidence contains a single onboarding research note: compare progressive profile setup with one long signup form, and consult the accessibility checklist. No owner, deadline, or decision is recorded. There is no transcript, so absence-to-transcript timing is unavailable, and this is preparation-only context rather than a report of what happened.",
+      "proposals": [
+        {
+          "kind": "follow-up",
+          "nextStep": "Confirm whether this onboarding research note should be assigned to someone and given a deadline.",
+          "evidenceIds": [
+            "4ff7acba-114a-4784-b2f5-658b6b22f5ae"
+          ],
+          "owner": null,
+          "dueDate": null,
+          "delivery": "quiet-status"
+        },
+        {
+          "kind": "research",
+          "nextStep": "Compare progressive profile setup versus a single long signup form, using the accessibility checklist as the evaluation frame.",
+          "evidenceIds": [
+            "4ff7acba-114a-4784-b2f5-658b6b22f5ae"
+          ],
+          "owner": null,
+          "dueDate": null,
+          "delivery": "digest-on-return"
+        },
+        {
+          "kind": "decision",
+          "nextStep": "Decide whether the onboarding flow should favor progressive profile setup or a single long signup form.",
+          "evidenceIds": [
+            "4ff7acba-114a-4784-b2f5-658b6b22f5ae"
+          ],
+          "owner": null,
+          "dueDate": null,
+          "delivery": "queued-decision"
+        }
+      ],
+      "evidenceIds": [
+        "4ff7acba-114a-4784-b2f5-658b6b22f5ae",
+        "5dfeba20-6966-42ab-97bd-9b0fd3e73643"
+      ],
+      "classification": "decision",
+      "actionRequired": true,
+      "urgency": "when-available",
+      "reason": "Saved analysis is a proposal for review, not execution authority.",
+      "resurface": "on-return"
+    },
+    "evidenceIds": [
+      "4ff7acba-114a-4784-b2f5-658b6b22f5ae",
+      "5dfeba20-6966-42ab-97bd-9b0fd3e73643"
+    ]
+  },
+  "analysis": {
+    "id": "1a02b7a2-5fce-4b0a-9548-e98bef6f6819",
+    "toolActivity": [],
+    "response": "{\"summary\":\"Untrusted evidence contains a single onboarding research note: compare progressive profile setup with one long signup form, and consult the accessibility checklist. No owner, deadline, or decision is recorded. There is no transcript, so absence-to-transcript timing is unavailable, and this is preparation-only context rather than a report of what happened.\",\"proposals\":[{\"kind\":\"follow-up\",\"nextStep\":\"Confirm whether this onboarding research note should be assigned to someone and given a deadline.\",\"evidenceIds\":[\"4ff7acba-114a-4784-b2f5-658b6b22f5ae\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"quiet-status\"},{\"kind\":\"research\",\"nextStep\":\"Compare progressive profile setup versus a single long signup form, using the accessibility checklist as the evaluation frame.\",\"evidenceIds\":[\"4ff7acba-114a-4784-b2f5-658b6b22f5ae\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"digest-on-return\"},{\"kind\":\"decision\",\"nextStep\":\"Decide whether the onboarding flow should favor progressive profile setup or a single long signup form.\",\"evidenceIds\":[\"4ff7acba-114a-4784-b2f5-658b6b22f5ae\"],\"owner\":null,\"dueDate\":null,\"delivery\":\"queued-decision\"}]}",
+    "evidenceIds": [
+      "4ff7acba-114a-4784-b2f5-658b6b22f5ae",
+      "5dfeba20-6966-42ab-97bd-9b0fd3e73643"
+    ]
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-12T21:36:16.863Z"
+}
