@@ -46,7 +46,8 @@ try {
  pass('Real Chrome capture hotkey authorizes and snapshots the seeded Jitsi document', { url: snapshot.url, title: snapshot.title });
  await panel.getByRole('button', { name: 'Notes', exact: true }).click();
  const noteText = `Demo follow-through ${runId}: keep progressive onboarding context for the project meeting.`;
- await panel.locator('#note').fill(noteText); await panel.getByRole('button', { name: 'Save note locally', exact: true }).click();
+ await panel.getByRole('button', { name: 'Notes', exact: true }).click();
+  await panel.locator('#note').fill(noteText); await panel.getByRole('button', { name: 'Save note locally', exact: true }).click();
  await eventually(async () => (await state()).notes.length === 1);
  await panel.getByRole('button', { name: 'Review', exact: true }).click();
  const taskTitle = `Review onboarding decisions ${runId}`;

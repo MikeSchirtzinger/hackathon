@@ -1,0 +1,44 @@
+{
+  "startedAt": "2026-09-12T21:40:56.139Z",
+  "checks": [
+    {
+      "name": "In-flight Disconnect clears saved pairing and reaches real bridge cancellation using the previous secret, with actual GET readback"
+    }
+  ],
+  "requests": [
+    {
+      "url": "http://127.0.0.1:4318/v1/capabilities",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:4318/v1/jobs",
+      "method": "POST",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:4318/v1/jobs/c7dcf600-900a-451b-b99b-6e4d7ca42b21/cancel",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "sourceSha256": {
+    "extension/src/jobs.ts": "d4b34d661f408363dabdd85f16815dd6691feb7d8b1ad0859c2da79ddc3cd4dc",
+    "extension/src/local-agent.ts": "41f48c6fc41ce2e232a2a2c33251a6ec7f75028a205bc5646abc1d0ad3fb2777",
+    "extension/src/background.ts": "c013ccc5ef1592873f43da837a0693437e002c79746c2ba473f9df9029b7f694",
+    "extension/src/hosted.ts": "c1976195ddf760bfbb9fdaf9eee96a547035891a9b81887dbc50403dfa5811b2",
+    "extension/src/attention.ts": "fc4a20e15029f2c6a8917b8fe01934048bacb711d5c26f02e8ea92fd8b73ec39",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/foundation/background.js": "34128ac22483cbf311a96fddc131c22732242291f7e01d06bf5f938e50892fdb"
+  },
+  "chrome": "151.0.7922.34",
+  "receipt": {
+    "id": "c7dcf600-900a-451b-b99b-6e4d7ca42b21",
+    "clientState": "cancelled",
+    "cancelDelivery": "confirmed",
+    "remoteState": "cancelled",
+    "readbackStatus": 200
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-12T21:41:49.520Z"
+}

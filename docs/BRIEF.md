@@ -1,6 +1,6 @@
 # Build brief
 
-The extension carries context from browsing into a meeting and brings the user back to the decisions and work they missed. The intended flow analyzes a hotkey note without requiring a manual context prompt. The implemented checkpoint saves context first and requires a separate explicit hosted-analysis action. Captured records go to IndexedDB first. Ambiguous sync is optional.
+The extension carries context from browsing into a meeting and brings the user back to the decisions and work they missed. The intended flow analyzes a hotkey note without requiring a manual context prompt. The current implementation saves context first and queues background reasoning only after explicit per-provider automatic opt-in. It has no sidebar; a compact toolbar popup opens on request, with deeper settings in an options page. Captured records go to IndexedDB first. Ambiguous sync is optional.
 
 Deadline: September 12, 2026, 4:30 PM EDT. Target submission: 4:00 PM.
 
@@ -10,7 +10,7 @@ Submission needs: title, written description, public repo, two-minute video, and
 
 - Automatic current-page context when the hotkey note starts.
 - Push-to-capture by default, with optional continuous capture.
-- Hotkey notes save context quietly. Optional hosted analysis currently requires an explicit click; automatic analysis remains outside this checkpoint.
+- Hotkey notes save context quietly. Automatic analysis requires separate consent for Ambiguous or connected Codex; manual analysis remains available in Settings.
 - IndexedDB first for context, notes, transcripts, proposed actions, and sync state.
 - A toggle keeps records local or enables Ambiguous sync.
 - Teammate owns silent-notetaker/Nemotron transcription and Kokoro speech work, including the proposed virtual microphone route.
@@ -38,7 +38,7 @@ Classify work independently from its delivery and execution permissions. A task 
 | Routine classification, summary, or sync finishes | Quiet status | Update the record without taking focus or speaking |
 | Useful information that needs no decision | Digest | Surface when the user returns or ends the meeting |
 | An action needs approval but can wait | Queued decision | Include it in the next review, with a resurface trigger |
-| Meeting is about to start | Interrupt | Show the join action at the saved reminder time |
+| Meeting is about to start | Interrupt | Show the join action from a trusted saved deadline, within the shared ten-minute interruption budget |
 | User is away and the meeting asks a question | Meeting speech | Answer within the active Takeover instructions |
 
 Proposed Takeover default: answer from captured context and the user's instructions; queue new commitments for the user's return. This authority choice is pending Mike's answer. Page content and meeting transcripts are evidence, not permission to speak, sync, or execute an action.
@@ -69,19 +69,19 @@ Use the extension's resume view for prefilled context. A remote task URL alone d
 
 The confirmed demo meeting runs in Zoom in Chrome. The Jitsi document replay below is shared tab-capture proof, not evidence of live Zoom participant delivery.
 
-The current extension passes the local, calendar, reviewed-write, tab-capture and explicitly requested hosted-analysis checks recorded in [EXTENSION-HANDOFF.md](EXTENSION-HANDOFF.md). The complete autonomous meeting demo remains unverified.
+The current extension passes the local, calendar, reviewed-write, tab-capture, manual hosted-analysis and opted-in automatic-reasoning checks recorded in [EXTENSION-HANDOFF.md](EXTENSION-HANDOFF.md). The complete autonomous meeting demo remains unverified. Automatic work stays in background jobs; only the central attention controller may send native notifications. Routine on-request notes are status, useful findings become digests, and actionable proposals become quiet pending decisions. Provider text cannot create interruption or execution authority.
 
 The inherited audio base is `bf79f61`. Its Voice Lab uses sherpa-onnx WebAssembly workers for Nemotron and Kokoro, an IndexedDB audio queue and BlackHole output selection. Tab capture now accepts an explicitly authorized Jitsi, Zoom or other web tab. A real clip played in the seeded Jitsi document was captured, recognized and persisted. This does not prove live participant delivery.
 
-The versioned Chrome runtime bridge carries session and segment IDs, sequence/revision, decoded-audio offsets, text, source and partial/final state. The worker validates the owning tab and document before committing to IndexedDB. The persistent Voice Lab tab remains the audio owner; closing the side panel does not stop it. Closing or reloading that owner preserves captured transcripts and permits a new session. Offscreen ownership remains a later option.
+The versioned Chrome runtime bridge carries session and segment IDs, sequence/revision, decoded-audio offsets, text, source and partial/final state. The worker validates the owning tab and document before committing to IndexedDB. The persistent Voice Lab tab remains the audio owner; closing the popup or Settings does not stop it. Closing or reloading that owner preserves captured transcripts and permits a new session. Offscreen ownership remains a later option.
 
 Earlier real Kokoro checks prove synthesis and late-result cancellation. Return stops output while the existing ASR worker remains usable. Virtual microphone delivery still needs participant verification. Autonomous Takeover is unavailable.
 
-Ambiguous supplies the seeded Jitsi event, reminder and notes-document association. Real event/upcoming import and task/note creation with HTTP readback passed through the extension UI. The key is entered through Settings and stored in trusted browser storage. Local mode blocks network integration, and enabling sync does not enqueue earlier private history.
+Ambiguous supplies the seeded Jitsi event, reminder and notes-document association. Real event/upcoming import and task/note creation with HTTP readback passed through the extension UI. The key is entered through Settings and stored in trusted browser storage. Local mode blocks captured-content egress and hosted inference, and enabling sync does not enqueue earlier private history.
 
-The hosted Assistant endpoint supplies actual note analysis and meeting preparation proposals after a separate visible opt-in and per-request click. Actual responses and evidence IDs persist locally. Meeting requests include saved absence intervals and state that decoded-audio offsets cannot identify what was missed during those intervals. Owners and dates remain null in generated proposals. The extension executes none of them.
+The hosted Assistant endpoint supplies actual note analysis and meeting preparation proposals after visible hosted consent and either a per-request click or separate automatic-provider opt-in. Actual responses and evidence IDs persist locally. Meeting requests include saved absence intervals and state that decoded-audio offsets cannot identify what was missed during those intervals. Owners and dates remain null in generated proposals. The extension executes none of them.
 
-The provider API offers no hard tool restriction for this request. Prompts request analysis only; returned tool activity is displayed as an error and proposals are rejected. Actual hosted checks returned no tool activity. Workspace agent identities and their independent execution receipts are documented in [AMBIGUOUS.md](AMBIGUOUS.md); the extension's measured hosted UI used the saved workspace key. Managed coworker runtime remains unavailable.
+The provider API offers no hard tool restriction for this request. Prompts request analysis only; returned tool activity is displayed as an error and proposals are rejected. Actual hosted checks returned no tool activity. Workspace agent identities and their independent execution receipts are documented in [AMBIGUOUS.md](AMBIGUOUS.md); the automatic hosted check uses the separately configured ordinary Context Scout agent key. Managed coworker runtime remains unavailable.
 
 ## Inputs and evidence still needed
 

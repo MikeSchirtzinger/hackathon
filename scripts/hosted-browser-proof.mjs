@@ -26,7 +26,8 @@ try {
  const page = await context.newPage(); await page.goto('https://example.com/'); const cdp = await context.newCDPSession(page);
  for (const type of ['rawKeyDown','keyUp']) await cdp.send('Input.dispatchKeyEvent', { type, modifiers: 12, key: 'Y', code: 'KeyY', windowsVirtualKeyCode: 89, nativeVirtualKeyCode: 16, isSystemKey: true }); await cdp.detach();
  await eventually(async () => (await state()).contexts.length === 1);
- await panel.locator('#note').fill('Prepare for the onboarding design meeting. Compare progressive profile with the existing signup flow. Keep the accessibility checklist handy. No owner or due date has been decided.');
+ await panel.getByRole('button', { name: 'Notes', exact: true }).click();
+  await panel.locator('#note').fill('Prepare for the onboarding design meeting. Compare progressive profile with the existing signup flow. Keep the accessibility checklist handy. No owner or due date has been decided.');
  await panel.getByRole('button', { name: 'Save note locally', exact: true }).click();
  await eventually(async () => (await state()).notes.length === 1); const note = (await state()).notes[0];
  assert(await panel.getByRole('button', { name: 'Analyze saved note', exact: true }).isDisabled());

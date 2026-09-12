@@ -6,6 +6,9 @@ import { safeWebUrl } from './policy';
 import { approveBatch, calendarRead, readCalendarEvent, credentials, haltSync, pumpOutbox, reconcile, recoverOutbox, setSyncEnabled, storeCredentials } from './ambiguous';
 import { calendarId, importCalendarEvent, object } from './calendar';
 import { analyze, recoverAnalyses, stopHostedAnalysis } from './hosted';
+import { queueReasoning, recoverJobs, wakeJobs, revokeJobs, cancelJob } from './jobs';
+import { pairing, connectLocalAgent, disconnectLocalAgent, invalidateConnectionAttempt } from './local-agent';
+import { meetingAttention, flushAttention, recoverAttention, surfaceAttention } from './attention';
 
 let mutationQueue: Promise<unknown> = Promise.resolve();
 function serialize<T>(operation: () => Promise<T>): Promise<T> {
@@ -16,13 +19,13 @@ function serialize<T>(operation: () => Promise<T>): Promise<T> {
 async function changed() { await chrome.runtime.sendMessage({ type: 'changed' }).catch(() => undefined); }
 async function status(message: string, error = false) {
   await put('settings', { id: 'lastStatus', value: { message, error, at: Date.now() } });
-  await chrome.action.setBadgeText({ text: error ? '!' : 'OK' });
-  await chrome.action.setBadgeBackgroundColor({ color: error ? '#9f3030' : '#26604d' });
+
   await changed();
 }
 async function capture(tab: chrome.tabs.Tab, source: 'hotkey' | 'button') {
   const context = await captureContext(tab, source);
   await status(context.availability === 'available' ? 'Context saved locally.' : 'Context saved. Page text unavailable.');
+  void queueReasoning('context', context.id).catch(error => status(String(error), true));
   return context;
 }
 async function authorizeAudioTab(tab: chrome.tabs.Tab) {
@@ -31,7 +34,7 @@ async function authorizeAudioTab(tab: chrome.tabs.Tab) {
   }
 }
 chrome.commands.onCommand.addListener((command, tab) => {
-  if (command === 'open-panel' && tab?.windowId !== undefined) { void chrome.sidePanel.open({ windowId: tab.windowId }).catch(error => status(String(error), true)); return; }
+  if (command === 'open-panel') { void chrome.action.openPopup().catch(error => status(String(error), true)); return; }
   if (command === 'capture-context') {
     // Chrome supplies the original tab at the command boundary. Never re-query after capture starts.
     void serialize(async () => {
@@ -40,10 +43,6 @@ chrome.commands.onCommand.addListener((command, tab) => {
       await capture(tab, 'hotkey');
     }).catch(error => status(error instanceof Error ? error.message : 'Capture failed.', true));
   }
-});
-chrome.action.onClicked.addListener(tab => {
-  if (tab.windowId !== undefined) void chrome.sidePanel.open({ windowId: tab.windowId });
-  void serialize(async () => { await authorizeAudioTab(tab); return capture(tab, 'button'); }).catch(error => status(String(error), true));
 });
 async function scheduleReminder(meeting: Meeting) {
   if (meeting.reminderEnabled === false || meeting.status === 'ended' || meeting.reminderFiredAt) { await chrome.alarms.clear(`meeting:${meeting.id}`); return; }
@@ -59,11 +58,17 @@ async function initialize() {
   await recoverAnalyses();
   await recoverAudioSessions();
   await restoreAlarms();
+  await chrome.action.setBadgeText({ text: '' });
+  await recoverAttention();
+  await recoverJobs();
 }
 const ready = initialize();
 chrome.runtime.onInstalled.addListener(() => { void ready.catch(error => status(String(error), true)); });
 chrome.runtime.onStartup.addListener(() => { void ready.catch(error => status(String(error), true)); });
 chrome.alarms.onAlarm.addListener(alarm => {
+  if (alarm.name === 'reasoning-jobs') { void ready.then(wakeJobs); return; }
+  if (alarm.name === 'attention-flush' || alarm.name.startsWith('attention-deadline:')) { void ready.then(flushAttention).then(changed); return; }
+  if (alarm.name.startsWith('attention-clear:')) { void chrome.notifications.clear(alarm.name.slice(16)); return; }
   if (!alarm.name.startsWith('meeting:')) return;
   void serialize(async () => {
     await ready;
@@ -71,8 +76,7 @@ chrome.alarms.onAlarm.addListener(alarm => {
     if (!meeting || meeting.reminderEnabled === false || meeting.status === 'ended' || meeting.reminderFiredAt) return;
     const next = { ...meeting, reminderFiredAt: Date.now(), revision: meeting.revision + 1 };
     await put('meetings', next);
-    try { await chrome.notifications.create(`meeting:${meeting.id}`, { type: 'basic', iconUrl: chrome.runtime.getURL('icon.png'), title: meeting.title, message: 'Your saved meeting reminder is due. Click to join.', priority: 2 }); }
-    catch { await put('meetings', { ...next, notificationError: 'System notification unavailable. The reminder is visible here.' }); }
+    await meetingAttention(next);
     await changed();
   }).catch(error => status(String(error), true));
 });
@@ -188,7 +192,25 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
     }
     case 'state': {
       const [contexts, notes, tasks, meetings, absences, transcripts, outbox, prefs, current, last, auth, commands] = await Promise.all([all('contexts'), all('notes'), all('tasks'), all('meetings'), all('absences'), all('transcripts'), all('outbox'), settings(), get('settings', 'currentContext'), get('settings', 'lastStatus'), credentials(), chrome.commands.getAll()]);
-      return { contexts, notes, tasks, meetings, absences, transcripts, outbox, analyses: await all('analyses'), audioSessions: await all('audioSessions'), settings: prefs, currentContextId: current?.value, lastStatus: last?.value, credentialsConfigured: !!auth.token, commands };
+      return { contexts, notes, tasks, meetings, absences, transcripts, outbox, analyses: await all('analyses'), jobs: await all('jobs'), attention: await all('attention'), localAgent: { connected: (await pairing()).connected, processing: 'hosted', provider: 'codex' }, audioSessions: await all('audioSessions'), settings: prefs, currentContextId: current?.value, lastStatus: last?.value, credentialsConfigured: !!auth.token, commands };
+    }
+    case 'popup-open': {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (tab) await authorizeAudioTab(tab);
+      return true;
+    }
+    case 'attention-request': return surfaceAttention('on-request');
+    case 'cancel-job': return cancelJob(text(message.id, 100));
+    case 'connect-local': return connectLocalAgent(message.secret);
+    case 'disconnect-local': await revokeJobs('codex'); await disconnectLocalAgent(); await changed(); return true;
+    case 'popup-note': {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (!tab) throw new Error('No active page is available.');
+      const context = await captureContext(tab, 'button');
+      const note: Note = { ...base(), contextId: context.id, text: text(message.text), source: 'manual', syncEligible: (await settings()).syncMode === 'sync', reasoning: 'unavailable' };
+      await put('notes', note);
+      void queueReasoning('note', note.id).catch(error => status(String(error), true));
+      await status('Note saved locally.'); return note;
     }
     case 'capture': {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -201,7 +223,8 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
       const note: Note = { ...base(), contextId, text: text(message.text), source: 'manual', syncEligible: (await settings()).syncMode === 'sync', reasoning: 'unavailable' };
       if (typeof message.meetingId === 'string' && await get('meetings', message.meetingId)) note.meetingId = message.meetingId;
       await put('notes', note);
-      await status('Note saved locally. Reasoning is not configured.');
+      void queueReasoning('note', note.id).catch(error => status(String(error), true));
+      await status('Note saved locally.');
       return note;
     }
     case 'save-transcript-note': {
@@ -209,7 +232,7 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
       const session = segment ? await get('audioSessions', segment.sessionId) : undefined;
       if (!segment?.final || !session?.contextId || !await get('contexts', session.contextId)) throw new Error('A final transcript with saved context is required.');
       const note: Note = { ...base(), contextId: session.contextId, text: text(segment.text), source: 'transcript', transcriptId: segment.id, meetingId: session.meetingId, syncEligible: (await settings()).syncMode === 'sync', reasoning: 'unavailable' };
-      await put('notes', note); await status('Transcript note saved locally.'); return note;
+      await put('notes', note); void queueReasoning('note', note.id).catch(error => status(String(error), true)); await status('Transcript note saved locally.'); return note;
     }
     case 'save-task': {
       const contextId = text(message.contextId, 100);
@@ -246,6 +269,7 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
         const open = (await all('absences')).filter(a => a.meetingId === meeting.id && !a.endAt);
         await writeBatch([{ store: 'meetings', value: next }, ...open.map(a => ({ store: 'absences' as const, value: { ...a, endAt: Date.now(), revision: a.revision + 1 } }))]);
       } else throw new Error('Unknown meeting action.');
+      if (action === 'return' || action === 'end') { await surfaceAttention('on-return'); void queueReasoning('meeting', next.id).catch(error => status(String(error), true)); }
       await changed(); return next;
     }
     case 'settings': {
@@ -254,6 +278,14 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
       if (!['local', 'sync'].includes(String(syncMode))) throw new Error('Invalid sync mode.');
       if (syncMode === 'local') haltSync();
       const next: Settings = { ...old, syncMode: syncMode as Settings['syncMode'], hostedReasoning: typeof message.hostedReasoning === 'boolean' ? message.hostedReasoning : old.hostedReasoning, workspaceLabel: typeof message.workspaceLabel === 'string' ? message.workspaceLabel.trim().slice(0, 200) : old.workspaceLabel };
+      if (typeof message.autoAmbiguous === 'boolean') next.autoAmbiguous = message.autoAmbiguous;
+      if (typeof message.autoLocalAgent === 'boolean') next.autoLocalAgent = message.autoLocalAgent;
+      if (message.autoAmbiguous === false || syncMode === 'local' || message.hostedReasoning === false) next.ambiguousReasoningEpoch = crypto.randomUUID();
+      if (message.autoLocalAgent === false || syncMode === 'local') next.localReasoningEpoch = crypto.randomUUID();
+      if (syncMode === 'local') { next.autoAmbiguous = false; next.autoLocalAgent = false; }
+      if (!next.hostedReasoning) next.autoAmbiguous = false;
+      if (next.autoAmbiguous && !((await credentials()).token && next.hostedReasoning && syncMode === 'sync')) throw new Error('Connect Ambiguous and allow hosted analysis before automatic reasoning.');
+      if (next.autoLocalAgent && !((await pairing()).connected && syncMode === 'sync')) throw new Error('Connect Codex and allow hosted processing before automatic reasoning.');
       await put('settings', { id: 'preferences', value: next });
       setSyncEnabled(next.syncMode === 'sync');
       await changed(); return next;
@@ -294,14 +326,21 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
 }
 chrome.runtime.onMessage.addListener((message, sender, reply) => {
   if (!message || ['changed','voice-control'].includes(message.type)) return;
-  const panelOrigin = sender.url?.split(/[?#]/)[0] === chrome.runtime.getURL('panel.html');
+  const panelOrigin = ['panel.html', 'popup.html'].some(page => sender.url?.split(/[?#]/)[0] === chrome.runtime.getURL(page));
   const voiceOrigin = sender.url?.split(/[?#]/)[0] === chrome.runtime.getURL('index.html');
   const voiceOperations = ['capture-zoom','capture-tab','voice-begin','voice-segment','voice-status','voice-output-status'];
   if (sender.id !== chrome.runtime.id || (voiceOperations.includes(message.type) ? !voiceOrigin : !panelOrigin)) { reply({ ok: false, error: 'This operation requires its extension workspace.' }); return; }
   if (message.type === 'meeting-action' && ['return','end'].includes(message.action)) void stopVoiceOutput().catch(() => undefined);
   if (message.type === 'settings' && message.syncMode === 'local') haltSync();
   if ((message.type === 'settings' && (message.syncMode === 'local' || message.hostedReasoning === false)) || message.type === 'credentials') stopHostedAnalysis();
-  const run = ['state','analyze-note','meeting-brief'].includes(message.type) ? handle(message, sender) : serialize(() => handle(message, sender));
+  if (message.type === 'settings' && message.syncMode === 'local') void revokeJobs().catch(error => status(String(error), true));
+  else {
+    if (message.type === 'credentials' || message.type === 'settings' && (message.autoAmbiguous === false || message.hostedReasoning === false)) void revokeJobs('ambiguous').catch(error => status(String(error), true));
+    if (['connect-local','disconnect-local'].includes(message.type) || message.type === 'settings' && message.autoLocalAgent === false) void revokeJobs('codex').catch(error => status(String(error), true));
+  }
+  if (['connect-local','disconnect-local'].includes(message.type)) invalidateConnectionAttempt();
+  if (message.type === 'cancel-job' && typeof message.id === 'string') void cancelJob(message.id).catch(() => undefined);
+  const run = ['state','analyze-note','meeting-brief','connect-local','cancel-job'].includes(message.type) ? handle(message, sender) : serialize(() => handle(message, sender));
   void run.then(value => reply({ ok: true, value }), error => reply({ ok: false, error: error instanceof Error ? error.message : 'Operation failed.' }));
   return true;
 });

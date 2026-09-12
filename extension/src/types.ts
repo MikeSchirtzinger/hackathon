@@ -36,10 +36,11 @@ export interface AudioSession extends BaseRecord {
 export interface Setting { id: string; value: unknown }
 export interface Settings {
   syncMode: 'local' | 'sync'; captureMode: 'push'; workspaceLabel: string;
-  hostedReasoning: boolean;
+  hostedReasoning: boolean; autoAmbiguous: boolean; autoLocalAgent: boolean;
+  ambiguousReasoningEpoch: string; localReasoningEpoch: string;
 }
 export interface Analysis extends BaseRecord {
-  kind: 'note' | 'meeting'; targetId: string; evidenceIds: string[];
+  kind: 'context' | 'note' | 'meeting'; targetId: string; evidenceIds: string[];
   state: 'pending' | 'complete' | 'error'; response?: string; error?: string;
   summary?: string; proposals?: { kind: string; nextStep: string; evidenceIds: string[]; owner: null; dueDate: null; delivery: string }[];
   toolActivity: string[]; finishedAt?: number;
@@ -54,7 +55,33 @@ export interface OutboxItem extends BaseRecord {
 }
 export interface Stores {
   contexts: ContextSnapshot; notes: Note; tasks: TaskProposal; transcripts: TranscriptSegment;
-  meetings: Meeting; absences: Absence; settings: Setting; outbox: OutboxItem; audioSessions: AudioSession; analyses: Analysis;
+  meetings: Meeting; absences: Absence; settings: Setting; outbox: OutboxItem; audioSessions: AudioSession; analyses: Analysis; jobs: ReasoningJob; attention: AttentionSignal;
 }
-export const defaults: Settings = { syncMode: 'local', captureMode: 'push', workspaceLabel: '', hostedReasoning: false };
+export const defaults: Settings = { syncMode: 'local', captureMode: 'push', workspaceLabel: '', hostedReasoning: false, autoAmbiguous: false, autoLocalAgent: false, ambiguousReasoningEpoch: 'initial', localReasoningEpoch: 'initial' };
 export function base(): BaseRecord { return { id: crypto.randomUUID(), createdAt: Date.now(), revision: 1 }; }
+
+export type Provider = 'ambiguous' | 'codex';
+export type EvidenceKind = 'context' | 'note' | 'meeting';
+export interface ReasoningResult {
+  summary: string; classification: 'note' | 'research' | 'follow-up' | 'reminder' | 'decision';
+  actionRequired: boolean; urgency: 'none' | 'when-available' | 'time-sensitive';
+  reason: string; resurface: 'on-request' | 'on-return'; evidenceIds: string[];
+  proposals: NonNullable<Analysis['proposals']>;
+}
+export interface ReasoningJob extends BaseRecord {
+  provider: Provider; kind: EvidenceKind; targetId: string; targetRevision: number;
+  dedupeKey: string; consentEpoch: string; connectionEpoch: string;
+  evidenceIds: string[]; evidence: Record<string, unknown>;
+  state: 'queued' | 'running' | 'complete' | 'error' | 'cancelled';
+  dispatchedAt?: number; polls: number; deadline: number; finishedAt?: number;
+  result?: ReasoningResult; error?: string; analysisId?: string;
+  cancelDelivery?: 'pending' | 'confirmed' | 'error'; cancelError?: string;
+}
+export interface AttentionSignal extends BaseRecord {
+  source: 'reasoning' | 'meeting' | 'status'; sourceId: string;
+  mode: 'status' | 'digest' | 'negotiate' | 'interrupt';
+  summary: string; reason: string; resurface: 'on-request' | 'on-return';
+  evidenceIds: string[]; actionRequired: boolean;
+  trustedDeadline?: number; deliveredAt?: number; surfacedAt?: number;
+  notificationError?: string; shelvedCount?: number;
+}

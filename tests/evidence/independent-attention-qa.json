@@ -1,0 +1,316 @@
+{
+  "startedAt": "2026-09-12T21:42:12.101Z",
+  "checks": [
+    {
+      "name": "Actual installed manifest has popup and no sidebar; pristine Local only without credentials, connections, automatic providers, or optional bridge permission"
+    },
+    {
+      "name": "Native CmdShiftY persists actual page URL, title and selection with no new document, badge, notification, job, or HTTP request",
+      "detail": {
+        "contexts": 2,
+        "requestObserverPositiveControl": true
+      }
+    },
+    {
+      "name": "Native CmdShiftU opens actual Chrome POPUP, captured directly from its native popup target",
+      "detail": {
+        "innerWidth": 370,
+        "innerHeight": 498,
+        "scrollWidth": 370,
+        "scrollHeight": 507
+      }
+    },
+    {
+      "name": "Real native popup accepts typed note and saves its actual active-page context; note survives popup and panel reload with zero worker HTTP"
+    }
+  ],
+  "requests": [
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/panel.html",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249332810
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/panel.css",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249332862
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/panel.js",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249332862
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/panel.js",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249332864
+    },
+    {
+      "url": "http://127.0.0.1:60551/",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249332958
+    },
+    {
+      "url": "http://127.0.0.1:60551/qa-network-positive-control",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249332998
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/panel.html",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249334648
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/panel.css",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249334679
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/panel.js",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249334679
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/panel.js",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249334680
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/popup.html",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249334756
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/popup.css",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249334788
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/popup.js",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249334788
+    },
+    {
+      "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/foundation/popup.js",
+      "method": "GET",
+      "worker": false,
+      "at": 1789249334788
+    }
+  ],
+  "errors": [],
+  "beforeHashes": {
+    "extension/manifest.json": "a5c32ec33dbacc9e5ada698d8762c5e99e4d0e8823140cbb90aacacfdb5244c4",
+    "extension/popup.html": "bb18c1b76124808970984944d11b99047ca31207e29985b19ff83364a8f6c12a",
+    "extension/popup.css": "2a6fe265cf10de07178cc11441a7b92f7e89b76aad1bb1be9d3758192067c827",
+    "extension/src/background.ts": "c013ccc5ef1592873f43da837a0693437e002c79746c2ba473f9df9029b7f694",
+    "extension/src/jobs.ts": "d4b34d661f408363dabdd85f16815dd6691feb7d8b1ad0859c2da79ddc3cd4dc",
+    "extension/src/local-agent.ts": "41f48c6fc41ce2e232a2a2c33251a6ec7f75028a205bc5646abc1d0ad3fb2777",
+    "extension/src/attention.ts": "fc4a20e15029f2c6a8917b8fe01934048bacb711d5c26f02e8ea92fd8b73ec39",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/hosted.ts": "c1976195ddf760bfbb9fdaf9eee96a547035891a9b81887dbc50403dfa5811b2",
+    "extension/src/evidence.ts": "ffdfc776628a6265ffd1ed235ba7d43ae99413ed9646b94f70dcd91d97225ddd",
+    "extension/src/types.ts": "51dfa165702ce36bc339ad9fe5b0dfd95ddf95b679134215582ae0fe4d002c04",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/src/popup.ts": "4513c0b8fe187dac3fb0c8e587a5330aee0a69515dd5c6ddd774cd05ae770f6f",
+    "extension/src/panel.ts": "1c6e635aad40ffdebe18bbd0c34e5c071d0b246e7142e2d9d2f2035d40f1c120",
+    "extension/public/panel.html": "384a83f4b481796effb8ca671b4c9fd7ea5a00fb8247415452ba5437e0c28201",
+    "extension/foundation/background.js": "34128ac22483cbf311a96fddc131c22732242291f7e01d06bf5f938e50892fdb",
+    "extension/foundation/popup.js": "1168f0e752ba7f9952feca8f65c6451f9f972ba8a611181cc6cae7e10a3b2722",
+    "extension/foundation/panel.js": "1d6d6e9d8ba0b67a5e46c9c11863ab61e02d16f6d877e04273a6f907ee3c09f5"
+  },
+  "extensionId": "kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+  "chrome": "151.0.7922.34",
+  "manifest": {
+    "action": {
+      "default_icon": "icon.png",
+      "default_popup": "popup.html",
+      "default_title": "Open Spark"
+    },
+    "background": {
+      "service_worker": "foundation/background.js",
+      "type": "module"
+    },
+    "commands": {
+      "capture-context": {
+        "description": "Save current page context quietly",
+        "suggested_key": {
+          "default": "Ctrl+Shift+Y",
+          "mac": "Command+Shift+Y"
+        }
+      },
+      "open-panel": {
+        "description": "Open the Spark popup",
+        "suggested_key": {
+          "default": "Ctrl+Shift+U",
+          "mac": "Command+Shift+U"
+        }
+      }
+    },
+    "content_security_policy": {
+      "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' blob: https://app.ambiguous.ai http://127.0.0.1:4318; worker-src 'self'; media-src 'self' blob:"
+    },
+    "description": "Keep browser context with local notes and meeting follow-through.",
+    "host_permissions": [
+      "https://app.ambiguous.ai/*"
+    ],
+    "icons": {
+      "128": "icon.png"
+    },
+    "manifest_version": 3,
+    "minimum_chrome_version": "127",
+    "name": "Spark",
+    "optional_host_permissions": [
+      "http://127.0.0.1:4318/*"
+    ],
+    "options_ui": {
+      "open_in_tab": true,
+      "page": "panel.html"
+    },
+    "permissions": [
+      "activeTab",
+      "tabCapture",
+      "storage",
+      "power",
+      "scripting",
+      "alarms",
+      "notifications"
+    ],
+    "version": "0.3.0"
+  },
+  "quietBefore": {
+    "contexts": [
+      {
+        "contextId": "5eb79138-b973-4726-a4e2-a55e50115e06",
+        "contextType": "BACKGROUND",
+        "frameId": -1,
+        "incognito": false,
+        "tabId": -1,
+        "windowId": -1
+      },
+      {
+        "contextId": "4dc61f19-8b4b-4be8-8a42-37405223972f",
+        "contextType": "TAB",
+        "documentId": "7BC393601496D30AB115A629B497287F",
+        "documentOrigin": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+        "documentUrl": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/panel.html",
+        "frameId": 0,
+        "incognito": false,
+        "tabId": 14606122,
+        "windowId": 14606121
+      }
+    ],
+    "pages": [
+      "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/panel.html",
+      "http://127.0.0.1:60551/"
+    ],
+    "badge": "",
+    "notifications": {},
+    "requestIndex": 6
+  },
+  "captured": {
+    "id": "6aff4bc6-905f-41b3-a673-2c0c05a20955",
+    "createdAt": 1789249333315,
+    "revision": 1,
+    "capturedAt": 1789249333319,
+    "tabId": 14606123,
+    "url": "http://127.0.0.1:60551/",
+    "title": "Independent attention QA",
+    "selection": "Selection belongs to this actual page.",
+    "visibleText": "Accessible signup review\n\nSelection belongs to this actual page.\n\nCompare onboarding accessibility before the next review.",
+    "source": "hotkey",
+    "trust": "untrusted-page",
+    "availability": "available"
+  },
+  "quietRequests": [],
+  "popupContexts": [
+    {
+      "contextId": "1f23e80b-ac64-4bb4-8f67-cea62dd8cb9e",
+      "contextType": "POPUP",
+      "documentId": "41A2BB74A6583D2E7818EE948ACA5D2D",
+      "documentOrigin": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd",
+      "documentUrl": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/popup.html",
+      "frameId": 0,
+      "incognito": false,
+      "tabId": -1,
+      "windowId": -1
+    }
+  ],
+  "popupTarget": {
+    "targetId": "F8BAD582E319B209E69C08D4E70F268B",
+    "type": "page",
+    "title": "Spark",
+    "url": "chrome-extension://kmnjgekhlkdbkcinogmhkamfcfchdbcd/popup.html",
+    "attached": false,
+    "canAccessOpener": false,
+    "browserContextId": "4BEDBA5641F6308C4ED0DAE9722D4C6E"
+  },
+  "popupText": "Spark\nLocal only\nKeep a thought with this page\nSave note\n\nReady. Notes save before reasoning.\n\n0 jobs pending. Automatic reasoning: off.\n\n0 decisions and 0 summaries saved for when you are ready.\n\nReview saved results\nConnections and settings\nConnect local coding agent\nOpen Voice Lab\n\nSpark stays in the background. Completed work never opens a window.",
+  "popupGeometry": {
+    "innerWidth": 370,
+    "innerHeight": 498,
+    "scrollWidth": 370,
+    "scrollHeight": 507
+  },
+  "note": {
+    "id": "f5959129-4ea3-4df9-aa48-8c5878b02f75",
+    "createdAt": 1789249334383,
+    "revision": 1,
+    "contextId": "f0025b6a-bd3f-42dc-a857-090161101a24",
+    "text": "Independent popup note persists with the accessible signup page.",
+    "source": "manual",
+    "syncEligible": false,
+    "reasoning": "unavailable"
+  },
+  "noteContext": {
+    "id": "f0025b6a-bd3f-42dc-a857-090161101a24",
+    "createdAt": 1789249334379,
+    "revision": 1,
+    "capturedAt": 1789249334379,
+    "tabId": 14606123,
+    "url": "http://127.0.0.1:60551/",
+    "title": "Independent attention QA",
+    "selection": "Selection belongs to this actual page.",
+    "visibleText": "Accessible signup review\n\nSelection belongs to this actual page.\n\nCompare onboarding accessibility before the next review.",
+    "source": "button",
+    "trust": "untrusted-page",
+    "availability": "available"
+  },
+  "afterHashes": {
+    "extension/manifest.json": "a5c32ec33dbacc9e5ada698d8762c5e99e4d0e8823140cbb90aacacfdb5244c4",
+    "extension/popup.html": "bb18c1b76124808970984944d11b99047ca31207e29985b19ff83364a8f6c12a",
+    "extension/popup.css": "2a6fe265cf10de07178cc11441a7b92f7e89b76aad1bb1be9d3758192067c827",
+    "extension/src/background.ts": "c013ccc5ef1592873f43da837a0693437e002c79746c2ba473f9df9029b7f694",
+    "extension/src/jobs.ts": "d4b34d661f408363dabdd85f16815dd6691feb7d8b1ad0859c2da79ddc3cd4dc",
+    "extension/src/local-agent.ts": "41f48c6fc41ce2e232a2a2c33251a6ec7f75028a205bc5646abc1d0ad3fb2777",
+    "extension/src/attention.ts": "fc4a20e15029f2c6a8917b8fe01934048bacb711d5c26f02e8ea92fd8b73ec39",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/hosted.ts": "c1976195ddf760bfbb9fdaf9eee96a547035891a9b81887dbc50403dfa5811b2",
+    "extension/src/evidence.ts": "ffdfc776628a6265ffd1ed235ba7d43ae99413ed9646b94f70dcd91d97225ddd",
+    "extension/src/types.ts": "51dfa165702ce36bc339ad9fe5b0dfd95ddf95b679134215582ae0fe4d002c04",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/src/popup.ts": "4513c0b8fe187dac3fb0c8e587a5330aee0a69515dd5c6ddd774cd05ae770f6f",
+    "extension/src/panel.ts": "1c6e635aad40ffdebe18bbd0c34e5c071d0b246e7142e2d9d2f2035d40f1c120",
+    "extension/public/panel.html": "384a83f4b481796effb8ca671b4c9fd7ea5a00fb8247415452ba5437e0c28201",
+    "extension/foundation/background.js": "34128ac22483cbf311a96fddc131c22732242291f7e01d06bf5f938e50892fdb",
+    "extension/foundation/popup.js": "1168f0e752ba7f9952feca8f65c6451f9f972ba8a611181cc6cae7e10a3b2722",
+    "extension/foundation/panel.js": "1d6d6e9d8ba0b67a5e46c9c11863ab61e02d16f6d877e04273a6f907ee3c09f5"
+  },
+  "changedFiles": [],
+  "result": "PASS",
+  "finishedAt": "2026-09-12T21:43:26.006Z",
+  "checkoutHead": "daf8c93e01170f85c0e4622201c107556490865f",
+  "scopeNote": "Read-only working-tree snapshot atop checkoutHead. Stable source hashes define the tested implementation. Later disconnect and hosted receipts cover the final cancellation guards."
+}
