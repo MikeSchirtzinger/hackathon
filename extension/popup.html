@@ -8,5 +8,6 @@
 <div id="latest"></div><div id="meetings"></div>
 <div class="row"><button id="review">Review saved results</button><button id="settings">Connections and settings</button></div>
 <details><summary>Connect local coding agent</summary><p>Codex uses hosted processing. Connecting checks capabilities only. Automatic reasoning needs a separate opt-in in Settings.</p><label for="pairing-secret">Private pairing secret</label><input id="pairing-secret" type="password" autocomplete="off"><button id="connect-local">Connect</button><p id="connection-status"></p></details>
+<div class="row"><button id="microphone">Start microphone</button><button id="stop-speech">Stop audio</button></div><label class="speech-option"><input id="voice-responses" type="checkbox"> Browser voice responses</label><p id="speech-status" class="spark-meta" role="status"></p>
 <div class="row"><button id="voice">Open Voice Lab</button><span id="listening" class="spark-listening" hidden><span class="spark-dot" aria-hidden="true"></span>Listening on device</span></div>
 <script type="module" src="foundation/popup.js"></script></body></html>

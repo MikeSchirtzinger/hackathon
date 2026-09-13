@@ -1,11 +1,17 @@
+import { playTestOutput } from './app.js';
 import { stopSpeechOutput } from './speech-output.js';
 import { voiceMessage } from './voice-bridge.js';
 const el = id => document.getElementById(id);
 const player = el('playback');
 window.zoomOutputReady = false;
-// Block default-speaker playback until the selected route is confirmed.
-player.addEventListener('play', () => {if (!window.zoomOutputReady) player.pause();});
+// Browser output is the default. Meeting routing requires its own explicit action.
+el('browser-output').onclick = async () => {
+  stopSpeechOutput('Output changed to browser speakers.');
+  try { await player.setSinkId(''); window.zoomOutputReady = false; await voiceMessage('voice-output-status', { ready: false }); el('route-status').textContent = 'Browser speakers selected.'; }
+  catch (error) { el('route-status').textContent = error.message; }
+};
 el('connect-output').onclick = async () => {
+  stopSpeechOutput('Connecting meeting output.');
   try {
     const permission = await navigator.mediaDevices.getUserMedia({audio:true});
     permission.getTracks().forEach(t=>t.stop());
@@ -21,8 +27,7 @@ el('connect-output').onclick = async () => {
 };
 el('test-output').onclick = async () => {
   if (!window.zoomOutputReady) {el('route-status').textContent='Click Connect BlackHole first.';return;}
-  player.src='demo.wav';
-  try {await player.play();} catch(e) {el('route-status').textContent=e.message;}
+  try {await playTestOutput();} catch(e) {el('route-status').textContent=e.message;}
 };
 el('stop-output').onclick = () => stopSpeechOutput();
 el('copy-caption').onclick = () => {el('speech').value=el('zoom-transcript').textContent.slice(-500);};

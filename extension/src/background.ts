@@ -1,5 +1,6 @@
 import { authorizeSurface, acknowledgeCapture, refreshListeningSurface, revokeTabSurfaces, surfaceMessage, listeningNow } from './surfaces';
 import { validateSegment } from './transcript';
+import { speechPreferences, saveSpeechPreferences, enqueueSpeech, takeSpeechCommands, savedSpeech, speechCommandAllowed } from './speech';
 import { all, get, put, settings, writeBatch } from './db';
 import { base, type Meeting, type Note, type Settings, type TaskProposal, type AudioSession } from './types';
 import { captureContext } from './capture';
@@ -37,6 +38,7 @@ async function authorizeAudioTab(tab: chrome.tabs.Tab) {
   }
 }
 chrome.commands.onCommand.addListener((command, tab) => {
+  if (command === 'toggle-transcription') { void serialize(async () => { await ready; return controlMicrophone('toggle'); }).catch(error => status(String(error), true)); return; }
   if (command === 'open-panel') { void chrome.action.openPopup().catch(error => status(String(error), true)); return; }
   if (command === 'capture-context') {
     // Chrome supplies the original tab at the command boundary. Never re-query after capture starts.
@@ -66,6 +68,12 @@ async function initialize() {
   await recoverAttention();
   await recoverJobs();
   void refreshListeningSurface().catch(() => undefined);
+  const startup = await chrome.storage.session.get('speechStartupRestored');
+  if (!startup.speechStartupRestored) {
+    await chrome.storage.session.set({ speechStartupRestored: true });
+    const prefs = await speechPreferences();
+    if (prefs.transcriptionMode === 'continuous' && !prefs.paused) { await enqueueSpeech('start'); await openVoice(undefined, false); }
+  }
 }
 const ready = initialize();
 chrome.runtime.onInstalled.addListener(() => { void ready.catch(error => status(String(error), true)); });
@@ -113,16 +121,29 @@ async function recoverAudioSessions() {
   }
 }
 async function stopVoiceOutput() {
+  await enqueueSpeech('stop-output');
   const tabs = await voiceContexts();
   if (!tabs.length) return;
   const response = await chrome.runtime.sendMessage({ type: 'voice-control', action: 'stop-output' });
   if (!response?.stopped) throw new Error('Speech stop was not acknowledged. Use Stop audio in Voice Lab.');
 }
-async function openVoice(meetingId?: string) {
+async function openVoice(meetingId?: string, focus = true) {
   await chrome.storage.session.set({ voiceMeetingId: meetingId ?? null });
   const tabs = await voiceContexts();
-  if (tabs[0] && tabs[0].tabId >= 0) { await chrome.tabs.update(tabs[0].tabId, { active: true }); return; }
-  await chrome.tabs.create({ url: chrome.runtime.getURL('index.html') });
+  if (tabs[0] && tabs[0].tabId >= 0) { if (focus) await chrome.tabs.update(tabs[0].tabId, { active: true }); return; }
+  await chrome.tabs.create({ url: chrome.runtime.getURL('index.html'), active: focus });
+}
+async function controlMicrophone(action: unknown) {
+  if (!['start','stop','toggle'].includes(String(action))) throw Error('Invalid microphone control.');
+  await recoverAudioSessions();
+  const active = (await all('audioSessions')).some(session => ['starting','listening'].includes(session.captureStatus));
+  const stored = await chrome.storage.session.get('speechCommands');
+  const pendingStart = Array.isArray(stored.speechCommands) && stored.speechCommands.some((command: { action: string }) => command.action === 'start');
+  const stop = action === 'stop' || action === 'toggle' && (active || pendingStart);
+  await saveSpeechPreferences({ paused: stop });
+  const result = await enqueueSpeech(stop ? 'stop' : 'start');
+  if (!stop) await openVoice(undefined, false);
+  await changed(); return result;
 }
 async function importEvent(id: string, triggerAt?: number) {
   const event = await readCalendarEvent(id);
@@ -142,6 +163,32 @@ async function importEvent(id: string, triggerAt?: number) {
 async function handle(message: Record<string, unknown>, sender?: chrome.runtime.MessageSender) {
   await ready;
   switch (message.type) {
+    case 'speech-control': return controlMicrophone(message.action);
+    case 'speech-settings': {
+      const old = await speechPreferences();
+      const next = await saveSpeechPreferences(message);
+      if (old.voiceResponses && !next.voiceResponses) { await stopVoiceOutput(); }
+      if (message.transcriptionMode !== undefined || message.paused !== undefined) {
+        await enqueueSpeech(next.transcriptionMode === 'continuous' && !next.paused ? 'start' : 'stop');
+        if (next.transcriptionMode === 'continuous' && !next.paused) await openVoice(undefined, false);
+      }
+      await changed(); return next;
+    }
+    case 'voice-preferences': return speechPreferences();
+    case 'voice-save-preferences': { const next = await saveSpeechPreferences(message); await changed(); return next; }
+    case 'voice-poll': return takeSpeechCommands();
+    case 'voice-command-allowed': return speechCommandAllowed(message.id, message.action);
+    case 'speak-result': {
+      const summary = await savedSpeech(message.kind, message.id);
+      const result = await enqueueSpeech('speak', summary);
+      await openVoice(undefined, false); return result;
+    }
+    case 'speech-stop-output': { await stopVoiceOutput(); return true; }
+    case 'voice-playback-status': {
+      if (!['loading','speaking','stopped','error'].includes(String(message.status))) throw Error('Invalid speech status.');
+      await put('settings', { id: 'speechPlayback', value: { status: message.status, detail: typeof message.detail === 'string' ? message.detail.slice(0, 1000) : '', at: Date.now() } });
+      await changed(); return true;
+    }
     case 'open-voice': {
       const meetingId = typeof message.meetingId === 'string' ? message.meetingId : undefined;
       if (meetingId && !await get('meetings', meetingId)) throw new Error('Meeting not found.');
@@ -173,6 +220,12 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
       const session: AudioSession = { ...base(), tabId, ownerDocumentId, source: message.source as AudioSession['source'], contextId: meeting?.contextId ?? (typeof current?.value === 'string' ? current.value : undefined), meetingId: meeting?.status !== 'ended' && ['zoom','tab'].includes(String(message.source)) ? meeting?.id : undefined, captureStatus: 'starting', startedAt: Date.now() };
       await put('audioSessions', session); await changed(); return session;
     }
+    case 'voice-buffer': {
+      const session = await get('audioSessions', text(message.sessionId, 100));
+      if (!session || session.tabId !== sender?.tab?.id || session.ownerDocumentId !== sender?.documentId) throw Error('Audio buffer producer does not own this session.');
+      if (typeof message.database !== 'string' || !/^zoom-audio-[a-f0-9-]{36}$/.test(message.database)) throw Error('Invalid audio buffer.');
+      await put('audioSessions', { ...session, pendingAudio: { database: message.database, samples: 0 }, revision: session.revision + 1 }); return true;
+    }
     case 'voice-segment': {
       const segment = validateSegment(message.segment);
       const session = await get('audioSessions', segment.sessionId);
@@ -194,7 +247,13 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
       if (!session || session.tabId !== sender?.tab?.id || session.ownerDocumentId !== sender?.documentId) throw new Error('Audio status producer does not own this session.');
       if (!['listening','stopped','error'].includes(String(message.status))) throw new Error('Invalid capture status.');
       const captureStatus = message.status as 'listening' | 'stopped' | 'error';
-      await put('audioSessions', { ...session, captureStatus, inputActive: captureStatus === 'listening' && session.inputActive === true, detail: typeof message.detail === 'string' ? message.detail.slice(0,1000) : undefined, endedAt: captureStatus === 'listening' ? undefined : Date.now(), revision: session.revision + 1 });
+      let pendingAudio = captureStatus === 'stopped' ? undefined : session.pendingAudio;
+      if (message.pendingAudio !== undefined) {
+        const pending = object(message.pendingAudio);
+        if (typeof pending.database !== 'string' || !/^zoom-audio-[a-f0-9-]{36}$/.test(pending.database) || !Number.isInteger(pending.samples) || Number(pending.samples) < 0) throw Error('Invalid retained audio reference.');
+        pendingAudio = { database: pending.database, samples: Number(pending.samples) };
+      }
+      await put('audioSessions', { ...session, captureStatus, pendingAudio, inputActive: captureStatus === 'listening' && session.inputActive === true, detail: typeof message.detail === 'string' ? message.detail.slice(0,1000) : undefined, endedAt: captureStatus === 'listening' ? undefined : Date.now(), revision: session.revision + 1 });
       const meeting = session.meetingId ? await get('meetings', session.meetingId) : undefined;
       if (meeting) await put('meetings', { ...meeting, captureStatus, revision: meeting.revision + 1 });
       void refreshListeningSurface().catch(() => undefined);
@@ -206,7 +265,7 @@ async function handle(message: Record<string, unknown>, sender?: chrome.runtime.
     }
     case 'state': {
       const [contexts, notes, tasks, meetings, absences, transcripts, outbox, prefs, current, last, auth, commands] = await Promise.all([all('contexts'), all('notes'), all('tasks'), all('meetings'), all('absences'), all('transcripts'), all('outbox'), settings(), get('settings', 'currentContext'), get('settings', 'lastStatus'), credentials(), chrome.commands.getAll()]);
-      return { contexts, notes, tasks, meetings, absences, transcripts, outbox, audioListening: await listeningNow(), analyses: await all('analyses'), jobs: await all('jobs'), attention: await all('attention'), localAgent: { connected: (await pairing()).connected, processing: 'hosted', provider: 'codex' }, audioSessions: await all('audioSessions'), settings: prefs, currentContextId: current?.value, lastStatus: last?.value, credentialsConfigured: !!auth.token, commands };
+      return { speechPreferences: await speechPreferences(), speechPlayback: (await get('settings', 'speechPlayback'))?.value, contexts, notes, tasks, meetings, absences, transcripts, outbox, audioListening: await listeningNow(), analyses: await all('analyses'), jobs: await all('jobs'), attention: await all('attention'), localAgent: { connected: (await pairing()).connected, processing: 'hosted', provider: 'codex' }, audioSessions: await all('audioSessions'), settings: prefs, currentContextId: current?.value, lastStatus: last?.value, credentialsConfigured: !!auth.token, commands };
     }
     case 'popup-open': {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -356,7 +415,7 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
   }
   const panelOrigin = ['panel.html', 'popup.html'].some(page => sender.url?.split(/[?#]/)[0] === chrome.runtime.getURL(page));
   const voiceOrigin = sender.url?.split(/[?#]/)[0] === chrome.runtime.getURL('index.html');
-  const voiceOperations = ['capture-zoom','capture-tab','voice-begin','voice-segment','voice-status','voice-input-status','voice-output-status'];
+  const voiceOperations = ['capture-zoom','capture-tab','voice-begin','voice-buffer','voice-segment','voice-status','voice-input-status','voice-output-status','voice-preferences','voice-save-preferences','voice-poll','voice-command-allowed','voice-playback-status'];
   if (sender.id !== chrome.runtime.id || (voiceOperations.includes(message.type) ? !voiceOrigin : !panelOrigin)) { reply({ ok: false, error: 'This operation requires its extension workspace.' }); return; }
   if (message.type === 'meeting-action' && ['return','end'].includes(message.action)) void stopVoiceOutput().catch(() => undefined);
   if (message.type === 'settings' && message.syncMode === 'local') haltSync();

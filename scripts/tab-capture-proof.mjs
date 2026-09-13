@@ -25,6 +25,7 @@ const created=await panel.evaluate(()=>chrome.runtime.sendMessage({type:'save-me
  await panel.getByRole('button', { name: 'Meeting', exact: true }).click();
  await panel.getByRole('button', { name: 'Open meeting audio', exact: true }).click();
  voice = await opened; await voice.waitForURL(`chrome-extension://${id}/index.html`);
+ await voice.getByText('Meeting tab audio and optional meeting output', { exact: true }).click();
  await voice.locator('#listen-zoom').click();
  await eventually(async () => (await state()).audioSessions.some(s => s.source === 'tab' && s.captureStatus === 'listening'), 180000);
  const audio = await state(); const session = audio.audioSessions.find(s => s.source === 'tab');

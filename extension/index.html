@@ -6,44 +6,37 @@
   <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; connect-src 'self' blob:; worker-src 'self'; media-src 'self' blob:">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <main>
-    <header><a class="brand" href="index.html">VOICE LAB</a><span class="badge">ON DEVICE · WASM</span></header>
-    <p><a href="panel.html">Open notes and meeting controls</a></p><p id="local-save-status" role="status">Transcript storage connects when capture starts. Keep this tab open during capture.</p><section class="intro"><div class="eyebrow">A SMALL SPEECH EXPERIMENT</div><h1>Your voice.<br><span>Your browser.</span></h1><p>Hear it. Read it. Say it back. Two real speech models,<br class="wide"> running locally with sherpa-onnx WebAssembly.</p></section>
-    <div class="pipeline"><span>01 &nbsp; Microphone</span><i>→</i><span>02 &nbsp; Nemotron</span><i>→</i><span>03 &nbsp; Kokoro</span></div>
-    <section class="card">
-      <h2>Meeting audio handoff</h2>
-      <p>On your Jitsi, Zoom, or other meeting tab, click the extension icon or press the capture hotkey to authorize that tab. Then return here and start listening. Select BlackHole 2ch as the meeting microphone for speech output; keep the meeting speaker and system output on headphones. Nemotron transcribes other participants locally.</p>
-      <button id="connect-output">Connect BlackHole</button>
-      <button id="test-output">Play bundled test phrase</button>
-      <button id="stop-output">Stop audio</button>
-      <div id="route-status" role="status">Output disconnected. No meeting audio will play until connected.</div>
-      <h3>Authorized tab audio → Nemotron</h3>
-      <button id="listen-zoom">Load Nemotron & listen to meeting</button>
-      <button id="stop-zoom" disabled>Stop listening</button>
-      <div id="zoom-asr-status" role="status">Ready to load local speech recognition.</div>
-      <pre id="zoom-transcript">Transcript appears here.</pre>
-      <button id="copy-caption">Copy transcript into speech text</button>
+<body><main>
+  <header><a class="brand" href="panel.html">SPARK / VOICE</a><span class="badge">ON DEVICE</span></header>
+  <section class="intro"><h1>Stay in the conversation.</h1><p>Transcribe with Nemotron. Hear Spark with Kokoro.<br>Models load automatically and run in your browser.</p></section>
+  <section class="card preferences" aria-label="Speech preferences">
+    <div><label for="transcription-mode">Microphone transcription</label><select id="transcription-mode"><option value="hotkey">Only with the voice hotkey</option><option value="continuous">Continuous while enabled</option></select><p id="mode-detail" class="hint">Microphone stays off until you start it.</p><p class="hint">Voice hotkey: <kbd>Command / Ctrl + Shift + 9</kbd>. Press again to stop. <a href="panel.html#settings">Speech settings</a></p></div>
+    <div><label class="check"><input id="voice-responses" type="checkbox"> Read Spark responses with browser Kokoro</label><p class="hint">Read completed responses from saved work. Requested analyses play automatically when enabled. Background results stay quiet until opened. Speech synthesis runs on device; reasoning keeps its separate hosted permission.</p><button id="stop-output" class="secondary">Stop audio</button><p id="capture-indicator" role="status" hidden>Listening on device</p></div>
+  </section>
+  <p id="local-save-status" role="status">Keep this tab open for audio. The popup and settings can close.</p>
+  <div class="grid">
+    <section class="card"><div class="cardtop"><h2>Listen with Nemotron</h2><span class="tag">ENGLISH · INT8</span></div>
+      <p class="hint">Live microphone transcription with bounded audio storage. Transcripts stay saved when you stop.</p>
+      <div class="controls"><button id="record">Start microphone</button><button id="sample" class="secondary">Try sample audio</button></div>
+      <div id="asr-status" class="status" role="status">Ready. Nemotron loads when capture starts.</div>
+      <label for="transcript">Transcript</label><textarea id="transcript" placeholder="Your words appear here." rows="5" readonly></textarea>
+      <div class="bottom"><span id="asr-metric">16 kHz audio</span><button id="use-text" class="link">Use text for speech</button></div>
     </section>
-    <div class="grid">
-      <section class="card"><div class="cardtop"><div><span class="eyebrow">SPEECH → TEXT</span><h2>Listen with Nemotron</h2></div><span class="tag">0.6B · INT8</span></div>
-        <p class="hint">English streaming recognition. Try the bundled clip first, or record a short phrase.</p>
-        <button id="load-asr" class="secondary">Load Nemotron</button>
-        <div id="asr-status" class="status" role="status">Model is on disk. Load it when you’re ready.</div>
-        <div class="controls"><button id="sample" disabled>Try sample audio</button><button id="record" class="secondary" disabled>● Record</button></div>
-        <label for="transcript">TRANSCRIPT</label><textarea id="transcript" placeholder="Your words appear here…" rows="5"></textarea>
-        <div class="bottom"><span id="asr-metric">16 kHz · CPU / WASM</span><button id="use-text" class="link">Use text for speech ↗</button></div>
-      </section>
-      <section class="card"><div class="cardtop"><div><span class="eyebrow">TEXT → SPEECH</span><h2>Speak with Kokoro</h2></div><span class="tag">82M · INT8</span></div>
-        <p class="hint">A local voice, generated from your text. Edit the line below or bring over your transcript.</p>
-        <button id="load-tts" class="secondary">Load Kokoro</button>
-        <div id="tts-status" class="status" role="status">Model is on disk. Load it when you’re ready.</div>
-        <label for="speech">SAY SOMETHING</label><textarea id="speech" maxlength="500" rows="5">Hello from the hackathon. Nemotron listens, and Kokoro speaks. Everything runs right here in your browser.</textarea>
-        <div class="controls"><select id="voice" aria-label="Voice"><option value="0">Default voice</option></select><button id="speak" disabled>Generate speech ↗</button></div>
-        <audio id="playback" controls></audio><div id="tts-metric" class="bottom">24 kHz · CPU / WASM</div>
-      </section>
-    </div>
-    <footer><span><b class="dot"></b> No API key. No audio uploads. No inference server.</span><button id="reset" class="link">Reset & release models</button></footer>
-    <details><summary>What’s running?</summary><p>Nemotron Speech Streaming English 0.6B (560 ms configuration) and Kokoro English v0.19, both quantized to INT8. Each runs in its own Web Worker using sherpa-onnx 1.13.8 and ONNX Runtime WASM. All runtime and model files are bundled with this extension. Model loading can take a while and uses substantial RAM. This is a speech demo; it does not include a chatbot.</p><pre id="log" aria-label="Diagnostic log"></pre></details>
-  </main><script src="app.js" type="module"></script><script src="zoom.js" type="module"></script><script src="zoom-asr.js" type="module"></script>
-</body></html>
+    <section class="card"><div class="cardtop"><h2>Speak with Kokoro</h2><span class="tag">BROWSER VOICE · INT8</span></div>
+      <p class="hint">Write a phrase or read a saved Spark response. Audio plays through your browser speakers.</p>
+      <label for="speech">Text to read</label><textarea id="speech" maxlength="20000" rows="5">Your saved context is ready whenever you are.</textarea>
+      <div class="controls"><select id="voice" aria-label="Voice"><option value="0">Voice 1</option></select><button id="speak">Speak</button></div>
+      <div id="tts-status" class="status" role="status">Ready. Kokoro loads when speech starts.</div>
+      <audio id="playback" controls></audio><div id="tts-metric" class="bottom">24 kHz audio</div>
+    </section>
+  </div>
+  <details class="meeting-options"><summary>Meeting tab audio and optional meeting output</summary>
+    <p>Invoke Spark on the meeting tab first, then start tab transcription here. This records the tab's playback. Your own microphone is a separate source.</p>
+    <button id="listen-zoom">Transcribe meeting tab</button><button id="stop-zoom" disabled>Stop listening</button>
+    <div id="zoom-asr-status" class="status" role="status">Ready to transcribe the authorized tab.</div><pre id="zoom-transcript">Transcript appears here.</pre><button id="copy-caption" class="secondary">Use meeting transcript for speech</button>
+    <h3>Optional meeting output</h3><p>Browser voice responses do not need an audio driver. To send manually entered speech into a meeting, connect BlackHole and select it as the meeting microphone. Keep meeting speakers on headphones. Verify delivery with a participant.</p>
+    <button id="connect-output">Connect BlackHole</button><button id="browser-output" class="secondary">Use browser speakers</button><button id="test-output" class="secondary">Play bundled test phrase</button><div id="route-status" class="status" role="status">Browser speakers selected.</div>
+  </details>
+  <footer><span>Audio and synthesis stay on device.</span><button id="reset" class="link">Stop and release models</button></footer>
+  <details><summary>Local model diagnostics</summary><p>Each model runs in its own worker with an enforced WASM memory limit. Audio is decoded one chunk at a time after IndexedDB storage. Idle workers release automatically. The limit covers model linear memory; total browser memory also includes file loading, JavaScript and playback buffers.</p><p id="memory-status">Nemotron has not loaded.</p><p id="tts-memory">Kokoro has not loaded.</p><button id="load-asr" class="secondary">Preload Nemotron</button><button id="load-tts" class="secondary">Preload Kokoro</button><pre id="log" aria-label="Diagnostic log"></pre></details>
+</main><script src="app.js" type="module"></script><script src="zoom.js" type="module"></script><script src="zoom-asr.js" type="module"></script></body></html>

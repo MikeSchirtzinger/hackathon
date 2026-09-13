@@ -8,14 +8,13 @@ Use Node.js 22+ and Chrome 127 or later on macOS.
 
 ```sh
 npm ci
-node scripts/import-assets.mjs /path/to/existing/extension
-npm run prepare:assets
+npm run setup
 npm run verify
 ```
 
-Load this repository's `extension/` folder unpacked at `chrome://extensions`. This is the only install and load path. The build preserves imported models, runtime files, licenses and notices. Those assets are ignored by Git; a fresh clone requires an asset bundle. Public asset distribution remains unfinished.
+Load this repository's `extension/` folder unpacked at `chrome://extensions`. Setup downloads pinned model and runtime files, checks their hashes and preserves the required licenses. Model files stay outside Git. Later starts load the installed models automatically. See [speech setup](docs/speech-setup.md) for offline checks and repairs. The existing asset importer remains available.
 
-For virtual microphone setup, run `sh install.sh` in an interactive Terminal. It installs BlackHole when needed and may restart CoreAudio. Driver installation requires administrator credentials. The installer opens the same `extension/` folder.
+Browser voice responses need no audio driver. For optional virtual microphone setup, run `sh install.sh` in an interactive Terminal. It installs BlackHole when needed and may restart CoreAudio. Driver installation requires administrator credentials. The installer opens the same `extension/` folder.
 
 ## Capture, import and follow through
 
@@ -54,11 +53,17 @@ The Assistant returns proposals for review. The extension does not execute them 
 
 Open Voice Lab from the popup or Settings and keep its persistent tab open during capture. Closing the popup or Settings does not stop it. Closing or reloading Voice Lab records an interrupted session, preserves transcripts and permits another capture. A small bottom-left pill appears on an authorized active page only while a live Voice Lab owner reports actual microphone or tab input. It disappears on Stop, even while queued transcription finishes. The validation sample alone does not produce a listening claim.
 
-Microphone transcription: load Nemotron and use Record. The bundled sample is a separate, labeled validation input. Final transcripts can be saved as notes with their original captured context.
+Choose **Only with the voice hotkey** or **Continuous while enabled** in speech settings. The voice hotkey is Command+Shift+9 on macOS or Ctrl+Shift+9 elsewhere. It starts and stops microphone transcription independently of the page-capture hotkey. Chrome asks for microphone permission on first use. Continuous mode resumes with Chrome while enabled; an explicit Stop stays paused across reloads and restarts. Capture ends on device loss or an explicit error. It does not silently retry a denied microphone.
 
-For Jitsi, Zoom or another web meeting, invoke the extension icon or capture hotkey on the meeting tab first. Open meeting audio from Settings, then choose **Load Nemotron & listen to meeting** in Voice Lab. Chrome's real tab-capture permission remains required. Tab playback captures received audio; it does not include your own microphone.
+Nemotron loads on the first capture. Audio enters IndexedDB before one acknowledged decode at a time, and final segments are saved as capture continues. The bundled sample is a separate validation input. Final transcripts can be saved as notes with their original captured context. If a capture faults or its owner closes with pending audio, committed queued PCM remains in local storage and the interrupted session retains its database reference. Recovery of that interrupted backlog is not yet exposed in the UI.
 
-Manual speech output uses BlackHole. Connect BlackHole, select BlackHole 2ch as the meeting microphone and keep speakers on headphones. Load Kokoro and generate speech from entered text. **Stop audio** and **Return** invalidate pending speech as well as stopping playback. Re-select the physical microphone to speak yourself. Route selection does not prove another participant heard audio.
+Enable **Read Spark responses with browser Kokoro** to hear requested analyses automatically. Saved responses also have a **Read aloud** button. Background jobs remain quiet until requested. Kokoro loads automatically and plays through browser speakers; turning this option on does not grant hosted reasoning permission. Saved responses can be spoken in Local only. Speech pauses active microphone capture to avoid recording Spark as human evidence, then resumes an enabled continuous microphone. **Stop audio**, opt-out and **Return** cancel pending speech and playback.
+
+For Jitsi, Zoom or another web meeting, invoke the extension icon or page-capture hotkey on the meeting tab first. Choose **Transcribe meeting tab** under the optional meeting controls. Chrome's tab-capture permission remains required. Tab playback captures received audio; it does not include your own microphone. Microphone and tab transcription share one recognizer and cannot run simultaneously.
+
+To route manually entered speech into a meeting, connect BlackHole, select BlackHole 2ch as the meeting microphone and keep meeting speakers on headphones. **Use browser speakers** restores ordinary playback. Reading a saved Spark response selects browser speakers automatically. Re-select the physical meeting microphone to speak yourself. Route selection does not prove another participant heard audio.
+
+The recognizer and voice workers enforce separate WASM memory limits and release after inactivity. Audio-processing contexts remain active until queued decoding or synthesis finishes, then close. Stop releases microphone tracks immediately. These limits cover model linear memory, not the entire Chrome process. Local speech speed depends on the device. Kokoro synthesis can take longer than the audio it produces; its progress and cancellation remain available while it computes.
 
 ## Verification and limits
 
@@ -68,6 +73,9 @@ npm run verify
 npm run test:foundation
 npm run test:browser
 npm run test:integration
+npm run test:speech
+npm run test:speech-lifecycle
+npm run test:speech-restart
 npm run test:proactive
 npm run test:concept
 npm run test:listening-surface
@@ -81,8 +89,8 @@ The [concept UI receipts](tests/evidence/CONCEPT-UI.md) cover real capture ackno
 
 Current and historical checks prove real calendar import, task/note creation and readback, explicitly requested hosted proposals, local-mode network boundaries, and real Jitsi document audio through tabCapture and Nemotron. Earlier audio checks prove real Kokoro synthesis and stale-result cancellation. See [the handoff](docs/EXTENSION-HANDOFF.md) for exact tested scope and hashes.
 
-The current full audio regression remains non-green at the third Kokoro synthesis after Return. A matched comparison reproduces the same 180-second timeout on the previous main commit with identical assets. Return revokes pending output, but timely synthesis completion and the later assertions in that run are not established. See the [matched audio receipt](tests/evidence/concept-audio-baseline.json).
+Historical audio runs include a third-synthesis timeout after Return; see the [matched audio receipt](tests/evidence/concept-audio-baseline.json). The post-hackathon speech branch changes loading, cancellation and worker lifetime. Its current checks and measured operating limits are recorded in [speech verification](docs/speech-verification.md).
 
-Hosted requests can fail independently of local storage; the UI retains an explicit error when that happens. Autonomous Takeover, continuous browser-context capture, physical-microphone mixing and an offscreen audio owner are not implemented. Live participant delivery and sustained meeting throughput remain unverified. Transcript offsets measure decoded audio and are not aligned to absence wall-clock intervals; the extension cannot attribute missed items to an absence. Local resume links restore only the originating browser's saved context and execute nothing.
+Hosted requests can fail independently of local storage; the UI retains an explicit error when that happens. Autonomous Takeover, continuous browser-context capture, physical-microphone mixing and an offscreen audio owner are not implemented. Live participant delivery, physical microphone quality and long meeting workloads remain unverified. The speech checks use recorded audio through real browser media APIs and actual local models; they do not establish accuracy for every microphone, accent or environment. Transcript offsets measure decoded audio and are not aligned to absence wall-clock intervals; the extension cannot attribute missed items to an absence. Local resume links restore only the originating browser's saved context and execute nothing.
 
 Inherited audio work and dependencies remain documented in [migration notes](docs/MIGRATION.md). The [build brief](docs/BRIEF.md) separates the complete intended demo from current evidence, and [submission notes](SUBMISSION.md) track inherited and event-built work.

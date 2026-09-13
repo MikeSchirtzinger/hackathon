@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "verify": "npm run check && npm test && npm run build && node scripts/verify.mjs && npm run check:publication",
+    "verify": "npm run check && npm test && npm run build && node scripts/verify.mjs && npm run check:assets && npm run check:publication",
     "test:browser": "node tests/browser.cjs",
     "prepare:assets": "node prepare-assets.mjs",
     "build": "node scripts/build.mjs",
@@ -19,7 +19,15 @@
     "test:disconnect": "node scripts/disconnect-browser-proof.mjs",
     "check:publication": "node scripts/check-publication.mjs",
     "test:concept": "node scripts/concept-browser-proof.mjs",
-    "test:listening-surface": "node scripts/listening-surface-proof.mjs"
+    "test:listening-surface": "node scripts/listening-surface-proof.mjs",
+    "setup:assets": "node scripts/setup-speech-assets.mjs",
+    "check:assets": "node scripts/setup-speech-assets.mjs --check",
+    "setup": "npm run setup:assets && npm run build",
+    "test:speech": "node scripts/speech-controls-proof.mjs",
+    "test:speech-runtime": "node scripts/speech-runtime-proof.mjs",
+    "test:speech-lifecycle": "node scripts/speech-lifecycle-proof.mjs",
+    "test:speech-response": "node scripts/speech-response-proof.mjs",
+    "test:speech-restart": "node scripts/speech-restart-proof.mjs"
   },
   "devDependencies": {
     "@types/chrome": "^0.1.0",
