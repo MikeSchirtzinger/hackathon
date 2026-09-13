@@ -10,4 +10,6 @@ Measured by `node scripts/surface-transparency-proof.mjs`, GitHub capture follow
 
 `npm run verify` passed TypeScript, all 39 tests, the build, validation of 362 installed model assets and the publication gate. `impeccable detect --json extension/surface.html extension/surface.css` returned no findings. This change does not modify audio, model, consent or attention policy. No audio or hosted provider rerun was performed. The prior audio integration limitation remains recorded in [the concept evidence](CONCEPT-UI.md).
 
+[Independent read-only QA](surface-transparency-independent.json) passed on implementation head `e97065491a97ec16d2ced80739112a03305f4304`. Its receipt records three hosts, 27 corner and trailing-canvas pixel comparisons, private-surface denial and zero worker HTTP requests. All 25 source and bundle hashes stayed stable and still match after this evidence-only followup.
+
 Local browser screenshots and raw reports remain in `.evidence/surface-transparency/baseline/` and `.evidence/surface-transparency/fixed/`. The proof uses its own profile and port 19334. Existing visible profiles were left untouched.
