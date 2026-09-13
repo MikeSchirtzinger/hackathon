@@ -1,0 +1,624 @@
+{
+  "startedAt": "2026-09-13T00:01:54.082Z",
+  "head": "e97065491a97ec16d2ced80739112a03305f4304",
+  "beforeHashes": {
+    "extension/manifest.json": "7f65e37a9fa91dc2caaba580af3ca40f9cc221a13e2004667c25ff5c40e65993",
+    "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+    "extension/popup.css": "1f50280705efaaf7386f8537dee2ab478847d2defaab8e915c28f8f2c3ec4ff1",
+    "extension/popup.html": "1bfd4b3667dbd12b99006172da8b182a15a37790f3e8dc2f45765df5beeb7e61",
+    "extension/surface.html": "f48a393c5eb48409c4a13ee83169089a8cb8a4cc69f4da0400568a872832cefa",
+    "extension/surface.css": "2031fd4365a01c08c17bf3249f3d2382f6cfa8d20da057a68f28ad41f5bf680d",
+    "extension/src/surfaces.ts": "8a69451e83920c2cc85f2d3a6523e80a4b2d065231db23f7d487676fd2286ac9",
+    "extension/src/surface-frame.ts": "ce61d1c929d3c339406e89839ae49396ec670d49714429d56cc4f2f9dc8d50b1",
+    "extension/src/surface-types.ts": "c69d92690ccdca56ea37f54e95f5e8bcfe12bdf419e7eff1cf294c6d7790c7b0",
+    "extension/src/cards.ts": "4d60208c0d5462e49c2a1448b53d5f203444dd1d735aefcc0e55f531279a90a7",
+    "extension/src/background.ts": "f28c7b876162bdd65b1ab04ffba3b0a6cf01f58b7c8aa606222507d32b9ff67c",
+    "extension/src/attention.ts": "b87b84bf62be868f2b2bbdc8dba5e1ac55525b2951b79b140509aecb67927d22",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/popup.ts": "644def400380caebf8ebbeaa6b2cefc5bbe7995525ec9ae8a86513cfd03ec9fb",
+    "extension/src/panel.ts": "728297e84b6e12f75dbfc838d7f265c9a867e735c3996cc5360885f996e747ba",
+    "extension/src/types.ts": "9ae0106fa429305c4218a174922ac69e61a327e9b56a2037f07581faa51662c5",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/app.js": "fb4df0813ed95264596fa42e323523da4aa946859ed691c9d3b2710ad9712065",
+    "extension/voice-bridge.js": "a8a099473a77ff1cb751268299b58c1d53b40424314a9f3b1d1b1a63fa24f6c8",
+    "extension/zoom-asr.js": "cb59221d9f11193ad8174094f3bd65633f9e4269f1f6f6794c56949462a5570c",
+    "extension/public/panel.css": "e4bed795977a9f7a7c492fe258d084173bd0a17b3530519f3132b06ef8509875",
+    "extension/foundation/background.js": "6b441954bacf757f615563f7b792c6c435ef29d097271d6a84fea45462f46698",
+    "extension/foundation/surface-frame.js": "7a468d471c7f0d08cdcf3f0dfcff7ac9508facdaee503edc0a51298367f24b0d",
+    "extension/foundation/popup.js": "103ce060e1b66f5708a54606e42c832110a6259a43e96b3aeb83c896b1326fdf",
+    "extension/foundation/panel.js": "75fa095f63095b7ca8ea1fedcfc721cb01ec57730589847608a1625195db4820"
+  },
+  "cases": [
+    {
+      "name": "light",
+      "host": {
+        "dark": true,
+        "schemeMeta": "light dark",
+        "rootScheme": "normal",
+        "bodyBackground": "rgb(217, 226, 236)"
+      },
+      "geometry": {
+        "x": 872,
+        "y": 28,
+        "width": 380,
+        "height": 167
+      },
+      "styles": {
+        "rootScheme": "dark",
+        "rootBackground": "rgba(0, 0, 0, 0)",
+        "bodyBackground": "rgba(0, 0, 0, 0)",
+        "cardBackground": "rgb(22, 25, 36)",
+        "cardRadius": "12px",
+        "shadow": "rgba(0, 0, 0, 0.133) 0px 8px 22px 0px",
+        "cardRect": {
+          "x": 1,
+          "y": 1,
+          "width": 378,
+          "height": 162.765625
+        }
+      },
+      "privacy": {
+        "openShadow": false,
+        "visibleFrame": false,
+        "mountGlobal": "undefined",
+        "privateAttribute": false,
+        "focus": "focus"
+      },
+      "pixels": [
+        {
+          "name": "top-left",
+          "x": 872,
+          "y": 28,
+          "baseline": [
+            217,
+            226,
+            236
+          ],
+          "rendered": [
+            214,
+            223,
+            233
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "top-right",
+          "x": 1251,
+          "y": 28,
+          "baseline": [
+            217,
+            226,
+            236
+          ],
+          "rendered": [
+            214,
+            223,
+            233
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-left",
+          "x": 872,
+          "y": 194,
+          "baseline": [
+            217,
+            226,
+            236
+          ],
+          "rendered": [
+            208,
+            216,
+            226
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-right",
+          "x": 1251,
+          "y": 194,
+          "baseline": [
+            217,
+            226,
+            236
+          ],
+          "rendered": [
+            208,
+            216,
+            226
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "corner-left-inner",
+          "x": 874,
+          "y": 30,
+          "baseline": [
+            217,
+            226,
+            236
+          ],
+          "rendered": [
+            213,
+            222,
+            231
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "corner-right-inner",
+          "x": 1249,
+          "y": 30,
+          "baseline": [
+            217,
+            226,
+            236
+          ],
+          "rendered": [
+            213,
+            222,
+            231
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-canvas-left",
+          "x": 880,
+          "y": 194,
+          "baseline": [
+            217,
+            226,
+            236
+          ],
+          "rendered": [
+            203,
+            211,
+            220
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-canvas-middle",
+          "x": 1062,
+          "y": 194,
+          "baseline": [
+            217,
+            226,
+            236
+          ],
+          "rendered": [
+            197,
+            205,
+            214
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-canvas-right",
+          "x": 1243,
+          "y": 194,
+          "baseline": [
+            217,
+            226,
+            236
+          ],
+          "rendered": [
+            203,
+            211,
+            220
+          ],
+          "onlyPermittedShadow": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "dark",
+      "host": {
+        "dark": true,
+        "schemeMeta": "light dark",
+        "rootScheme": "normal",
+        "bodyBackground": "rgb(36, 48, 64)"
+      },
+      "geometry": {
+        "x": 872,
+        "y": 28,
+        "width": 380,
+        "height": 167
+      },
+      "styles": {
+        "rootScheme": "dark",
+        "rootBackground": "rgba(0, 0, 0, 0)",
+        "bodyBackground": "rgba(0, 0, 0, 0)",
+        "cardBackground": "rgb(22, 25, 36)",
+        "cardRadius": "12px",
+        "shadow": "rgba(0, 0, 0, 0.133) 0px 8px 22px 0px",
+        "cardRect": {
+          "x": 1,
+          "y": 1,
+          "width": 378,
+          "height": 162.765625
+        }
+      },
+      "privacy": {
+        "openShadow": false,
+        "visibleFrame": false,
+        "mountGlobal": "undefined",
+        "privateAttribute": false,
+        "focus": "focus"
+      },
+      "pixels": [
+        {
+          "name": "top-left",
+          "x": 872,
+          "y": 28,
+          "baseline": [
+            36,
+            48,
+            64
+          ],
+          "rendered": [
+            36,
+            47,
+            63
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "top-right",
+          "x": 1251,
+          "y": 28,
+          "baseline": [
+            36,
+            48,
+            64
+          ],
+          "rendered": [
+            36,
+            47,
+            63
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-left",
+          "x": 872,
+          "y": 194,
+          "baseline": [
+            36,
+            48,
+            64
+          ],
+          "rendered": [
+            34,
+            46,
+            61
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-right",
+          "x": 1251,
+          "y": 194,
+          "baseline": [
+            36,
+            48,
+            64
+          ],
+          "rendered": [
+            34,
+            46,
+            61
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "corner-left-inner",
+          "x": 874,
+          "y": 30,
+          "baseline": [
+            36,
+            48,
+            64
+          ],
+          "rendered": [
+            35,
+            47,
+            63
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "corner-right-inner",
+          "x": 1249,
+          "y": 30,
+          "baseline": [
+            36,
+            48,
+            64
+          ],
+          "rendered": [
+            35,
+            47,
+            63
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-canvas-left",
+          "x": 880,
+          "y": 194,
+          "baseline": [
+            36,
+            48,
+            64
+          ],
+          "rendered": [
+            34,
+            45,
+            60
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-canvas-middle",
+          "x": 1062,
+          "y": 194,
+          "baseline": [
+            36,
+            48,
+            64
+          ],
+          "rendered": [
+            33,
+            43,
+            58
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-canvas-right",
+          "x": 1243,
+          "y": 194,
+          "baseline": [
+            36,
+            48,
+            64
+          ],
+          "rendered": [
+            34,
+            45,
+            60
+          ],
+          "onlyPermittedShadow": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "name": "github-dark",
+      "host": {
+        "dark": true,
+        "schemeMeta": "light dark",
+        "rootScheme": "dark",
+        "bodyBackground": "rgb(13, 17, 23)"
+      },
+      "geometry": {
+        "x": 872,
+        "y": 28,
+        "width": 380,
+        "height": 167
+      },
+      "styles": {
+        "rootScheme": "dark",
+        "rootBackground": "rgba(0, 0, 0, 0)",
+        "bodyBackground": "rgba(0, 0, 0, 0)",
+        "cardBackground": "rgb(22, 25, 36)",
+        "cardRadius": "12px",
+        "shadow": "rgba(0, 0, 0, 0.133) 0px 8px 22px 0px",
+        "cardRect": {
+          "x": 1,
+          "y": 1,
+          "width": 378,
+          "height": 162.765625
+        }
+      },
+      "privacy": {
+        "openShadow": false,
+        "visibleFrame": false,
+        "mountGlobal": "undefined",
+        "privateAttribute": false,
+        "focus": ""
+      },
+      "pixels": [
+        {
+          "name": "top-left",
+          "x": 872,
+          "y": 28,
+          "baseline": [
+            0,
+            0,
+            0
+          ],
+          "rendered": [
+            0,
+            0,
+            0
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "top-right",
+          "x": 1251,
+          "y": 28,
+          "baseline": [
+            0,
+            0,
+            0
+          ],
+          "rendered": [
+            0,
+            0,
+            0
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-left",
+          "x": 872,
+          "y": 194,
+          "baseline": [
+            13,
+            17,
+            23
+          ],
+          "rendered": [
+            12,
+            16,
+            22
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-right",
+          "x": 1251,
+          "y": 194,
+          "baseline": [
+            13,
+            17,
+            23
+          ],
+          "rendered": [
+            12,
+            16,
+            22
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "corner-left-inner",
+          "x": 874,
+          "y": 30,
+          "baseline": [
+            0,
+            0,
+            0
+          ],
+          "rendered": [
+            0,
+            0,
+            0
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "corner-right-inner",
+          "x": 1249,
+          "y": 30,
+          "baseline": [
+            0,
+            0,
+            0
+          ],
+          "rendered": [
+            0,
+            0,
+            0
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-canvas-left",
+          "x": 880,
+          "y": 194,
+          "baseline": [
+            13,
+            17,
+            23
+          ],
+          "rendered": [
+            12,
+            16,
+            21
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-canvas-middle",
+          "x": 1062,
+          "y": 194,
+          "baseline": [
+            13,
+            17,
+            23
+          ],
+          "rendered": [
+            12,
+            15,
+            21
+          ],
+          "onlyPermittedShadow": true
+        },
+        {
+          "name": "bottom-canvas-right",
+          "x": 1243,
+          "y": 194,
+          "baseline": [
+            13,
+            17,
+            23
+          ],
+          "rendered": [
+            12,
+            16,
+            21
+          ],
+          "onlyPermittedShadow": true
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "requests": [],
+  "errors": [],
+  "changedSinceAcceptedConcept": [
+    "extension/foundation/background.js",
+    "extension/src/surfaces.ts",
+    "extension/surface.css"
+  ],
+  "chrome": "151.0.7922.34",
+  "afterHashes": {
+    "extension/manifest.json": "7f65e37a9fa91dc2caaba580af3ca40f9cc221a13e2004667c25ff5c40e65993",
+    "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+    "extension/popup.css": "1f50280705efaaf7386f8537dee2ab478847d2defaab8e915c28f8f2c3ec4ff1",
+    "extension/popup.html": "1bfd4b3667dbd12b99006172da8b182a15a37790f3e8dc2f45765df5beeb7e61",
+    "extension/surface.html": "f48a393c5eb48409c4a13ee83169089a8cb8a4cc69f4da0400568a872832cefa",
+    "extension/surface.css": "2031fd4365a01c08c17bf3249f3d2382f6cfa8d20da057a68f28ad41f5bf680d",
+    "extension/src/surfaces.ts": "8a69451e83920c2cc85f2d3a6523e80a4b2d065231db23f7d487676fd2286ac9",
+    "extension/src/surface-frame.ts": "ce61d1c929d3c339406e89839ae49396ec670d49714429d56cc4f2f9dc8d50b1",
+    "extension/src/surface-types.ts": "c69d92690ccdca56ea37f54e95f5e8bcfe12bdf419e7eff1cf294c6d7790c7b0",
+    "extension/src/cards.ts": "4d60208c0d5462e49c2a1448b53d5f203444dd1d735aefcc0e55f531279a90a7",
+    "extension/src/background.ts": "f28c7b876162bdd65b1ab04ffba3b0a6cf01f58b7c8aa606222507d32b9ff67c",
+    "extension/src/attention.ts": "b87b84bf62be868f2b2bbdc8dba5e1ac55525b2951b79b140509aecb67927d22",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/popup.ts": "644def400380caebf8ebbeaa6b2cefc5bbe7995525ec9ae8a86513cfd03ec9fb",
+    "extension/src/panel.ts": "728297e84b6e12f75dbfc838d7f265c9a867e735c3996cc5360885f996e747ba",
+    "extension/src/types.ts": "9ae0106fa429305c4218a174922ac69e61a327e9b56a2037f07581faa51662c5",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/app.js": "fb4df0813ed95264596fa42e323523da4aa946859ed691c9d3b2710ad9712065",
+    "extension/voice-bridge.js": "a8a099473a77ff1cb751268299b58c1d53b40424314a9f3b1d1b1a63fa24f6c8",
+    "extension/zoom-asr.js": "cb59221d9f11193ad8174094f3bd65633f9e4269f1f6f6794c56949462a5570c",
+    "extension/public/panel.css": "e4bed795977a9f7a7c492fe258d084173bd0a17b3530519f3132b06ef8509875",
+    "extension/foundation/background.js": "6b441954bacf757f615563f7b792c6c435ef29d097271d6a84fea45462f46698",
+    "extension/foundation/surface-frame.js": "7a468d471c7f0d08cdcf3f0dfcff7ac9508facdaee503edc0a51298367f24b0d",
+    "extension/foundation/popup.js": "103ce060e1b66f5708a54606e42c832110a6259a43e96b3aeb83c896b1326fdf",
+    "extension/foundation/panel.js": "75fa095f63095b7ca8ea1fedcfc721cb01ec57730589847608a1625195db4820"
+  },
+  "result": "PASS",
+  "finishedAt": "2026-09-13T00:03:27.643Z",
+  "redactedFields": [
+    "cases[].text",
+    "cases[].host.title"
+  ],
+  "originalReceiptSha256": "d27bb67330ea8152c08bc2d2adb846c3032aeace0a82d578a03b98a3de6f01f0"
+}
