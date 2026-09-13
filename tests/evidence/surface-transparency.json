@@ -1,0 +1,1146 @@
+{
+  "baseCommit": "ff1a8a322f45c62f6ce27388ab7e65a70b380897",
+  "command": "SPARK_PROOF_PHASE=baseline|fixed CHROME_PATH=<Chrome for Testing 151 executable> node scripts/surface-transparency-proof.mjs",
+  "proofSha256": "8e15d111d426ef198362cd0f8909ee9940d62d69d40afaa7b397cad7c8d95307",
+  "baseline": {
+    "phase": "baseline",
+    "startedAt": "2026-09-12T23:57:04.271Z",
+    "checks": [
+      {
+        "hostScheme": "light",
+        "preferredScheme": "light",
+        "pass": true,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "styles": {
+          "rootScheme": "normal",
+          "rootBackground": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)",
+          "cardBackground": "rgb(22, 25, 36)",
+          "cardRadius": "12px"
+        },
+        "cornerCoordinates": [
+          [
+            872,
+            28
+          ],
+          [
+            1251,
+            28
+          ],
+          [
+            872,
+            194
+          ],
+          [
+            1251,
+            194
+          ]
+        ],
+        "hostPixels": [
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            208,
+            222,
+            237,
+            255
+          ],
+          [
+            208,
+            222,
+            237,
+            255
+          ],
+          [
+            201,
+            215,
+            230,
+            255
+          ],
+          [
+            201,
+            215,
+            230,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          3,
+          3,
+          10,
+          10
+        ]
+      },
+      {
+        "hostScheme": "dark",
+        "preferredScheme": "light",
+        "pass": true,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "styles": {
+          "rootScheme": "normal",
+          "rootBackground": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)",
+          "cardBackground": "rgb(22, 25, 36)",
+          "cardRadius": "12px"
+        },
+        "cornerCoordinates": [
+          [
+            872,
+            28
+          ],
+          [
+            1251,
+            28
+          ],
+          [
+            872,
+            194
+          ],
+          [
+            1251,
+            194
+          ]
+        ],
+        "hostPixels": [
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            15,
+            22,
+            33,
+            255
+          ],
+          [
+            15,
+            22,
+            33,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "hostScheme": "light",
+        "preferredScheme": "dark",
+        "pass": false,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "styles": {
+          "rootScheme": "normal",
+          "rootBackground": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)",
+          "cardBackground": "rgb(22, 25, 36)",
+          "cardRadius": "12px"
+        },
+        "cornerCoordinates": [
+          [
+            872,
+            28
+          ],
+          [
+            1251,
+            28
+          ],
+          [
+            872,
+            194
+          ],
+          [
+            1251,
+            194
+          ]
+        ],
+        "hostPixels": [
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            252,
+            252,
+            252,
+            255
+          ],
+          [
+            252,
+            252,
+            252,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          42,
+          42,
+          34,
+          34
+        ]
+      },
+      {
+        "hostScheme": "dark",
+        "preferredScheme": "dark",
+        "pass": false,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "styles": {
+          "rootScheme": "normal",
+          "rootBackground": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)",
+          "cardBackground": "rgb(22, 25, 36)",
+          "cardRadius": "12px"
+        },
+        "cornerCoordinates": [
+          [
+            872,
+            28
+          ],
+          [
+            1251,
+            28
+          ],
+          [
+            872,
+            194
+          ],
+          [
+            1251,
+            194
+          ]
+        ],
+        "hostPixels": [
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            252,
+            252,
+            252,
+            255
+          ],
+          [
+            252,
+            252,
+            252,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          236,
+          236,
+          228,
+          228
+        ]
+      },
+      {
+        "site": "https://github.com/MikeSchirtzinger/spark",
+        "preferredScheme": "light",
+        "pass": true,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "documentStyle": {
+          "scheme": "light",
+          "meta": "light dark",
+          "theme": "auto"
+        },
+        "frameStyle": {
+          "scheme": "normal",
+          "background": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)"
+        },
+        "mounted": {
+          "hostBackground": "rgba(0, 0, 0, 0)",
+          "hostScheme": "normal"
+        },
+        "hostPixels": [
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            255,
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          0,
+          0,
+          11,
+          11
+        ]
+      },
+      {
+        "site": "https://github.com/MikeSchirtzinger/spark",
+        "preferredScheme": "dark",
+        "pass": false,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "documentStyle": {
+          "scheme": "dark",
+          "meta": "light dark",
+          "theme": "auto"
+        },
+        "frameStyle": {
+          "scheme": "normal",
+          "background": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)"
+        },
+        "mounted": {
+          "hostBackground": "rgba(0, 0, 0, 0)",
+          "hostScheme": "normal"
+        },
+        "hostPixels": [
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            13,
+            17,
+            23,
+            255
+          ],
+          [
+            13,
+            17,
+            23,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            252,
+            252,
+            252,
+            255
+          ],
+          [
+            252,
+            252,
+            252,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          252,
+          252,
+          231,
+          231
+        ]
+      }
+    ],
+    "sourceSha256": {
+      "extension/src/surfaces.ts": "345df8802dacd25105b67d2d68864ce637ee8805f384f7d58726e57fe6dbc0e9",
+      "extension/surface.css": "46f69ac841b00422306e2150cd5e19afa0e9ba37a49adaf219b5bc6395ee0bf9",
+      "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+      "extension/manifest.json": "7f65e37a9fa91dc2caaba580af3ca40f9cc221a13e2004667c25ff5c40e65993",
+      "extension/foundation/background.js": "b37f5e2b2d7690dc55e886ff4788338d0bb84e1516df4f808308047c6b250b61"
+    },
+    "chrome": "151.0.7922.34",
+    "result": "FAIL",
+    "finishedAt": "2026-09-12T23:57:30.574Z"
+  },
+  "fixed": {
+    "phase": "fixed",
+    "startedAt": "2026-09-12T23:58:35.011Z",
+    "checks": [
+      {
+        "hostScheme": "light",
+        "preferredScheme": "light",
+        "pass": true,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "styles": {
+          "rootScheme": "dark",
+          "rootBackground": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)",
+          "cardBackground": "rgb(22, 25, 36)",
+          "cardRadius": "12px"
+        },
+        "cornerCoordinates": [
+          [
+            872,
+            28
+          ],
+          [
+            1251,
+            28
+          ],
+          [
+            872,
+            194
+          ],
+          [
+            1251,
+            194
+          ]
+        ],
+        "hostPixels": [
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            208,
+            222,
+            237,
+            255
+          ],
+          [
+            208,
+            222,
+            237,
+            255
+          ],
+          [
+            201,
+            215,
+            230,
+            255
+          ],
+          [
+            201,
+            215,
+            230,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          3,
+          3,
+          10,
+          10
+        ]
+      },
+      {
+        "hostScheme": "dark",
+        "preferredScheme": "light",
+        "pass": true,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "styles": {
+          "rootScheme": "dark",
+          "rootBackground": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)",
+          "cardBackground": "rgb(22, 25, 36)",
+          "cardRadius": "12px"
+        },
+        "cornerCoordinates": [
+          [
+            872,
+            28
+          ],
+          [
+            1251,
+            28
+          ],
+          [
+            872,
+            194
+          ],
+          [
+            1251,
+            194
+          ]
+        ],
+        "hostPixels": [
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            15,
+            22,
+            33,
+            255
+          ],
+          [
+            15,
+            22,
+            33,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "hostScheme": "light",
+        "preferredScheme": "dark",
+        "pass": true,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "styles": {
+          "rootScheme": "dark",
+          "rootBackground": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)",
+          "cardBackground": "rgb(22, 25, 36)",
+          "cardRadius": "12px"
+        },
+        "cornerCoordinates": [
+          [
+            872,
+            28
+          ],
+          [
+            1251,
+            28
+          ],
+          [
+            872,
+            194
+          ],
+          [
+            1251,
+            194
+          ]
+        ],
+        "hostPixels": [
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ],
+          [
+            210,
+            225,
+            240,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            208,
+            222,
+            237,
+            255
+          ],
+          [
+            208,
+            222,
+            237,
+            255
+          ],
+          [
+            201,
+            215,
+            230,
+            255
+          ],
+          [
+            201,
+            215,
+            230,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          3,
+          3,
+          10,
+          10
+        ]
+      },
+      {
+        "hostScheme": "dark",
+        "preferredScheme": "dark",
+        "pass": true,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "styles": {
+          "rootScheme": "dark",
+          "rootBackground": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)",
+          "cardBackground": "rgb(22, 25, 36)",
+          "cardRadius": "12px"
+        },
+        "cornerCoordinates": [
+          [
+            872,
+            28
+          ],
+          [
+            1251,
+            28
+          ],
+          [
+            872,
+            194
+          ],
+          [
+            1251,
+            194
+          ]
+        ],
+        "hostPixels": [
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            16,
+            23,
+            34,
+            255
+          ],
+          [
+            15,
+            22,
+            33,
+            255
+          ],
+          [
+            15,
+            22,
+            33,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "site": "https://github.com/MikeSchirtzinger/spark",
+        "preferredScheme": "light",
+        "pass": true,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "documentStyle": {
+          "scheme": "light",
+          "meta": "light dark",
+          "theme": "auto"
+        },
+        "frameStyle": {
+          "scheme": "dark",
+          "background": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)"
+        },
+        "mounted": {
+          "hostBackground": "rgba(0, 0, 0, 0)",
+          "hostScheme": "normal"
+        },
+        "hostPixels": [
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            255,
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ],
+          [
+            244,
+            244,
+            244,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          0,
+          0,
+          11,
+          11
+        ]
+      },
+      {
+        "site": "https://github.com/MikeSchirtzinger/spark",
+        "preferredScheme": "dark",
+        "pass": true,
+        "rect": {
+          "x": 872,
+          "y": 28,
+          "width": 380,
+          "height": 167
+        },
+        "documentStyle": {
+          "scheme": "dark",
+          "meta": "light dark",
+          "theme": "auto"
+        },
+        "frameStyle": {
+          "scheme": "dark",
+          "background": "rgba(0, 0, 0, 0)",
+          "bodyBackground": "rgba(0, 0, 0, 0)"
+        },
+        "mounted": {
+          "hostBackground": "rgba(0, 0, 0, 0)",
+          "hostScheme": "normal"
+        },
+        "hostPixels": [
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            13,
+            17,
+            23,
+            255
+          ],
+          [
+            13,
+            17,
+            23,
+            255
+          ]
+        ],
+        "renderedPixels": [
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            0,
+            0,
+            0,
+            255
+          ],
+          [
+            12,
+            16,
+            22,
+            255
+          ],
+          [
+            12,
+            16,
+            22,
+            255
+          ]
+        ],
+        "maxChannelDifferences": [
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    ],
+    "sourceSha256": {
+      "extension/src/surfaces.ts": "8a69451e83920c2cc85f2d3a6523e80a4b2d065231db23f7d487676fd2286ac9",
+      "extension/surface.css": "2031fd4365a01c08c17bf3249f3d2382f6cfa8d20da057a68f28ad41f5bf680d",
+      "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+      "extension/manifest.json": "7f65e37a9fa91dc2caaba580af3ca40f9cc221a13e2004667c25ff5c40e65993",
+      "extension/foundation/background.js": "6b441954bacf757f615563f7b792c6c435ef29d097271d6a84fea45462f46698"
+    },
+    "chrome": "151.0.7922.34",
+    "result": "PASS",
+    "finishedAt": "2026-09-12T23:59:01.233Z"
+  },
+  "screenshotsSha256": {
+    ".evidence/surface-transparency/baseline/dark-host-dark-preference.png": "93f1c5ac2efe31c296b1ec0ed3dfa419180d0c026268b56027614c9a6779d134",
+    ".evidence/surface-transparency/baseline/dark-host-light-preference.png": "3fc5bb84e1d68edab6337d14d61af699decd1a146517b62d9bf308175c11d50d",
+    ".evidence/surface-transparency/baseline/github-dark.png": "c359a55a00e8d582aeb6ee8cd6b71c4532795cea1a302bd7f4c6b9113fd2a3db",
+    ".evidence/surface-transparency/baseline/github-light.png": "21d6699c849ee67cdb4b53e2b060b876a1402af0e198938b9f998e6debb86b47",
+    ".evidence/surface-transparency/baseline/light-host-dark-preference.png": "0b81543878f7c8091e3d2a2348bdd483081cb5899079c4dd0f29678060b433bc",
+    ".evidence/surface-transparency/baseline/light-host-light-preference.png": "16363f5ce7d5fa2f98116eb9cd59a0cc8bf30fe56b7a9039096007412c46dbd9",
+    ".evidence/surface-transparency/fixed/dark-host-dark-preference.png": "3fc5bb84e1d68edab6337d14d61af699decd1a146517b62d9bf308175c11d50d",
+    ".evidence/surface-transparency/fixed/dark-host-light-preference.png": "3fc5bb84e1d68edab6337d14d61af699decd1a146517b62d9bf308175c11d50d",
+    ".evidence/surface-transparency/fixed/github-dark.png": "e5d27cdfea2c3f206201e877d479054183e9b53ffeee06c3d5c584f9803466fa",
+    ".evidence/surface-transparency/fixed/github-light.png": "315ca6999e71c915cf201f708a1e55e21fadb82ed5c501171b39f102df57164c",
+    ".evidence/surface-transparency/fixed/light-host-dark-preference.png": "16363f5ce7d5fa2f98116eb9cd59a0cc8bf30fe56b7a9039096007412c46dbd9",
+    ".evidence/surface-transparency/fixed/light-host-light-preference.png": "16363f5ce7d5fa2f98116eb9cd59a0cc8bf30fe56b7a9039096007412c46dbd9"
+  },
+  "verification": {
+    "command": "npm run verify",
+    "exitCode": 0,
+    "testsPassed": 39,
+    "installedAssetsVerified": 362
+  },
+  "detector": {
+    "command": "impeccable detect --json extension/surface.html extension/surface.css",
+    "exitCode": 0,
+    "findings": []
+  }
+}

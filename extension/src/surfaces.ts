@@ -40,7 +40,7 @@ function mountFrame(nonce: string, url: string, listening: boolean, expiresAt: n
   const shadow = host.attachShadow({mode:'closed'}), frame = document.createElement('iframe');
   frame.src = `${url}#${nonce}`; frame.title = listening ? 'Spark listening status' : 'Spark saved context and reminder card';
   frame.tabIndex = -1; frame.referrerPolicy = 'no-referrer';
-  style(frame,{all:'initial',display:'block',width:'100%',height:'100%',border:'0','color-scheme':'normal','pointer-events':listening?'none':'auto'});
+  style(frame,{all:'initial',display:'block',width:'100%',height:'100%',border:'0','color-scheme':'dark','pointer-events':listening?'none':'auto'});
   shadow.append(frame); document.documentElement.append(host);
   const timer = window.setTimeout(() => { host.remove(); if(scope.sparkMounts?.[slot]?.node === host) delete scope.sparkMounts[slot]; },Math.max(0,expiresAt-Date.now())+500);
   scope.sparkMounts[slot] = { node:host,timer,nonce };
