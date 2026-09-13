@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "groups": [
+    {
+      "id": "nemotron",
+      "destination": "models/nemotron",
+      "archiveRoot": "sherpa-onnx-nemotron-speech-streaming-en-0.6b-1120ms-int8-2026-04-25",
+      "archive": "nemotron-1120ms-int8.tar.bz2",
+      "download": {
+        "bytes": 463945058,
+        "sha256": "840c48deed02d4a5975716e7b12dc0a8b1ba620776c6366f7e5677d8907edd73",
+        "source": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemotron-speech-streaming-en-0.6b-1120ms-int8-2026-04-25.tar.bz2"
+      },
+      "fileCount": 7,
+      "installedBytes": 661998650,
+      "treeSha256": "8c51395b2676145c6788aa1a926d895a17d4fa26cfc3eeb1857c92020894761e",
+      "notice": {
+        "file": "Notice.txt",
+        "text": "Licensed by NVIDIA Corporation under the NVIDIA Open Model License\n",
+        "requiredBy": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/"
+      },
+      "supplements": [
+        {
+          "destination": "LICENSE-NVIDIA.pdf",
+          "archive": "nemotron-LICENSE-NVIDIA.pdf",
+          "download": {
+            "bytes": 79005,
+            "sha256": "4d2fb590aa9b30c47f2058bff17291df7fa2aa0c1bd775a20703da9bb267cfab",
+            "source": "https://www.nvidia.com/content/dam/en-zz/Solutions/license-agreements/enterprise-software/nvidia-open-model-license-agreements-24-10-2025.pdf"
+          }
+        }
+      ]
+    },
+    {
+      "id": "kokoro",
+      "destination": "models/kokoro",
+      "archiveRoot": "kokoro-int8-en-v0_19",
+      "archive": "kokoro-int8-en-v0_19.tar.bz2",
+      "download": {
+        "bytes": 103248205,
+        "sha256": "c9f0dd393615805b0bab050c340834d5e684e732aec91c0e860cd30e982c08bd",
+        "source": "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/kokoro-int8-en-v0_19.tar.bz2"
+      },
+      "fileCount": 360,
+      "installedBytes": 157947103,
+      "treeSha256": "ed8e68b1324cbccb5928700cb28d7863c345111c570c5362531014a918eecf0d",
+      "supplements": [
+        {
+          "destination": "LICENSE",
+          "archive": "kokoro-LICENSE.txt",
+          "download": {
+            "bytes": 11358,
+            "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+            "source": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+          }
+        }
+      ]
+    },
+    {
+      "id": "runtime",
+      "destination": "vendor",
+      "archiveRoot": "assets",
+      "archive": "sherpa_onnx_web-1.13.8.tar.gz",
+      "download": {
+        "bytes": 4351745,
+        "sha256": "e25a3813eb080636280b23dd4b0098252902675158b66dceda1efba061adf5d7",
+        "source": "https://pub.dev/api/archives/sherpa_onnx_web-1.13.8.tar.gz"
+      },
+      "fileCount": 10,
+      "installedBytes": 15363880,
+      "treeSha256": "7cbc931d738b8f61426bfad024b57a3de7b5b0359cf2f9b96bcb13064a155290"
+    },
+    {
+      "id": "sample",
+      "destination": "demo.wav",
+      "archive": "demo.wav",
+      "download": {
+        "bytes": 212044,
+        "sha256": "6bc58a4efdf20daac252b6b1502632601a71efe0308f6757dc1eda34891a7e4f",
+        "source": "https://huggingface.co/csukuangfj2/sherpa-onnx-nemotron-speech-streaming-en-0.6b-560ms-int8-2026-04-25/resolve/main/test_wavs/0.wav"
+      },
+      "fileCount": 1,
+      "installedBytes": 212044,
+      "treeSha256": "c2a290b31ff2415bb0b1e014dd1f036f8f735e586b3b66a74d51a670cbdda9eb"
+    }
+  ]
+}

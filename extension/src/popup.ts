@@ -1,4 +1,5 @@
 import { card } from './cards';
+import type { SpeechPreferences } from './speech';
 import { BRIDGE_PERMISSION } from './local-agent';
 import type { AttentionSignal, Meeting, ReasoningJob, Settings, AudioSession } from './types';
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -6,7 +7,7 @@ async function send(type: string, values: Record<string, unknown> = {}) { const 
 function status(text: string, error = false) { $('status').textContent = text; $('status').classList.toggle('error', error); }
 async function run(fn: () => Promise<void>) { try { await fn(); await refresh(); } catch (error) { status(error instanceof Error ? error.message : 'Operation failed.', true); } }
 async function refresh() {
-  const state: { jobs: ReasoningJob[]; attention: AttentionSignal[]; settings: Settings; audioListening: boolean; audioSessions: AudioSession[]; localAgent: { connected: boolean }; meetings: Meeting[] } = await send('state');
+  const state: { speechPreferences: SpeechPreferences; speechPlayback?: { status: string; detail: string }; jobs: ReasoningJob[]; attention: AttentionSignal[]; settings: Settings; audioListening: boolean; audioSessions: AudioSession[]; localAgent: { connected: boolean }; meetings: Meeting[] } = await send('state');
   $('mode').textContent = state.settings.syncMode === 'local' ? 'Local only' : 'Hosted processing allowed';
   const running = state.jobs.filter(j => j.state === 'queued' || j.state === 'running');
   $('background-status').textContent = `${running.length} jobs pending. Automatic reasoning: ${[state.settings.autoAmbiguous && 'Ambiguous', state.settings.autoLocalAgent && 'Codex'].filter(Boolean).join(', ') || 'off'}.`;
@@ -14,10 +15,14 @@ async function refresh() {
   const digest = state.attention.filter(a => !a.surfacedAt && a.mode === 'digest').length;
   $('pending').textContent = `${pending} decisions and ${digest} summaries saved for when you are ready.`;
   $('connection-status').textContent = state.localAgent.connected ? 'Codex paired. Processing is hosted.' : 'Local bridge not paired.';
+  $<HTMLInputElement>('voice-responses').checked = state.speechPreferences.voiceResponses;
+  $('microphone').textContent = state.audioSessions.some(session => ['starting','listening'].includes(session.captureStatus)) ? 'Stop transcription' : 'Start microphone';
+  $('speech-status').textContent = state.speechPlayback ? `${state.speechPlayback.status}: ${state.speechPlayback.detail}` : 'Voice hotkey: Command / Ctrl + Shift + 9.';
   $('listening').hidden = !state.audioListening;
   $('latest').replaceChildren();
   const latest = [...state.attention].filter(a => a.mode !== 'status').sort((a,b)=>b.createdAt-a.createdAt)[0];
   if (latest) $('latest').append(card(latest.mode === 'negotiate' ? 'queue' : latest.mode === 'interrupt' ? 'interrupt' : 'digest', latest.mode === 'negotiate' ? 'Ready for your review' : latest.mode === 'interrupt' ? 'Saved meeting reminder' : 'Summary ready', latest.summary.slice(0,220), latest.resurface === 'on-return' ? 'Saved for your return' : 'Available on request'));
+  if (latest?.source === 'reasoning' && state.speechPreferences.voiceResponses) { const read = document.createElement('button'); read.textContent = 'Read aloud'; read.onclick = () => void run(async () => { await send('speak-result', { kind: 'attention', id: latest.id }); }); $('latest').append(read); }
   $('meetings').replaceChildren();
   for (const meeting of state.meetings.filter(m => m.status !== 'ended').slice(-2)) {
     const box = card(meeting.status === 'away' ? 'queue' : 'tracked', meeting.status === 'away' ? 'You stepped away' : meeting.title, meeting.status === 'away' ? 'Absence recorded. Speaking on your behalf is unavailable.' : `Starts ${new Date(meeting.startsAt).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' })}`, meeting.captureStatus === 'listening' ? 'Transcription listening' : `Capture ${meeting.captureStatus}`);
@@ -33,6 +38,9 @@ async function refresh() {
 $('note-form').onsubmit = event => { event.preventDefault(); void run(async () => { await send('popup-note', { text: $<HTMLTextAreaElement>('note').value }); $<HTMLTextAreaElement>('note').value = ''; status('Note saved locally. Enabled providers will analyze it quietly.'); }); };
 $('settings').onclick = () => void chrome.runtime.openOptionsPage();
 $('review').onclick = () => void chrome.tabs.create({ url: chrome.runtime.getURL('panel.html#attention') });
+$('microphone').onclick = () => void run(async () => { await send('speech-control', { action: 'toggle' }); });
+$('stop-speech').onclick = () => void run(async () => { await send('speech-stop-output'); });
+$('voice-responses').onchange = () => void run(async () => { await send('speech-settings', { voiceResponses: $<HTMLInputElement>('voice-responses').checked }); });
 $('voice').onclick = () => void run(async () => { await send('open-voice'); });
 $('connect-local').onclick = () => {
   // Permission request must be the direct result of this explicit user gesture.

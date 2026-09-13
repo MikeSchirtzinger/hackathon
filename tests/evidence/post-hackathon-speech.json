@@ -1,0 +1,497 @@
+{
+  "schema": 1,
+  "checkedAt": "2026-09-13T05:12:42.963Z",
+  "baseCommit": "21d160f3ab7eafb3ef29dcfb29317a64d778bf16",
+  "branch": "fix/post-hackathon-speech",
+  "scope": "Post-hackathon cleanup, kept separate from grading main. Actual browser and local model runs. Recorded audio inputs do not establish physical microphone quality or live participant delivery.",
+  "host": {
+    "platform": "darwin",
+    "architecture": "arm64",
+    "cpu": "Apple M1 Pro",
+    "logicalCpus": 10,
+    "memoryBytes": 17179869184
+  },
+  "browser": "Chrome for Testing 151.0.7922.34",
+  "sourceSha256": {
+    "extension/app.js": "b99886cf276768378b072353c5310b4da4351b548aee9b4c8de2d50c24e2b3a6",
+    "extension/audio-queue.js": "109119aab5538d73160931354e72d390da99318b3fe7e30cebbbb2b7677f0247",
+    "extension/captions.js": "5635c2e369451b00bbd5219062ced69c01de21ef074abb01ff7bfbb97e68614c",
+    "extension/capture-session.js": "e595d7e255359b72654842ffd6ba31e845696de084199656b52f07b95108341f",
+    "extension/capture-worklet.js": "33f85335555ba8fb9309959b336fb4d6bed5854a1742bc109e84104300ff07df",
+    "extension/concept.css": "ca90dd20ceece0511dbe0ca41327beb0088962b989a229af56966e27e919764f",
+    "extension/engine-client.js": "3d7faa6c9d8981f09949696106c5d187ef1e58d22a5a4c2207474df0f79d264b",
+    "extension/engine-memory.js": "83f75d34933be94ecc954f682917b8ba79aa4e84439c7e4a5fbeab648bd5618d",
+    "extension/engine-worker.js": "f7dc21e865716d1f7572772bd713602e38d1118244a2ae445107a015a5dc6a3f",
+    "extension/index.html": "455792973549f1976bd996b4c67a5bbe8e637ffdf528ea83983c3c8fcb5f099d",
+    "extension/manifest.json": "a72a99e94d6d1da83ecaa64e7f577f456471253595ced85fbb2c67c8b4cc0644",
+    "extension/popup.css": "4275fdcc37aa859a1d05cf4a2d4f93e78fbb7c1891fa3f9e226a4155e94b67a3",
+    "extension/popup.html": "fcc3a3dec7975427063dda03f672a8e7af53cb165e2f88e2fb5c0a0dde02ed27",
+    "extension/public/panel.css": "e4bed795977a9f7a7c492fe258d084173bd0a17b3530519f3132b06ef8509875",
+    "extension/public/panel.html": "f2a46e32042dd91a43c58c378a456f6c4e6a6029cf28be9404bfb17c149f4dbd",
+    "extension/speech-output.js": "885392258e15a0db7178ed14fdde2cced73875e12e3917e9299270d7a529d64e",
+    "extension/speech-text.js": "f5fc1d49d6a7a220a23976018b582454b8f0f80496fbb6332dd04a5424f25d25",
+    "extension/src/ambiguous.ts": "c57ecdc7aad53b14c34e536a102799a61cd35245e5256d87809dda22c50aac6c",
+    "extension/src/analysis-result.ts": "58470b97570c749c4cddc5287a61e7ec3ff83190919e3ef171fa71bcd1401131",
+    "extension/src/attention-policy.ts": "7871132ea2d72cfd49f0dff09a1a33b75142802625510dbf6df413bd1a65a2df",
+    "extension/src/attention.ts": "b87b84bf62be868f2b2bbdc8dba5e1ac55525b2951b79b140509aecb67927d22",
+    "extension/src/background.ts": "7b074c2a4d913fd72e7ad86ee6c29b7c6ea1999c889e4798214cdc92247e0ee8",
+    "extension/src/calendar.ts": "0bbc7a2c779bd43f3c2de57470b1a2c93031f669a4d3dc051935357bae14ed9e",
+    "extension/src/capture.ts": "165fcdec9502b4db20b4840aa9374ef40fde6bea61086f700f5d9667c30f0d7e",
+    "extension/src/cards.ts": "4d60208c0d5462e49c2a1448b53d5f203444dd1d735aefcc0e55f531279a90a7",
+    "extension/src/db.ts": "d7f9fa1185d7232e934b2b691f02f8be7650c38b0d706160e94381ca81ef83df",
+    "extension/src/evidence.ts": "ffdfc776628a6265ffd1ed235ba7d43ae99413ed9646b94f70dcd91d97225ddd",
+    "extension/src/hosted.ts": "c1976195ddf760bfbb9fdaf9eee96a547035891a9b81887dbc50403dfa5811b2",
+    "extension/src/jobs.ts": "d4b34d661f408363dabdd85f16815dd6691feb7d8b1ad0859c2da79ddc3cd4dc",
+    "extension/src/local-agent.ts": "41f48c6fc41ce2e232a2a2c33251a6ec7f75028a205bc5646abc1d0ad3fb2777",
+    "extension/src/panel.ts": "3b6f0eccfb84433d90d8e4f0d13975e57e8153be30f23886e072cfe556904bf6",
+    "extension/src/policy.ts": "4f5c7a8fef401b943bcddc4d6b7df69cc747a7eaf761f870dbdcbd1a658ae3d9",
+    "extension/src/popup.ts": "de43bbb30be8e687b6da11931ab7daef45bc55cef9d35766cccc23ac042764f7",
+    "extension/src/speech.ts": "49486338d37e731e5ee7817d701b8ebd2361b872fc926cfd0f8aa1b8c798d783",
+    "extension/src/surface-frame.ts": "ce61d1c929d3c339406e89839ae49396ec670d49714429d56cc4f2f9dc8d50b1",
+    "extension/src/surface-types.ts": "c69d92690ccdca56ea37f54e95f5e8bcfe12bdf419e7eff1cf294c6d7790c7b0",
+    "extension/src/surfaces.ts": "8a69451e83920c2cc85f2d3a6523e80a4b2d065231db23f7d487676fd2286ac9",
+    "extension/src/transcript.ts": "5fe892d8cf841eb98d5c804babeb31b8ee3d91c273bcc72fdf9f10257c9805f4",
+    "extension/src/types.ts": "5d2511dc54d7d61effc3d529e64cfb855228fab73f4fe48f09ccb7273cef33f6",
+    "extension/style.css": "5c99534e2a7594af87bfeb27d3dc11ab87a2a1ad3b66501450c5703c528057ec",
+    "extension/surface.css": "2031fd4365a01c08c17bf3249f3d2382f6cfa8d20da057a68f28ad41f5bf680d",
+    "extension/surface.html": "f48a393c5eb48409c4a13ee83169089a8cb8a4cc69f4da0400568a872832cefa",
+    "extension/voice-bridge.js": "e63c1919c88264d0c34ba53bdc5a7a12f9d72b124891716b05fca2ef2fed38a7",
+    "extension/zoom-asr.js": "ab0241c634b277bbd78dad04ac681d56546513c7467e067651b196492c16b016",
+    "extension/zoom.js": "aac1777cb2b52d68436c5c2b4c49377dff12de0124e36dceea37a4920f329415",
+    "prepare-assets.mjs": "64e056ef2f63aa6dcc533fedbb12b3fcc5eefaf665e91d650dfb2fc0dc135093",
+    "scripts/setup-speech-assets.mjs": "24963d8a8fab1607278012bd12bb150db49607378f732141e2434c093ed90e85",
+    "scripts/speech-assets.json": "e9d285079698b607badc95f2f4f25e198a18d5598dcb565f2140ac1d00eaf63e"
+  },
+  "checks": [
+    {
+      "command": "npm run verify",
+      "result": "PASS",
+      "unitTests": 43,
+      "logSha256": "28e52c5d09b46e69afdd9e8a6ef6e6af55ab26956519ea530b2916174b843f22"
+    },
+    {
+      "command": "npm run test:browser",
+      "result": "PASS",
+      "logSha256": "7e9648efc34c4c3b9919f5eefd1d7ab8c2dd392e9bdbecc13bc539b34d823f5e",
+      "scope": "40 second FIFO, acknowledgement drain, retained PCM on fault, late queue-open cancellation, actual Nemotron text and enforced memory cap"
+    },
+    {
+      "command": "npm run test:foundation",
+      "result": "PASS",
+      "startedAt": "2026-09-13T04:44:45.052Z",
+      "finishedAt": "2026-09-13T04:44:54.634Z",
+      "localReport": ".evidence/checkpoint/report.json",
+      "reportSha256": "59633e41a9d88c5e8f52f7cb8df74d2aa7492dd08c59697fb0ba044325470bae",
+      "checks": [
+        "Unpacked MV3 loads with registered capture command",
+        "Ordinary page keyboard input is a negative control for browser command routing",
+        "Real hotkey captures original page, selection, visible text, and time without focus or notification",
+        "Manual note remains paired to pre-tab-change context and persists after reload",
+        "Resume restores local context and next step with no task execution",
+        "Missing local resume ID is explicit and cannot attach to another context",
+        "Saved meeting time triggers a real chrome.alarms notification",
+        "Meeting join URL, absence boundaries, return/end persist; unavailable speech cannot fake Takeover",
+        "Local mode has zero observed worker HTTP requests, with positive network instrumentation control",
+        "Enabling sync does not enqueue private history; local mode denies batch approval",
+        "Real IndexedDB multi-write failure rejects and rolls back prior writes",
+        "Restricted browser page records explicit unavailable page text",
+        "Full browser restart retains notes, tasks, meeting state, and absence boundaries"
+      ]
+    },
+    {
+      "command": "npm run test:integration",
+      "result": "PASS",
+      "startedAt": "2026-09-13T05:03:42.610Z",
+      "finishedAt": "2026-09-13T05:04:08.681Z",
+      "localReport": ".evidence/audio-integration/report.json",
+      "reportSha256": "eec7d2ecdff42ce0a9bfe7b5614bca61c2ede8663369728ce3a92e86989d5b75",
+      "checks": [
+        "Panel opens the inherited Voice Lab under the same extension ID",
+        "Real Nemotron sample is saved through the UI bridge and retained after reload",
+        "Stop audio terminates real pending Kokoro synthesis",
+        "A fresh explicit Kokoro request generates audio after cancellation",
+        "Return terminates real pending synthesis; ASR decodes another clip within 30 seconds and releases its processing context",
+        "Reloaded audio document cannot leave a durable starting session blocking capture",
+        "Closed audio owner is marked interrupted and permits a new session",
+        "Browser restart recovers stale owner records and retains real transcript before allowing capture"
+      ]
+    },
+    {
+      "command": "npm run test:speech",
+      "result": "PASS",
+      "startedAt": "2026-09-13T05:05:09.990Z",
+      "finishedAt": "2026-09-13T05:07:27.059Z",
+      "localReport": ".evidence/speech-controls/report.json",
+      "reportSha256": "0ad81c45f1bf6c89689f1d3243fc1db24ab159144a985fd6e46fe6e2a0d535ad",
+      "checks": [
+        "Nemotron loads from one sample click and saves a real transcript",
+        "Transcript survives a settings reload",
+        "Kokoro loads and plays a chunked response in an inactive tab without Load or Play clicks, then closes its processing context",
+        "Stop terminates pending synthesis and removes playback",
+        "Continuous microphone capture stays active beyond 30 seconds with persisted rolling transcripts in a background tab",
+        "Explicit Stop persists through owner reload",
+        "The real Chrome voice command starts and stops microphone transcription",
+        "Local speech made no HTTP requests or captured-content uploads"
+      ]
+    },
+    {
+      "command": "npm run test:speech-runtime",
+      "result": "PASS",
+      "startedAt": "2026-09-13T04:19:19.483Z",
+      "finishedAt": "2026-09-13T04:20:38.944Z",
+      "localReport": ".evidence/speech-runtime/report.json",
+      "reportSha256": "d05310e8f0cb55a660729fca8558316ad5ce73064f22d16c3b343e848b3975b6",
+      "checks": [
+        "One real Nemotron initialization has an enforced WASM maximum",
+        "Real Nemotron sample stream 1",
+        "Real Nemotron sample stream 2",
+        "Real Nemotron sample stream 3",
+        "Oversized PCM is rejected and real silence produces no transcript",
+        "Real Kokoro loads while Nemotron remains available",
+        "Real Kokoro generates finite non-silent PCM",
+        "Real Kokoro generates finite non-silent PCM",
+        "Real Kokoro generates finite non-silent PCM",
+        "Real Kokoro generates finite non-silent PCM",
+        "Invalid voice and unbounded text are rejected before generation",
+        "Termination rejects pending synthesis and releases worker ownership",
+        "Real Kokoro reloads and synthesizes after termination"
+      ]
+    },
+    {
+      "command": "npm run test:speech-lifecycle",
+      "result": "PASS",
+      "startedAt": "2026-09-13T05:07:59.175Z",
+      "finishedAt": "2026-09-13T05:09:41.438Z",
+      "localReport": ".evidence/speech-lifecycle/report.json",
+      "reportSha256": "a4f2dec24f270bdca8f8fbf7d1f64a488d09bc8fff6daebf962886baa83abc6b",
+      "checks": [
+        "Cancel during real model initialization releases tracks and fresh Start transcribes",
+        "Reset releases the real model and fresh Start reloads and transcribes",
+        "Continuous microphone input is released before actual Kokoro playback",
+        "Stop audio cancels playback and continuous microphone resumes",
+        "A stopped synthesis request cannot steal the replacement or prevent microphone resume",
+        "Return cancels real pending Kokoro generation using a meeting control fixture",
+        "Opt-out cancels already playing real Kokoro audio",
+        "Explicit Stop remains paused after owner reload without a microphone request",
+        "Native microphone permission denial stops capture with a visible error and no live tracks",
+        "Fresh Start recovers after a real permission denial"
+      ]
+    },
+    {
+      "command": "npm run test:speech-restart",
+      "result": "PASS",
+      "startedAt": "2026-09-13T05:08:22.719Z",
+      "finishedAt": "2026-09-13T05:08:52.645Z",
+      "localReport": ".evidence/speech-restart/report.json",
+      "reportSha256": "0f1a6f044f50765b94d5cce660d0a0b6fc8a507bfb021cbb1fbbfae74f9c3c73",
+      "checks": [
+        "Continuous preference starts the real microphone pipeline and saves matching Nemotron text",
+        "Repeated Open Voice Lab reuses the same document and active capture session",
+        "Closing the owner retains real queued PCM and its saved session database pointer",
+        "Full Chrome close and same-profile relaunch autonomously resume continuous transcription with one new owner",
+        "Queued PCM and its session pointer survive the full Chrome restart byte-for-byte",
+        "Explicit Pause survives full browser restart and manually reopening Voice Lab without requesting the microphone"
+      ]
+    },
+    {
+      "command": "npm run test:speech-response",
+      "result": "PASS",
+      "startedAt": "2026-09-13T05:09:46.941Z",
+      "finishedAt": "2026-09-13T05:11:22.333Z",
+      "localReport": ".evidence/speech-response/report.json",
+      "reportSha256": "6acdfbfcede22e3e9ed4317252a6a6f3fdfb4ea2a4da206ded352fc7660c0df5",
+      "checks": [
+        "A real requested Assistant response is saved, synthesized with Kokoro and automatically played through browser speakers",
+        "Saved response playback works in Local only; disabling voice stops output and refuses new requests without HTTP",
+        "Return revokes queued speech from a real saved response before a suspended owner can play it"
+      ]
+    },
+    {
+      "command": "npm run test:tab-capture",
+      "result": "PASS",
+      "startedAt": "2026-09-13T05:09:00.920Z",
+      "localReport": ".evidence/tab-capture/report.json",
+      "reportSha256": "e50cfcf6eb04efee683d8a0d6587ab0d2dce7b5c3960f58f2baccd1d0daa012c",
+      "checks": [
+        "Authorized Jitsi tab playback passes through real tabCapture, Nemotron, and persistent transcript bridge"
+      ]
+    }
+  ],
+  "assetSetup": {
+    "manifestSha256": "e9d285079698b607badc95f2f4f25e198a18d5598dcb565f2140ac1d00eaf63e",
+    "realSources": true,
+    "checks": [
+      {
+        "name": "Fresh real-source installation matches committed hashes",
+        "exit": 0
+      },
+      {
+        "name": "One-byte corruption fails asset check",
+        "exit": 1
+      },
+      {
+        "name": "Corrupt offline cache cannot replace assets",
+        "exit": 1
+      },
+      {
+        "name": "Failed offline repair leaves destination unchanged",
+        "passed": true
+      },
+      {
+        "name": "Verified cached sample repairs corruption",
+        "exit": 0
+      },
+      {
+        "name": "Missing license fails asset check",
+        "exit": 1
+      },
+      {
+        "name": "prepare:assets rejects missing Kokoro voices even when language-data files remain",
+        "exit": 1
+      },
+      {
+        "name": "Missing runtime list repairs from verified installed bytes",
+        "exit": 0
+      },
+      {
+        "name": "Final repaired installation matches committed hashes",
+        "exit": 0
+      },
+      {
+        "name": "Unrelated files and valid model timestamp preserved",
+        "passed": true
+      }
+    ],
+    "negativeControls": "Nonzero exit is required for deliberate corruption, missing licenses and missing voices."
+  },
+  "streaming": {
+    "command": "node scripts/speech-streaming-benchmark.mjs extension/models/nemotron",
+    "segmentSeconds": 20.2,
+    "encoderSha256": "7d2246da3c077e8b57698d398e09d8ca67f50de73b3468af397b22213ce72117",
+    "runs": [
+      {
+        "audioSeconds": 20.2,
+        "elapsedMs": 17255.69999999553,
+        "realtimeFactor": 0.8542425742572044,
+        "firstTextMs": 967.7999999970198,
+        "diagnostics": {
+          "kind": "nemotron",
+          "wasmBytes": 868155392,
+          "peakWasmBytes": 868155392,
+          "wasmLimitBytes": 1610612736,
+          "modelFileBytes": 8952,
+          "streamSeconds": 20.19999999999996,
+          "maxStreamSeconds": 30,
+          "maxAudioChunkSamples": 16000,
+          "threads": 1,
+          "memoryLimitEnforced": true,
+          "scope": "WASM linear memory; browser process and asset buffers are additional"
+        }
+      },
+      {
+        "audioSeconds": 20.2,
+        "elapsedMs": 16999.60000000149,
+        "realtimeFactor": 0.8415643564357174,
+        "firstTextMs": 894.1999999955297,
+        "diagnostics": {
+          "kind": "nemotron",
+          "wasmBytes": 868155392,
+          "peakWasmBytes": 868155392,
+          "wasmLimitBytes": 1610612736,
+          "modelFileBytes": 8952,
+          "streamSeconds": 20.19999999999996,
+          "maxStreamSeconds": 30,
+          "maxAudioChunkSamples": 16000,
+          "threads": 1,
+          "memoryLimitEnforced": true,
+          "scope": "WASM linear memory; browser process and asset buffers are additional"
+        }
+      },
+      {
+        "audioSeconds": 20.2,
+        "elapsedMs": 16937.30000000447,
+        "realtimeFactor": 0.8384801980200233,
+        "firstTextMs": 891.7000000029802,
+        "diagnostics": {
+          "kind": "nemotron",
+          "wasmBytes": 868155392,
+          "peakWasmBytes": 868155392,
+          "wasmLimitBytes": 1610612736,
+          "modelFileBytes": 8952,
+          "streamSeconds": 20.19999999999996,
+          "maxStreamSeconds": 30,
+          "maxAudioChunkSamples": 16000,
+          "threads": 1,
+          "memoryLimitEnforced": true,
+          "scope": "WASM linear memory; browser process and asset buffers are additional"
+        }
+      }
+    ],
+    "baseline560ms": [
+      {
+        "audioSeconds": 19.875,
+        "elapsedMs": 25117.60000000149,
+        "realtimeFactor": 1.2637786163522764
+      },
+      {
+        "audioSeconds": 19.875,
+        "elapsedMs": 24740.29999999702,
+        "realtimeFactor": 1.2447949685533093
+      },
+      {
+        "audioSeconds": 19.875,
+        "elapsedMs": 24821.60000000149,
+        "realtimeFactor": 1.24888553459127
+      }
+    ],
+    "scope": "Three bounded sequential runs per export. Different segment lengths are explicit. Not a long meeting benchmark."
+  },
+  "kokoro": {
+    "command": "npm run test:speech-runtime",
+    "generations": [
+      {
+        "type": "audio-result",
+        "requestId": "09215c74-8eeb-4002-9f20-08ace9e41740",
+        "sampleRate": 24000,
+        "elapsed": 4422.10000000149,
+        "diagnostics": {
+          "kind": "kokoro",
+          "wasmBytes": 536870912,
+          "peakWasmBytes": 536870912,
+          "wasmLimitBytes": 805306368,
+          "modelFileBytes": 23748633,
+          "streamSeconds": 0,
+          "maxStreamSeconds": 30,
+          "maxAudioChunkSamples": 16000,
+          "threads": 1,
+          "memoryLimitEnforced": true,
+          "scope": "WASM linear memory; browser process and asset buffers are additional"
+        },
+        "sampleCount": 25170,
+        "seconds": 1.04875,
+        "rms": 0.0595499833605852,
+        "peak": 0.3265080153942108
+      },
+      {
+        "type": "audio-result",
+        "requestId": "5202a626-f5bb-4b92-b085-5c4eb7b88790",
+        "sampleRate": 24000,
+        "elapsed": 7984.39999999851,
+        "diagnostics": {
+          "kind": "kokoro",
+          "wasmBytes": 536870912,
+          "peakWasmBytes": 536870912,
+          "wasmLimitBytes": 805306368,
+          "modelFileBytes": 23748633,
+          "streamSeconds": 0,
+          "maxStreamSeconds": 30,
+          "maxAudioChunkSamples": 16000,
+          "threads": 1,
+          "memoryLimitEnforced": true,
+          "scope": "WASM linear memory; browser process and asset buffers are additional"
+        },
+        "sampleCount": 67736,
+        "seconds": 2.8223333333333334,
+        "rms": 0.05629517698737181,
+        "peak": 0.3766089975833893
+      },
+      {
+        "type": "audio-result",
+        "requestId": "cda30b0d-2270-4ae1-9a6f-97e76248762a",
+        "sampleRate": 24000,
+        "elapsed": 4340.89999999851,
+        "diagnostics": {
+          "kind": "kokoro",
+          "wasmBytes": 536870912,
+          "peakWasmBytes": 536870912,
+          "wasmLimitBytes": 805306368,
+          "modelFileBytes": 23748633,
+          "streamSeconds": 0,
+          "maxStreamSeconds": 30,
+          "maxAudioChunkSamples": 16000,
+          "threads": 1,
+          "memoryLimitEnforced": true,
+          "scope": "WASM linear memory; browser process and asset buffers are additional"
+        },
+        "sampleCount": 25121,
+        "seconds": 1.0467083333333334,
+        "rms": 0.0597046791756042,
+        "peak": 0.3174789845943451
+      },
+      {
+        "type": "audio-result",
+        "requestId": "086780ed-2f2e-47d7-ad63-9e7bf7d827c9",
+        "sampleRate": 24000,
+        "elapsed": 34013.5,
+        "diagnostics": {
+          "kind": "kokoro",
+          "wasmBytes": 644284416,
+          "peakWasmBytes": 644284416,
+          "wasmLimitBytes": 805306368,
+          "modelFileBytes": 23748633,
+          "streamSeconds": 0,
+          "maxStreamSeconds": 30,
+          "maxAudioChunkSamples": 16000,
+          "threads": 1,
+          "memoryLimitEnforced": true,
+          "scope": "WASM linear memory; browser process and asset buffers are additional"
+        },
+        "sampleCount": 346135,
+        "seconds": 14.422291666666666,
+        "rms": 0.05901426765380036,
+        "peak": 0.41009223461151123
+      }
+    ],
+    "memoryScope": "WASM linear memory only. Chrome process, asset buffers, JavaScript and audio storage are additional."
+  },
+  "limitations": [
+    "First-use browser installation and microphone permission remain required.",
+    "Kokoro CPU synthesis can be slower than the produced audio duration.",
+    "Persistent audio owner tab must remain open for current input.",
+    "Faulted PCM is retained, but backlog replay has no UI.",
+    "Physical microphone quality, long meetings, microphone mixing and participant delivery remain unverified."
+  ],
+  "historicalFailure": "tests/evidence/concept-audio-baseline.json remains unchanged.",
+  "backgroundProcessing": {
+    "command": "npm run test:integration",
+    "scope": "Same 6.625 second input after actual Kokoro cancellation. Experimental flags and lifetime interventions are diagnostics only; production uses the ordinary Chrome launch.",
+    "comparisons": [
+      {
+        "label": "isolated-retained",
+        "result": "PASS",
+        "elapsedMs": 104445,
+        "reportSha256": "fc9db6886eaebd27b1fd6420829eb3df197da93d939f6f581d1083b31433cfe9",
+        "localReport": ".evidence/asr-latency-isolated-retained/report.json"
+      },
+      {
+        "label": "isolated-released",
+        "result": "PASS",
+        "elapsedMs": 128600,
+        "reportSha256": "e547704632765100b89a029cb851273bbe23908583aa3f9dfffe3ad410c129f2",
+        "localReport": ".evidence/asr-latency-isolated-released/report.json"
+      },
+      {
+        "label": "optimizer-only",
+        "result": "PASS",
+        "elapsedMs": 103396,
+        "reportSha256": "7e9cc3d0d7749f3bcb67826a38410a078e09a63debe6d2aca9b891df65cede3b",
+        "localReport": ".evidence/asr-latency-optimizer-only/report.json"
+      },
+      {
+        "label": "retained-audio-context",
+        "result": "PASS",
+        "elapsedMs": 6599,
+        "reportSha256": "f62cd8416f2d8d768770e4e75cc8ec308fccf1f223903d22cf366e717211a707",
+        "localReport": ".evidence/asr-latency-retained-audio-context/report.json"
+      },
+      {
+        "label": "production-context",
+        "result": "PASS",
+        "elapsedMs": 6578,
+        "reportSha256": "eec7d2ecdff42ce0a9bfe7b5614bca61c2ede8663369728ce3a92e86989d5b75",
+        "localReport": ".evidence/asr-latency-production-context/report.json"
+      }
+    ],
+    "policy": "Stop hardware immediately, retain the actual processing AudioContext through pending decode and final persistence, then close. Output owns a context only through loading, synthesis and playback. No silent playback or production browser flags."
+  }
+}

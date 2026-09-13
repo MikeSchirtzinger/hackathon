@@ -45,6 +45,13 @@
         "mac": "Command+Shift+U"
       },
       "description": "Open the Spark popup"
+    },
+    "toggle-transcription": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+9",
+        "mac": "Command+Shift+9"
+      },
+      "description": "Start or stop local microphone transcription"
     }
   },
   "options_ui": {

@@ -31,7 +31,7 @@ export interface Meeting extends BaseRecord {
 }
 export interface AudioSession extends BaseRecord {
   tabId: number; ownerDocumentId: string; source: 'sample' | 'microphone' | 'zoom' | 'tab'; contextId?: string; meetingId?: string;
-  captureStatus: Meeting['captureStatus']; inputActive?: boolean; startedAt: number; endedAt?: number; detail?: string;
+  captureStatus: Meeting['captureStatus']; pendingAudio?: { database: string; samples: number }; inputActive?: boolean; startedAt: number; endedAt?: number; detail?: string;
 }
 export interface Setting { id: string; value: unknown }
 export interface Settings {

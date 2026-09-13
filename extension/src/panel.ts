@@ -1,7 +1,8 @@
 import { card as conceptCard } from './cards';
+import type { SpeechPreferences } from './speech';
 import { BRIDGE_PERMISSION } from './local-agent';
 import type { ReasoningJob, AttentionSignal, Analysis, Absence, AudioSession, ContextSnapshot, Meeting, Note, OutboxItem, Settings, TaskProposal, TranscriptSegment } from './types';
-interface State { jobs: ReasoningJob[]; attention: AttentionSignal[]; localAgent: { connected: boolean }; analyses: Analysis[]; audioSessions: AudioSession[]; contexts: ContextSnapshot[]; notes: Note[]; tasks: TaskProposal[]; meetings: Meeting[]; absences: Absence[]; transcripts: TranscriptSegment[]; outbox: OutboxItem[]; settings: Settings; currentContextId?: string; credentialsConfigured: boolean; commands: chrome.commands.Command[]; lastStatus?: { message: string; error: boolean } }
+interface State { speechPreferences: SpeechPreferences; speechPlayback?: { status: string; detail: string }; audioListening: boolean; jobs: ReasoningJob[]; attention: AttentionSignal[]; localAgent: { connected: boolean }; analyses: Analysis[]; audioSessions: AudioSession[]; contexts: ContextSnapshot[]; notes: Note[]; tasks: TaskProposal[]; meetings: Meeting[]; absences: Absence[]; transcripts: TranscriptSegment[]; outbox: OutboxItem[]; settings: Settings; currentContextId?: string; credentialsConfigured: boolean; commands: chrome.commands.Command[]; lastStatus?: { message: string; error: boolean } }
 const $ = <T extends HTMLElement = HTMLElement>(selector: string) => {
   const element = document.querySelector<T>(selector);
   if (!element) throw new Error(`Missing panel control: ${selector}`);
@@ -53,7 +54,7 @@ function analysisEnabled() { return state.settings.syncMode === 'sync' && state.
 async function requestAnalysis(type: 'analyze-note' | 'meeting-brief', id: string) {
   analysisRunning = true; showStatus('Sending saved evidence for hosted analysis. You can turn it off in Settings.');
   renderNotes(); renderMeetings();
-  try { const result = await send<Analysis>(type, { id }); showStatus(result.state === 'complete' ? 'Analysis saved locally. Proposals need your review.' : result.error ?? 'Analysis failed.', result.state !== 'complete'); }
+  try { const result = await send<Analysis>(type, { id }); showStatus(result.state === 'complete' ? 'Analysis saved locally. Proposals need your review.' : result.error ?? 'Analysis failed.', result.state !== 'complete'); if (result.state === 'complete' && state.speechPreferences.voiceResponses) await send('speak-result', { kind: 'analysis', id: result.id }); }
   finally { analysisRunning = false; }
 }
 function renderAnalyses(targetId: string, card: HTMLElement) {
@@ -61,7 +62,7 @@ function renderAnalyses(targetId: string, card: HTMLElement) {
     const box = el('div'); box.append(el('h3', record.kind === 'meeting' ? 'Meeting brief' : 'Saved note analysis'), el('p', `${record.state} · Hosted analysis · ${when(record.createdAt)}`, 'meta'));
     if (record.kind === 'meeting') box.append(el('p', 'Absence-to-transcript timing is unavailable. Decoded-audio offsets do not identify what was missed during an absence.', 'hint'));
     if (record.error) box.append(el('p', record.error, 'warning'));
-    if (record.summary) box.append(el('p', record.summary));
+    if (record.summary) { box.append(el('p', record.summary)); if (record.state === 'complete' && state.speechPreferences.voiceResponses) box.append(button('Read aloud', () => send('speak-result', { kind: 'analysis', id: record.id }))); }
     for (const proposal of record.proposals ?? []) box.append(el('p', proposal.nextStep), el('p', `Proposal only · ${proposal.delivery} · Owner and date unspecified · Evidence: ${proposal.evidenceIds.join(', ')}`, 'meta'));
     if (record.toolActivity.length) { const details = el('details'); details.append(el('summary', 'Returned provider tool activity'), el('pre', record.toolActivity.join('\n'))); box.append(details); }
     else if (record.state === 'complete') box.append(el('p', 'Provider returned no tool activity. No proposal is executed by this extension.', 'hint'));
@@ -174,6 +175,7 @@ function renderBackground() {
     const heading = signal.mode === 'status' ? 'Saved status' : signal.mode === 'digest' ? 'Summary ready' : signal.mode === 'negotiate' ? 'Ready for your review' : 'Meeting reminder';
     const card = conceptCard(kind, heading, signal.summary, signal.resurface === 'on-return' ? 'Saved for your return' : 'Available on request'); card.dataset.attentionId = signal.id;
     const details = el('details'); details.append(el('summary', 'Why this delivery'), el('p', signal.reason), el('p', `Evidence: ${signal.evidenceIds.join(', ')}`, 'hint')); card.append(details);
+    if (state.speechPreferences.voiceResponses && signal.source === 'reasoning' && signal.mode !== 'status') card.append(button('Read aloud', () => send('speak-result', { kind: 'attention', id: signal.id })));
     if (signal.notificationError) card.append(el('p', signal.notificationError, 'warning'));
     attention.append(card);
   }
@@ -183,6 +185,7 @@ function renderBackground() {
     if (job.error) card.append(el('p', job.error, 'warning'));
     if (job.cancelDelivery) card.append(el('p', `Bridge cancellation: ${job.cancelDelivery}${job.cancelError ? `. ${job.cancelError}` : ''}`, 'hint'));
     if (job.result) {
+      if (job.state === 'complete' && state.speechPreferences.voiceResponses) card.append(button('Read aloud', () => send('speak-result', { kind: 'job', id: job.id })));
       const reasoning = el('details'); reasoning.append(el('summary', 'Result details'), el('p', job.result.reason, 'hint')); card.append(reasoning);
       for (const proposal of job.result.proposals) card.append(el('p', proposal.nextStep), el('p', `Proposal only · ${proposal.delivery} · ${proposal.evidenceIds.join(', ')}`, 'meta'));
     }
@@ -197,6 +200,14 @@ async function refresh() {
   if (sequence !== refreshSequence) return;
   if (state && next.currentContextId !== state.currentContextId && !location.hash) selectedContextId = undefined;
   state = next;
+  $<HTMLSelectElement>('#speech-mode').value = state.speechPreferences.transcriptionMode;
+  $<HTMLInputElement>('#speech-responses').checked = state.speechPreferences.voiceResponses;
+  const audioActive = state.audioSessions.some(session => ['starting','listening'].includes(session.captureStatus));
+  $('#speech-toggle').textContent = audioActive ? 'Stop transcription' : 'Start microphone';
+  $('#speech-capture-status').textContent = state.audioListening ? 'Listening on device.' : audioActive ? 'Preparing or finishing audio.' : state.speechPreferences.transcriptionMode === 'continuous' ? (state.speechPreferences.paused ? 'Continuous transcription paused.' : 'Continuous transcription enabled. Open speech controls for device status.') : 'Microphone is off until started.';
+  $('#speech-playback').textContent = state.speechPlayback ? `${state.speechPlayback.status}: ${state.speechPlayback.detail}` : 'Browser voice is idle.';
+  const speechShortcut = state.commands.find(command => command.name === 'toggle-transcription')?.shortcut;
+  $('#speech-shortcut').textContent = speechShortcut ? `Start or stop transcription with ${speechShortcut}.` : 'Voice hotkey is unassigned. Set it at chrome://extensions/shortcuts.';
   $('#mode').textContent = state.settings.syncMode === 'local' ? 'Local only' : 'Reviewed sync';
   $<HTMLSelectElement>('#sync-mode').value = state.settings.syncMode;
   $<HTMLInputElement>('#hosted-reasoning').checked = state.settings.hostedReasoning;
@@ -210,6 +221,11 @@ async function refresh() {
   renderNotes(); renderMeetings(); renderReview(); renderBackground(); switchView(view);
 }
 for (const tab of document.querySelectorAll<HTMLElement>('[data-view]')) tab.onclick = () => switchView(tab.dataset.view!);
+$('#speech-mode').onchange = () => void run(async () => { const mode = $<HTMLSelectElement>('#speech-mode').value; await send('speech-settings', { transcriptionMode: mode, paused: mode !== 'continuous' }); showStatus('Transcription preference saved.'); });
+$('#speech-responses').onchange = () => void run(async () => { await send('speech-settings', { voiceResponses: $<HTMLInputElement>('#speech-responses').checked }); showStatus('Browser voice preference saved.'); });
+$('#speech-toggle').onclick = () => void run(() => send('speech-control', { action: 'toggle' }));
+$('#speech-open').onclick = () => void run(() => send('open-voice'));
+$('#speech-stop').onclick = () => void run(() => send('speech-stop-output'));
 $('#open-voice').onclick = () => void run(() => send('open-voice'));
 $('#capture').onclick = () => void run(async () => { selectedContextId = undefined; await send('capture'); showStatus('Context saved locally.'); });
 $('#note-form').onsubmit = event => { event.preventDefault(); void run(async () => { const context = currentContext(); if (!context) throw new Error('Capture a page first.'); await send('save-note', { contextId: context.id, text: $<HTMLTextAreaElement>('#note').value }); $<HTMLTextAreaElement>('#note').value = ''; showStatus('Note saved locally.'); }); };
